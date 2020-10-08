@@ -1,0 +1,177 @@
+* {
+  margin: auto;
+  padding: 0;
+  font-family: "Arial";
+background-color: #FFFFFF;
+}
+@font-face{
+font-family: "RisollaCalisto";
+src: url("src\assets\font\Risolla Calisto.ttf");
+}
+.img-presentacion{
+float: left;
+-webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  background-position: 0 0;
+  background-size: 454px 618px;
+  -webkit-flex-basis: 454px;
+  -ms-flex-preferred-size: 454px;
+  flex-basis: 454px;
+  height: 618px;
+margin-top: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.registro{
+float: right;
+color: #262626;
+background-color:white;
+  color: rgba(var(--i1d,38,38,38),1);
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+margin-left: 10%;
+margin-right: 10%;
+  margin-top: 2%;
+max-width: 300px;
+border: 0.1rem solid #F2F3F4;
+  border-radius: 4px;
+}
+.registro h1{
+font-weight: bold;
+text-align: center;
+margin: 22px auto 12px;
+font-family: "RisollaCalisto";
+}
+.registro h2{
+color: #8e8e8e;
+  color: rgba(var(--f52,142,142,142),1);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0 40px 10px;
+  text-align: center;
+}
+.registro form{
+margin-left: 10%;
+margin-right: 10%;
+}
+.registro p{
+color: #8e8e8e;
+  color: rgba(var(--f52,142,142,142),1);
+  font-size: 12px;
+  line-height: 16px;
+  margin: 10px 40px;
+  text-align: center;
+}
+.principal{
+-webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 64px auto 0;
+  max-width: 935px;
+  padding-bottom: 64px;
+  width: 100%;
+}
+.grupo-formulario input,select{
+margin-top: 2%;
+width: 100%;
+height: 1.5rem;
+padding: 12px 20px;
+margin: 8px 0;
+box-sizing: border-box;
+border: 0.1rem solid #F2F3F4;
+border-radius: 4px;
+background: #fafafa;
+  background: rgba(var(--b3f,250,250,250),1);
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  outline: 0;
+  overflow: hidden;
+padding: 9px 0 7px 8px;
+  text-overflow: ellipsis;
+height: 2.5rem;
+}
+
+.grupo-formulario button{
+color: aliceblue;
+background-color: #3F6EB1;
+appearance: button;
+text-align: center;
+border: 0;
+border-radius: 4px;
+margin-right: 2%;
+margin-left: 2%;
+margin-top:3%;
+margin-bottom: 3%;
+width: 100%;
+height: 1.5rem;
+}
+.enlace-login{
+  float: right;
+color: #262626;
+background-color:white;
+  color: rgba(var(--i1d,38,38,38),1);
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 2%;
+border: 0.1rem solid #F2F3F4;
+  border-radius: 4px;
+float: left;
+margin-left: 58%;
+margin-right:2%;
+padding-left: 2%;
+padding-right: 4%;
+  border: 0.1rem solid #F2F3F4;
+  border-radius: 4px;
+}
+.enlace-login p{
+  color: #262626;
+  color: rgba(var(--i1d,38,38,38),1);
+  font-size: 14px;
+  margin: 15px;
+  text-align: center;
+}
+footer{
+margin-top: 90%;
+margin-bottom: 3%;
+margin-left: 6%;
+margin-right: 6%;
+}
+footer ul{
+display: flex;
+justify-content: center;
+}
+footer ul li {
+margin: 0 .75rem;
+list-style: none;
+font-size: 0.7rem;
+}
+
+
+
+

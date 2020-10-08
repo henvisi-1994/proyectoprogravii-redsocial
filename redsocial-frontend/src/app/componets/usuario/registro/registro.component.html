@@ -1,0 +1,65 @@
+<main class="contenedor">
+  <article class="principal">
+    <div class="img-presentacion"> <img src="http://lorempixel.com/400/200" /> </div>
+    <div class="registro">
+      <h1>
+        Red Social
+      </h1>
+      <h2>
+        Regístrate para ver fotos y videos de tus amigos.
+      </h2>
+      <form>
+        <div class="grupo-formulario">
+          <input type="email" name="email" required="true" placeholder="Correo Electronico" [(ngModel)]="usuario.email_user">
+          <input type="text" name="nombres" placeholder="Nombres" [(ngModel)]="usuario.nombres_user">
+          <input type="text" name="apellidos" placeholder="Apellidos" [(ngModel)]="usuario.apellidos_user">
+          <input type="date" name="fecha_nacimiento" placeholder="Ingrese Fecha de Nacimiento" [(ngModel)]="usuario.fecha_nac">
+          <input type="text" name="presentacion" placeholder="Nombre de usuario" [(ngModel)]="usuario.presentacion">
+          <input type="password" name="contrasena" placeholder="Ingrese contraseña" [(ngModel)]="usuario.contrasena_usuario">
+          <label for="">Genero</label>
+          <select class="form-control" name="genero" id="" [(ngModel)]="usuario.id_genero">
+            <option *ngFor="let genero of generos"  [value]="genero.id_genero">{{genero.nombre_genero}}</option>
+          </select>
+          <button (click)="registrarse()">Registarse </button>
+        </div>
+      </form>
+      <p>Al registrarte, aceptas nuestras Condiciones, la Política de datos y la Política de cookies.</p>
+    </div>
+    <div class="enlace-login">
+      <p>¿Tienes una cuenta? <a href="login">Inicia sesión</a></p>
+    </div>
+  </article>
+
+</main>
+<footer>
+  <ul>
+    <li>
+      INFORMACIÓN
+    </li>
+    <li>
+      AYUDA
+    </li>
+    <li>
+      PRENSA
+    </li>
+    <li>
+      EMPLEO
+    </li>
+    <li>
+      PRIVACIDAD
+    </li>
+    <li>
+      CONDICIONES
+    </li>
+    <li>
+      UBICACIONES
+    </li>
+    <li>
+      CUENTAS DESTACADAS
+    </li>
+    <li>
+      © 2020 Henry Simbaña -Bryan Gonzales -Marvin Valarezo
+    </li>
+  </ul>
+</footer>
+
