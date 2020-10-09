@@ -6,13 +6,13 @@ aside {
   margin-left: 60%;
   margin-right: 10%;
   padding: 0;
-  top: 60px;
   left: 806px;
 }
 #anuncio1 {
-  padding-top: 5%;
   padding-left: 10%;
   padding-right: 10%;
+  padding-top: 2%;
+  margin-top: -30%;
 }
 #anuncio1 h1 {
   font-size: 0.8em;
@@ -22,6 +22,11 @@ aside {
 .user_perfil {
   height: 40px;
 }
+img.user_perfil {
+  border: 0.1rem solid #F2F3F4;
+  border-radius: 50%;
+}
+
 .nom_c_user::before {
   content: '\A';
   white-space: pre;

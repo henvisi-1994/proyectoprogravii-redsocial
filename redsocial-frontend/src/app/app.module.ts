@@ -13,6 +13,7 @@ import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service.service';
 import { MenuInfoComponent } from './componets/home/menu-info/menu-info.component';
 import { PublicacionesComponent } from './componets/home/publicaciones/publicaciones.component';
+import { HistoriasComponent } from './componets/home/historias/historias.component';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
@@ -30,7 +31,8 @@ const routes: Route[] = [
     PrincipalComponent,
     HomeComponent,
     MenuInfoComponent,
-    PublicacionesComponent
+    PublicacionesComponent,
+    HistoriasComponent
   ],
   imports: [
     BrowserModule,

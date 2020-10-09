@@ -19,6 +19,7 @@ app.set('port',process.env.PORT || 4000)
 app.use(express.static(path.join(__dirname,'public')));
 
 //rutas
+app.use(require('./routes/usuarios.route'));
 
 
 const server=app.listen(app.get('port'),()=>{

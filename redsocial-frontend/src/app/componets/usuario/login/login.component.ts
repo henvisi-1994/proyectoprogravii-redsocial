@@ -21,9 +21,10 @@ export class LoginComponent implements OnInit {
     id_genero: 0 };
     token = '';
   constructor(private usuarioService: UsuarioService,
-              private router: Router,) { }
+              private router: Router) { }
 
   ngOnInit(): void {
+    this.verificarSesion();
   }
   // tslint:disable-next-line: typedef
   public logear() {
@@ -41,6 +42,12 @@ export class LoginComponent implements OnInit {
 
       }
     );
+  }
+  // tslint:disable-next-line: typedef
+  public verificarSesion(){
+    if (this.usuarioService.estaLogeado){
+      this.router.navigate(['/home']);
+    }
   }
 
 }
