@@ -7,9 +7,9 @@
       </h1>
       <form>
         <div class="grupo-formulario">
-          <input type="email" required="true" placeholder="Correo Electronico">
-          <input type="password" placeholder="Ingrese contraseña">
-          <button>Iniciar Sesión </button>
+          <input type="email" name="email" placeholder="Correo Electronico" [(ngModel)]="usuario.email_user" required="true">
+          <input type="password" name="contrasena" placeholder="Ingrese contraseña"[(ngModel)]="usuario.contrasena_usuario" required="true">
+          <button (click)="logear()">Iniciar Sesión </button>
         </div>
       </form>
       <p> <a href="#">¿Olvidaste tu contraseña?</a>  </p>

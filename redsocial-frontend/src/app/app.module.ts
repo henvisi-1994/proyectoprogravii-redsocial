@@ -9,12 +9,17 @@ import { LoginComponent } from './componets/usuario/login/login.component';
 import { RegistroComponent } from './componets/usuario/registro/registro.component';
 import { PrincipalComponent } from './componets/home/principal/principal.component';
 import { HomeComponent } from './componets/home/home/home.component';
+import { AuthGuard } from './auth.guard';
+import { TokenInterceptorService } from './services/token-interceptor.service.service';
+import { MenuInfoComponent } from './componets/home/menu-info/menu-info.component';
+import { PublicacionesComponent } from './componets/home/publicaciones/publicaciones.component';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'home', component: PrincipalComponent,
-    children: [{ path: '', component: HomeComponent }]
+    children: [{ path: '', component: HomeComponent }],
+    canActivate: [AuthGuard]
   }
 ];
 @NgModule({
@@ -23,7 +28,9 @@ const routes: Route[] = [
     LoginComponent,
     RegistroComponent,
     PrincipalComponent,
-    HomeComponent
+    HomeComponent,
+    MenuInfoComponent,
+    PublicacionesComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +38,12 @@ const routes: Route[] = [
     RouterModule.forRoot(routes),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
