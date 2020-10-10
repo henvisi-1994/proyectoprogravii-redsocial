@@ -51,6 +51,7 @@ usuarios.delete = async (req, res) => {
     res.json(`usuario ${id} Eliminado Satisfactoriamente`)
 }
 usuarios.loginUser = async (req, res) => {
+    console.log('Yo me encargo de esto')
     const { email_user, contrasena_usuario } = req.body;
     let query = `SELECT * FROM usuario where email_usuario = '${email_user}'`;
     const user = await conexion.query(query);
