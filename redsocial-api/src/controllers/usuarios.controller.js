@@ -1,12 +1,16 @@
 const conexion = require('./conexionDB')
+const passport = require('passport');//Controla la autentificacion de los usuarios
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
 const SECRET_KEY = 'rd**'
 const usuarios = {};
+
 usuarios.getusuarios = async (req, res) => {
     const response = await conexion.query("select *from usuario");
     res.status(200).json(response.rows);
 }
+
 usuarios.registro = async(req, res) => {
     const {nombres_user,apellidos_user,fecha_nac,email_user,contrasena_usuario,presentacion,telefono,id_genero } = req.body;
     let salt = bcrypt.genSaltSync(10);
@@ -18,6 +22,7 @@ usuarios.registro = async(req, res) => {
 
     res.status(200).json({ token })
 }
+
 //Actualiza datos de Usuario mediante id
 usuarios.update = async (req, res) => {
     const id = req.params.id_usuario;
@@ -26,6 +31,7 @@ usuarios.update = async (req, res) => {
     await conexion.query(query);
     res.json('Usuario Actualizado con exito');
 }
+
 usuarios.updateContrasena = async(req, res) => {
     let salt = bcrypt.genSaltSync(10);
     const id = req.params.id_usuario;
@@ -35,6 +41,7 @@ usuarios.updateContrasena = async(req, res) => {
     await conexion.query(query);
     res.json('Contraseña Actualizada con exito');
 }
+
 usuarios.confirmContrasena = async(req,res) => {
     const id = req.params.id_usuario;
     const{contrasena_usuario} = req.body;
@@ -44,12 +51,15 @@ usuarios.confirmContrasena = async(req,res) => {
     if (!bcrypt.compareSync(contrasena_usuario, user.rows[0].contrasena_usuario)) return res.status(401).json({ message: "Password erroneo" })
     res.json('Contraseña Correcta');
 }
+
 //Elimina datos de usuario mediante id
 usuarios.delete = async (req, res) => {
     const id = req.params.id_usuario;
     const response = await conexion.query('DELETE FROM usuario WHERE id_usuario =$1', [id]);
     res.json(`usuario ${id} Eliminado Satisfactoriamente`)
 }
+
+/**
 usuarios.loginUser = async (req, res) => {
     console.log('Yo me encargo de esto')
     const { email_user, contrasena_usuario } = req.body;
@@ -59,8 +69,53 @@ usuarios.loginUser = async (req, res) => {
     if (!bcrypt.compareSync(contrasena_usuario, user.rows[0].contrasena_usuario)) return res.status(401).json({ message: "Password erroneo" })
    const token = jwt.sign({ _id: user.rows[0].id_usuario},SECRET_KEY);
     res.status(200).json({ token })
-	
 }
+*/
+
+usuarios.loginUser = async (req, res, next) => {
+    console.log('ID Session User: ' + req.sessionID);
+    passport.authenticate('local-login', (err, usuario, info) => {
+        try {
+            if (err) {
+                next(('Esto es un error: ' + err));
+            }
+            if (!usuario) {
+                return res.status(400).send('Usuario o Contraseña no válidos')
+            }
+            req.logIn(usuario, (err) => {
+                console.log(usuario)
+                if (err) {
+                    next(err);
+                }
+                const token = jwt.sign({_id: usuario.id_usuario}, SECRET_KEY);
+                req.session.id_usuario = usuario.id_usuario
+                console.log({token})
+                console.log('ID Session User: ' + req.sessionID)
+                console.log('Se ha almacenado la sesion del usuario: ' + req.session.id_usuario)
+                console.log('Datos de usuario en req')
+                console.log(req.user)
+                user = req.user;
+                res.json({ user, token })
+            })
+        } catch (error) {
+            console.log("este es el error: " + error)
+        }
+    })(req, res);
+};
+
+usuarios.Logout = async (req, res) => {
+    res.clearCookie('sessionID')
+    req.session.destroy(err => {
+        if (err) {
+            console.log('ha ocurrido un error')
+        }
+    })
+    req.logout();
+    console.log('ID Session User TERMINADA: ' + req.sessionID)
+    res.send('Sesion Terminada')
+}
+
+
 usuarios.authUsuario= async(req,res) => {
     const token = req.headers.authorization.split(' ')[1];
     const payload = await jwt.verify(token, SECRET_KEY);

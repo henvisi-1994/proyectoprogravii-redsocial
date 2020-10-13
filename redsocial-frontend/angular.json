@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "redsocial-frontend"
+    }
+  },
+  "defaultProject": "redsocial-frontend",
+  "cli": {
+    "analytics": false
+  }
 }
