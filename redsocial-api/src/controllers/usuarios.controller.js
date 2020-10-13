@@ -112,7 +112,7 @@ usuarios.Logout = async (req, res) => {
     })
     req.logout();
     console.log('ID Session User TERMINADA: ' + req.sessionID)
-    res.send('Sesion Terminada')
+    res.status(200).json('Sesion Terminada');
 }
 
 

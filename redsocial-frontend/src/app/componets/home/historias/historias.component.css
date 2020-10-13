@@ -1,16 +1,18 @@
 .historias {
   border: 0.1rem solid #f2f3f4;
   background-color: white;
-  margin-left: 11%;
-  margin-right: 70%;
-  padding-left: 3%;
+  margin-left: 5%;
+  margin-right: 80%;
+  margin-bottom: 3%;
+  padding-left: 2%;
   padding-right: 2%;
   padding-top: 0.1%;
   padding-bottom: 0.1%;
-  width: 41%;
+  width: 85%;
 }
 .historia_usuario img {
-  height: 20%;
+  height: 40px;
+  width: 40px;
   /* los siguientes valores son independientes del tamaño del círculo */
   background-repeat: no-repeat;
   background-position: 50%;

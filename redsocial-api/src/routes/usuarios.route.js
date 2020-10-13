@@ -5,7 +5,7 @@ const validacion = require('../validaciones.js');
 const usuarios = require('../controllers/usuarios.controller')
 const generos = require('../controllers/generos.controller')
 router.post('/login',usuarios.loginUser);
-router.get('/logout',validacion.EstaAutenticado,usuarios.Logout);
+router.get('/logout',validacion.verifyToken,usuarios.Logout);
 router.get('/usuarios',validacion.verifyToken,usuarios.getusuarios);
 router.get('/generos',generos.getGeneros);
 router.get('/usuarioauth',validacion.verifyToken,usuarios.authUsuario);

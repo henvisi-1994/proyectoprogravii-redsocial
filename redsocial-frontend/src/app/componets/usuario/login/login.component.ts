@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
   }
   // tslint:disable-next-line: typedef
   public verificarSesion(){
-    if (this.usuarioService.estaLogeado){
+   if (this.usuarioService.estaLogeado){
       this.router.navigate(['/home']);
     }
   }

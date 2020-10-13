@@ -11,7 +11,10 @@ import { PrincipalComponent } from './componets/home/principal/principal.compone
 import { HomeComponent } from './componets/home/home/home.component';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service.service';
-import { MenuInfoComponent } from './componets/home/menu-info/menu-info.component';
+import { MenuPrincipalComponent } from './componets/home/menu/menu-principal/menu-principal.component';
+import { MenuLateralComponent } from './componets/home/menu/menu-lateral/menu-lateral.component';
+import { MenuMovilComponent } from './componets/home/menu/menu-movil/menu-movil.component';
+import { MenuInfoComponent } from './componets/home/menu/menu-info/menu-info.component';
 import { PublicacionesComponent } from './componets/home/publicaciones/publicaciones.component';
 import { HistoriasComponent } from './componets/home/historias/historias.component';
 const routes: Route[] = [
@@ -31,6 +34,9 @@ const routes: Route[] = [
     PrincipalComponent,
     HomeComponent,
     MenuInfoComponent,
+    MenuPrincipalComponent,
+    MenuLateralComponent,
+    MenuMovilComponent,
     PublicacionesComponent,
     HistoriasComponent
   ],

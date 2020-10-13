@@ -1,0 +1,124 @@
+<div class="navbar">
+<div class="navbar_menuicon" id="navicon">
+  <img src="/../../../assets/img/barras.png" alt="">
+</div>
+<div class="navbar_logo">
+  <img src="/../../../assets/images/logo.png" alt="" />
+</div>
+<div class="navbar_search">
+  <form method="" action="/">
+    <input type="text" placeholder="Buscar personas.." />
+    <button><img src="/../../../assets/img/buscar.png" alt=""></button>
+  </form>
+</div>
+<div class="navbar_icons">
+  <ul>
+    <a href="" style="color:white">
+      <li><img src="/../../../assets/img/home.png" alt=""></li>
+    </a>
+    <li id="messagesmodal"><img src="/../../../assets/img/mensaje.png" alt=""><span id="notification">2</span></li>
+    <li id="friendsmodal"><img src="/../../../assets/img/notificaciones.png" alt=""><span id="notification">5</span></li>
+  </ul>
+</div>
+<div class="navbar_user" id="profilemodal" style="cursor:pointer">
+  <img src="/../../../assets/images/user.jpg" alt="" />
+  <span id="navbar_user_top">{{usuario.nombres_user}} {{usuario.apellidos_user}}<br>
+    <p>{{usuario.presentacion}}</p>
+  </span><i class="fa fa-angle-down"></i>
+</div>
+</div>
+  <!-- Modal Messages -->
+  <div class="modal modal-comments">
+    <div class="modal-icon-select"><i class="fa fa-sort-asc" aria-hidden="true"></i></div>
+    <div class="modal-title">
+      <span>CHAT / MESSAGES</span>
+      <a href="messages.html"><i class="fa fa-ellipsis-h"></i></a>
+    </div>
+    <div class="modal-content">
+      <ul>
+        <li>
+          <a href="#">
+            <img src="/../../../assets/images/user-7.jpg" alt="" />
+            <span><b>Diana Jameson</b><br>Hi James! It’s Diana, I just wanted to let you know that we have to
+              reschedule...<p>4 hours ago</p></span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <img src="/../../../assets/images/user-6.jpg" alt="" />
+            <span><b>Elaine Dreyfuss</b><br>We’ll have to check that at the office and see if the client is on board
+              with...<p>Yesterday at 9:56pm</p></span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <img src="/../../../assets/images/user-3.jpg" alt="" />
+            <span><b>Jake Parker</b><br>Great, I’ll see you tomorrow!.<p>4 hours ago</p></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Modal Friends -->
+  <div class="modal modal-friends">
+    <div class="modal-icon-select"><i class="fa fa-sort-asc" aria-hidden="true"></i></div>
+    <div class="modal-title">
+      <span>SOLICITUD DE AMISTAD</span>
+      <a href="friends.html"><i class="fa fa-ellipsis-h"></i></a>
+    </div>
+    <div class="modal-content">
+      <ul>
+        <li>
+          <a href="#">
+            <img src="/../../../assets/images/user-2.jpg" alt="" />
+            <span><b>Tony Stevens</b><br>4 Amigos en Común</span>
+            <button class="modal-content-accept">Accept</button><button class="modal-content-decline">Decline</button>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <img src="/../../../assets/images/user-6.jpg" alt="" />
+            <span><b>Tamara Romanoff</b><br>2 Amigos en Común</span>
+            <button class="modal-content-accept">Accept</button><button class="modal-content-decline">Decline</button>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <img src="/../../../assets/images/user-4.jpg" alt="" />
+            <span><b>Nicholas Grissom</b><br>1 Friend in Common</span>
+            <button class="modal-content-accept">Accept</button><button class="modal-content-decline">Decline</button>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Modal Profile -->
+  <div class="modal modal-profile">
+    <div class="modal-icon-select"><i class="fa fa-sort-asc" aria-hidden="true"></i></div>
+    <div class="modal-title">
+      <span>MI CUENTA</span>
+      <a href="settings.html"><i class="fa fa-cogs"></i></a>
+    </div>
+    <div class="modal-content">
+      <ul>
+        <li>
+          <a href="settings.html">
+            <i class="fa fa-tasks" aria-hidden="true"></i>
+            <span><b>Configuración de Perfil</b><br>Yours Configuración de Perfil</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-star-o" aria-hidden="true"></i>
+            <span><b>Crear una Página</b><br>Crear Mi Página</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" (click)="cerrarSesion()">
+            <i class="fa fa-power-off" aria-hidden="true"></i>
+            <span><b>Cerra Sesión</b><br>Cerrar Mi Sesión</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>

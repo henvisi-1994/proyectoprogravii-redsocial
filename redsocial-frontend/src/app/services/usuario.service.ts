@@ -56,8 +56,7 @@ export class UsuarioService {
   }
   // tslint:disable-next-line: typedef
   cerrarSesion() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
+    return this.http.get(`${this.API_URI}/logout`);
   }
   // tslint:disable-next-line: variable-name
   updateContrasena(id_usuario: number, updateUsuario: Usuario): any {
