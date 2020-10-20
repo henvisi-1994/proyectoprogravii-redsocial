@@ -25,8 +25,8 @@ export class UsuarioService {
 
   // tslint:disable-next-line: typedef
   // tslint:disable-next-line: variable-name
-  deleteUsuario(id_user: number) {
-    return this.http.delete(`${this.API_URI}/deleteUsuario/${id_user}`);
+  deleteUsuario(id_usuario: number) {
+    return this.http.delete(`${this.API_URI}/deleteUsuario/${id_usuario}`);
   }
 // Almacena en bd mediante  NgModel de Usuario enviado a servidor backend
  // tslint:disable-next-line: typedef

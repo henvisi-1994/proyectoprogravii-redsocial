@@ -12,6 +12,7 @@ export class RegistroComponent implements OnInit {
   usuario: Usuario = {  id_usuario: 0,
     nombres_user: '',
     apellidos_user: '',
+    nom_usuario: '',
     email_user: '',
     celular_user: '',
     fecha_nac: new Date(),
@@ -25,6 +26,7 @@ export class RegistroComponent implements OnInit {
   ngOnInit(): void {
     this.getGeneros();
   }
+  // Registra usuario
   // tslint:disable-next-line: typedef
   public registrarse(){
     this.usuarioService.saveUsuario(this.usuario).subscribe(
@@ -39,6 +41,7 @@ export class RegistroComponent implements OnInit {
       }
     );
   }
+  // limpia el objeto usuario
   // tslint:disable-next-line: typedef
   limpiar() {
     this.usuario.nombres_user = '',
@@ -51,6 +54,7 @@ export class RegistroComponent implements OnInit {
     this.usuario.telefono =  '',
     this.usuario.id_genero = 0;
   }
+  // obtiene los generos desde bd
   // tslint:disable-next-line: typedef
   public getGeneros(){
     this.usuarioService.getGeneros().subscribe(

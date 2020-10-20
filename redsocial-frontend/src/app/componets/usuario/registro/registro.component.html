@@ -14,7 +14,7 @@
           <input type="text" name="nombres" placeholder="Nombres" [(ngModel)]="usuario.nombres_user">
           <input type="text" name="apellidos" placeholder="Apellidos" [(ngModel)]="usuario.apellidos_user">
           <input type="date" name="fecha_nacimiento" placeholder="Ingrese Fecha de Nacimiento" [(ngModel)]="usuario.fecha_nac">
-          <input type="text" name="presentacion" placeholder="Nombre de usuario" [(ngModel)]="usuario.presentacion">
+          <input type="text" name="username" placeholder="Nombre de usuario" [(ngModel)]="usuario.nom_usuario">
           <input type="password" name="contrasena" placeholder="Ingrese contraseña" [(ngModel)]="usuario.contrasena_usuario">
           <label for="">Genero</label>
           <select class="form-control" name="genero" id="" [(ngModel)]="usuario.id_genero">
@@ -26,7 +26,7 @@
       <p>Al registrarte, aceptas nuestras Condiciones, la Política de datos y la Política de cookies.</p>
     </div>
     <div class="enlace-login">
-      <p>¿Tienes una cuenta? <a href="login">Inicia sesión</a></p>
+      <p>¿Tienes una cuenta? <a [routerLink]="['/login']">Inicia sesión</a></p>
     </div>
   </article>
 

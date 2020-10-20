@@ -46,7 +46,7 @@ html, body {background-color: #EDF2F6;font-family: 'Roboto', sans-serif;height:1
 /* CONTAIN */
 .all {width: 90%;margin: 30px auto;display: flex;font-family: "Segoe UI","Helvetica Neue",Arial,sans-serif;margin-top: 80px}
 
-.left_row {width: 30%;position: fixed;}
+.left_row {width: 25%;position: fixed;}
 .rowfixed {width: 25%;}
 .row {width: 90%;margin: 0px auto;display: block;background-color: white;color: #515365;margin-bottom: 20px;border: 1px solid #e6ecf5;}
 .row_title {padding: 10px;border-bottom: 1px solid #e6ecf5;letter-spacing: 1px;}

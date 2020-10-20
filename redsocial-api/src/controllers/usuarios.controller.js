@@ -17,8 +17,8 @@ usuarios.registro = async(req, res) => {
     let hash = bcrypt.hashSync(contrasena_usuario, salt);
     let query = `INSERT INTO public.usuario(nombres_usuario, apellidos_usuario, fecha_nac_usuario, email_usuario, contrasena_usuario, presentacion_usuario, telefono_usuario, id_genero) VALUES ('${nombres_user}','${apellidos_user}','${fecha_nac}','${email_user}','${hash}','${presentacion}','${telefono}','${id_genero}')`;
     await conexion.query(query);
-    const response = await conexion.query("select *from usuario");
-    const token = jwt.sign({ _id: response.rows[0].id_user }, SECRET_KEY)
+    const result = await conexion.query("SELECT  MAX(id_usuario) FROM usuario LIMIT 1");
+    const token = jwt.sign({ _id: result.rows[0].max }, SECRET_KEY)
 
     res.status(200).json({ token })
 }
@@ -120,7 +120,7 @@ usuarios.authUsuario= async(req,res) => {
     const token = req.headers.authorization.split(' ')[1];
     const payload = await jwt.verify(token, SECRET_KEY);
     const id = payload._id;
-    const response = await conexion.query('select *from usuario WHERE id_usuario =$1', [id]);
+    const response = await conexion.query('select usuario.id_usuario, nombres_usuario,apellidos_usuario,fecha_nac_usuario,email_usuario,presentacion_usuario,telefono_usuario,nom_usuario,imagen_usuario,usuario.id_genero,nombre_genero from usuario INNER JOIN genero ON usuario.id_genero=genero.id_genero WHERE id_usuario = $1', [id]);
 	res.status(200).json(response.rows);
 }
 

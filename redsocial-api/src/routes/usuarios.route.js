@@ -10,10 +10,10 @@ router.get('/usuarios',validacion.verifyToken,usuarios.getusuarios);
 router.get('/generos',generos.getGeneros);
 router.get('/usuarioauth',validacion.verifyToken,usuarios.authUsuario);
 router.post('/createUsuario',usuarios.registro);
-router.put('/updateUsuario/:id_user',validacion.verifyToken,usuarios.update);
-router.put('/updateContrasena/:id_user',usuarios.updateContrasena);
-router.put('/confirmContrasena/:id_user',usuarios.confirmContrasena);
-router.delete('/deleteUsuario/:id_user',validacion.verifyToken,usuarios.delete);
+router.put('/updateUsuario/:id_usuario',validacion.verifyToken,usuarios.update);
+router.put('/updateContrasena/:id_usuario',usuarios.updateContrasena);
+router.put('/confirmContrasena/:id_usuario',usuarios.confirmContrasena);
+router.delete('/deleteUsuario/:id_usuario',validacion.verifyToken,usuarios.delete);
 
 
 module.exports= router;

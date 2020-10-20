@@ -13,7 +13,7 @@
 </div>
 <div class="navbar_icons">
   <ul>
-    <a href="" style="color:white">
+    <a [routerLink]="['/home']" style="color:white">
       <li><img src="/../../../assets/img/home.png" alt=""></li>
     </a>
     <li id="messagesmodal"><img src="/../../../assets/img/mensaje.png" alt=""><span id="notification">2</span></li>
@@ -23,7 +23,7 @@
 <div class="navbar_user" id="profilemodal" style="cursor:pointer">
   <img src="/../../../assets/images/user.jpg" alt="" />
   <span id="navbar_user_top">{{usuario.nombres_user}} {{usuario.apellidos_user}}<br>
-    <p>{{usuario.presentacion}}</p>
+    <p>{{usuario.nom_usuario}}</p>
   </span><i class="fa fa-angle-down"></i>
 </div>
 </div>
@@ -97,12 +97,12 @@
     <div class="modal-icon-select"><i class="fa fa-sort-asc" aria-hidden="true"></i></div>
     <div class="modal-title">
       <span>MI CUENTA</span>
-      <a href="settings.html"><i class="fa fa-cogs"></i></a>
+      <a [routerLink]="['/configuracion']"><i class="fa fa-cogs"></i></a>
     </div>
     <div class="modal-content">
       <ul>
         <li>
-          <a href="settings.html">
+          <a [routerLink]="['/configuracion']">
             <i class="fa fa-tasks" aria-hidden="true"></i>
             <span><b>Configuración de Perfil</b><br>Yours Configuración de Perfil</span>
           </a>

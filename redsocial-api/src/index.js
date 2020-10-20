@@ -1,21 +1,22 @@
 `use strict`
-const express = require('express');
-require('./passport/autenticacion')
-const app = express();
-const morgan = require('morgan'); //Importación de Middleware
 const path = require('path')
 const cors = require('cors');
+require('./passport/autenticacion')
+const morgan = require('morgan'); //Importación de Middleware
 const bodyParser = require('body-parser')
+const express = require('express')
+const app = express()
 const socketIO = require('socket.io')
-const http = require('http')
-const server = http.Server(app);
+
 
 //Sessions
 const passport = require('passport')//Para validar inicio de session con passport
 const redis = require('redis')
 const ExpressSession = require('express-session');
+const { Socket } = require('dgram');
 const RedisStore = require('connect-redis')(ExpressSession) //Almacenar sesiones con en Redis
-
+const publicaciones = [];
+const comentarios = [];
 const redisClient = redis.createClient({
     host: 'localhost',
     port: '6379',
@@ -39,10 +40,6 @@ const SessionMiddleware = ExpressSession({
 })
 
 app.use(SessionMiddleware)
-
-//Settings 
-app.set('port',process.env.PORT || 4000)
-
 //midelwares
 app.use(morgan('dev')); //Permite ver en consola el intercambio de datos mediante las peticiones http
 app.use(bodyParser.json()); //Para leer peticiones application/JSON
@@ -58,7 +55,6 @@ app.use(cors({ //Cors permite la comunicacion entre dos servidores
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-
 app.use(function (req, res, next) {
     res.header()
     res.header('Access-Control-Allow-Credentials', true);
@@ -69,19 +65,36 @@ app.use(function (req, res, next) {
     next();
 }); 
 
+app.set('port',process.env.PORT || 4000)
+
 //static files
 app.use(express.static(path.join(__dirname,'public')));
 
 //rutas
 app.use(require('./routes/usuarios.route'));
+app.use(require('./routes/publicaciones.route'));
+app.use(require('./routes/comentarios.route'));
 
-//Starting the server
-app.listen(app.get('port'),()=>{
+
+
+const server=app.listen(app.get('port'),()=>{
     console.log('server on port', app.get('port'));
 })
 
 const io=socketIO.listen(server)
 
-//Inicializar Sockets y envio de Sessiones al Frontend/
-const sock = require('./socket/socket')
-sock(server, SessionMiddleware)
+io.on('connection',(socket)=>{
+    socket.on('publicar',function(data){
+        publicaciones.push(data);
+        socket.emit('obtener-publicacion',publicaciones);
+        socket.broadcast.emit('obtener-publicacion',publicaciones);
+    })
+    socket.on('comentar',function (data) {
+        comentarios.push(data);
+        socket.emit('obtener-comentario',comentarios);
+        socket.broadcast.emit('obtener-comentario',comentarios);
+    })
+    socket.on('escribir-comentario',function (data) {
+        socket.broadcast.emit('notificar-comentario',data);
+    })
+})

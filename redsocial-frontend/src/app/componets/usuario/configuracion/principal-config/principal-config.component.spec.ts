@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicarComponent } from './publicar.component';
+import { PrincipalConfigComponent } from './principal-config.component';
 
-describe('PublicarComponent', () => {
-  let component: PublicarComponent;
-  let fixture: ComponentFixture<PublicarComponent>;
+describe('PrincipalConfigComponent', () => {
+  let component: PrincipalConfigComponent;
+  let fixture: ComponentFixture<PrincipalConfigComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PublicarComponent ]
+      declarations: [ PrincipalConfigComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PublicarComponent);
+    fixture = TestBed.createComponent(PrincipalConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

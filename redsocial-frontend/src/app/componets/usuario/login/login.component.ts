@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   usuario: Usuario = {  id_usuario: 0,
     nombres_user: '',
     apellidos_user: '',
+    nom_usuario: '',
     email_user: '',
     celular_user: '',
     fecha_nac: new Date(),
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.verificarSesion();
   }
+  // Realiza inicio de sesion
   // tslint:disable-next-line: typedef
   public logear() {
     // Envia datos de NgModel de aporte a servicio de aporte para añadir en bd
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  // verifica si a iniciado sesion y es asi lo redirige a pagina home
   // tslint:disable-next-line: typedef
   public verificarSesion(){
    if (this.usuarioService.estaLogeado){
