@@ -8,19 +8,56 @@
       <h2>
         Regístrate para ver fotos y videos de tus amigos.
       </h2>
-      <form>
+      <form [formGroup]="registroForm" (ngSubmit)="registrarse()">
         <div class="grupo-formulario">
-          <input type="email" name="email" required="true" placeholder="Correo Electronico" [(ngModel)]="usuario.email_user">
-          <input type="text" name="nombres" placeholder="Nombres" [(ngModel)]="usuario.nombres_user">
-          <input type="text" name="apellidos" placeholder="Apellidos" [(ngModel)]="usuario.apellidos_user">
-          <input type="date" name="fecha_nacimiento" placeholder="Ingrese Fecha de Nacimiento" [(ngModel)]="usuario.fecha_nac">
-          <input type="text" name="username" placeholder="Nombre de usuario" [(ngModel)]="usuario.nom_usuario">
-          <input type="password" name="contrasena" placeholder="Ingrese contraseña" [(ngModel)]="usuario.contrasena_usuario">
+          <input type="email" formControlName="email" placeholder="Correo Electronico" [(ngModel)]="usuario.email_user">
+          <div class="alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
+            <div class="container-error-message" *ngIf="email.errors.required">
+              El correo es requerido.
+            </div>
+            <div class = "container-error-message" *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.pattern">
+              Formato de correo inválido.
+            </div>
+          </div>
+          <input type="text" formControlName="nombres" placeholder="Nombres" [(ngModel)]="usuario.nombres_user">
+          <div class="alert-danger" *ngIf="nombres.invalid && (nombres.dirty || nombres.touched)">
+            <div class="container-error-message" *ngIf="nombres.errors.required">
+              El nombre es requerido.
+            </div>
+            <div class = "container-error-message" *ngIf="(nombres.dirty || nombres.touched) && nombres.invalid && nombres.errors.pattern">
+              Formato de nombre invalido, solo se permiten letras.
+            </div>
+          </div>
+          <input type="text" formControlName="apellidos" placeholder="Apellidos" [(ngModel)]="usuario.apellidos_user">
+          <div class="alert-danger" *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)">
+            <div class="container-error-message" *ngIf="apellidos.errors.required">
+              Los apellidos es requerido.
+            </div>
+            <div class = "container-error-message" *ngIf="(apellidos.dirty || apellidos.touched) && apellidos.invalid && apellidos.errors.pattern">
+              Formato de apellido invalido, solo se permiten letras.
+            </div>
+          </div>
+          <input type="date" formControlName="fecha_nacimiento" placeholder="Ingrese Fecha de Nacimiento" [(ngModel)]="usuario.fecha_nac" required>
+          <input type="text" formControlName="username" placeholder="Nombre de usuario" [(ngModel)]="usuario.nom_usuario">
+          <div class="alert-danger" *ngIf="username.invalid && (username.dirty || username.touched)">
+            <div class="container-error-message" *ngIf="username.errors.required">
+              El nombre de usuario es requerido.
+            </div>
+            <div class = "container-error-message" *ngIf="(username.dirty || username.touched) && username.invalid && username.errors.pattern">
+              Formato de apellido invalido, solo se permiten letras.
+            </div>
+          </div>
+          <input type="password" formControlName="contrasena" placeholder="Ingrese contraseña" [(ngModel)]="usuario.contrasena_usuario">
+          <div class="alert-danger" *ngIf="contrasena.invalid && (contrasena.dirty || contrasena.touched)">
+            <div class="container-error-message" *ngIf="contrasena.errors.required">
+              La contraseña es requerida.
+            </div>
+          </div>
           <label for="">Genero</label>
-          <select class="form-control" name="genero" id="" [(ngModel)]="usuario.id_genero">
+          <select class="form-control" formControlName="genero" id="" [(ngModel)]="usuario.id_genero" required>
             <option *ngFor="let genero of generos"  [value]="genero.id_genero">{{genero.nombre_genero}}</option>
           </select>
-          <button (click)="registrarse()">Registarse </button>
+          <button type="submit">Registarse </button>
         </div>
       </form>
       <p>Al registrarte, aceptas nuestras Condiciones, la Política de datos y la Política de cookies.</p>
