@@ -39,12 +39,16 @@ export class PublicacionService {
     let segundos = fecha.getSeconds();
     let diaCnv = '';
     let mesCnv = '';
+    console.log(mes);
     if (mes < 10) {
       mesCnv = '0' + mes;
       if (dia < 10) {
         diaCnv = '0' + dia;
       }
+    } else {
+      mesCnv = mes + '';
     }
+    console.log(mesCnv);
     return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
   }
 }
