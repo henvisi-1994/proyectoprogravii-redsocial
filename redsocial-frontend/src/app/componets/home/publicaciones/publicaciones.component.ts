@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from 'src/app/services/web-socket.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Comentario } from 'src/app/modelos/Comentario';
+import { NotificacionService } from 'src/app/services/notificacion.service';
 
 @Component({
   selector: 'app-publicaciones',
@@ -42,12 +43,18 @@ export class PublicacionesComponent implements OnInit {
   constructor(private publicacionService: PublicacionService,
               private webService: WebSocketService,
               private comentarioService: ComentarioService,
+              private notificacioneService:NotificacionService,
               private usuarioService: UsuarioService) { }
+              
 
   ngOnInit(): void {
     this.getPublicaciones();
     this.getUsuario();
     // obtiene publicaciones desde el servidor mediante socket
+    this.webService.listen('obtener-notificacion').subscribe((data: any) => {
+      this.notificar(data,"Informacion");
+    });
+    
     this.webService.listen('obtener-publicacion').subscribe((data: any) => {
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
@@ -85,6 +92,11 @@ export class PublicacionesComponent implements OnInit {
       this.accion_comentario = data + ' esta escribiendo...';
     });
 
+  }
+
+  //Metodo Notificar
+  notificar(mensaje: string, tipo_notificacion: string) {
+    this.notificacioneService.notificar(mensaje,tipo_notificacion);
   }
   // obtiene usuario desde bd
   // tslint:disable-next-line: typedef
