@@ -98,4 +98,8 @@ io.on('connection',(socket)=>{
     socket.on('escribir-comentario',function (data) {
         socket.broadcast.emit('notificar-comentario',data);
     })
+	 socket.on('notificar',function (data) {
+        socket.emit('obtener-notificacion',data);
+        socket.broadcast.emit('obtener-notificacion',data);
+    })
 })
