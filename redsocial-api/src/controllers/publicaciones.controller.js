@@ -17,7 +17,7 @@ publicaciones.getpublicacion = async (req, res) => {
 
 publicaciones.registro = async(req, res) => {
     const {fecha_bub,url,id_usuario,id_type } = req.body;
-    const urli = `${url}/${req.file.filename}`;
+    const urli = `${url}/publicaciones/${req.file.filename}`;
     let query = `INSERT INTO public.publicacion( contenido_pub, fecha_bub, id_usuario, id_type) VALUES ('${urli}','${fecha_bub}','${id_usuario}','${id_type}')`;
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_pub) FROM publicacion LIMIT 1");
