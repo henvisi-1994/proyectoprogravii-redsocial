@@ -21,6 +21,9 @@ export class RegistroComponent implements OnInit {
     telefono: '',
     id_genero: 0 };
     generos = [];
+    edad;
+    alertaEdad;
+    alertaGenero;
   constructor(private usuarioService: UsuarioService,
               private router: Router, ) { }
   ngOnInit(): void {
@@ -28,18 +31,37 @@ export class RegistroComponent implements OnInit {
   }
   // Registra usuario
   // tslint:disable-next-line: typedef
-  public registrarse(){
-    this.usuarioService.saveUsuario(this.usuario).subscribe(
-      (res: any) => {
-        const token = res.token;
-        localStorage.setItem('token', token);
-        alert('usuario registrado con exito');
-        this.limpiar();
-      },
-      err => {
 
+  public registrarse(){
+    
+    var genero = this.usuario.id_genero;
+    var fecha = this.usuario.fecha_nac;
+    
+    const convertAge = new Date(fecha);
+    const timeDiff = Math.abs(Date.now() - convertAge.getTime());
+    this.edad = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+
+    if(this.edad < 18)
+    {
+      this.alertaEdad = "Usted debe ser mayor de edad para regsitarse."
+    }else{
+      this.alertaEdad = ""
+      if (genero == 0) {
+        this.alertaGenero = "Seleccione un género de las opciones otorgadas."
+      } else {
+        this.usuarioService.saveUsuario(this.usuario).subscribe(
+          (res: any) => {
+            const token = res.token;
+            localStorage.setItem('token', token);
+            alert('Usuario registrado con exito');
+            this.limpiar();
+          },
+          err => {
+    
+          }
+        );
       }
-    );
+    }
   }
   // limpia el objeto usuario
   // tslint:disable-next-line: typedef
@@ -49,10 +71,13 @@ export class RegistroComponent implements OnInit {
     this.usuario.email_user = '',
     this.usuario.celular_user = '',
     this.usuario.fecha_nac = new Date(),
+    this.usuario.nom_usuario = "",
     this.usuario.contrasena_usuario =  '',
     this.usuario.presentacion = '',
     this.usuario.telefono =  '',
     this.usuario.id_genero = 0;
+    this.alertaEdad = ""
+    this.alertaGenero = ""
   }
   // obtiene los generos desde bd
   // tslint:disable-next-line: typedef
