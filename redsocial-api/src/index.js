@@ -74,6 +74,7 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(require('./routes/usuarios.route'));
 app.use(require('./routes/publicaciones.route'));
 app.use(require('./routes/comentarios.route'));
+app.use(require('./routes/notificaciones.route'));
 
 
 

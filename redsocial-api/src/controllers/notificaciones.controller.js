@@ -15,9 +15,9 @@ notificaciones.getnotificacion = async (req, res) => {
     res.status(200).json(response.rows);
 }
 
-notificaciones.registro = async(req, res) => {
-    const {contenido_notif,fecha_hora_notif,leida_notif,id_usuario } = req.body;
-    let query = `INSERT INTO public.notificaciones(contenido_notif,fecha_hora_notif, leida_notif) VALUES ('${contenido_notif}','${fecha_hora_notif}','${leida_notif}')`;
+notificaciones.registro = async (req, res) => {
+    const { contenido_notif, fecha_hora_notif, leida_notif, id_usuario } = req.body;
+    let query = `INSERT INTO public.notificaciones(contenido_notif,fecha_hora_notif, leida_notif) VALUES ('${contenido_notif}','${convertirFecha(fecha_hora_notif)}','${leida_notif}')`;
     console.log(query);
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_notif) FROM notificaciones LIMIT 1");
@@ -31,7 +31,7 @@ notificaciones.registro = async(req, res) => {
 //Actualiza datos de notificacion mediante id
 notificaciones.update = async (req, res) => {
     const id = req.params.id_notif;
-    const {contenido_notif,fecha_hora_notif, leida_notif} = req.body;
+    const { contenido_notif, fecha_hora_notif, leida_notif } = req.body;
     let query = `UPDATE notificaciones SET contenido_notif='${contenido_notif}', fecha_hora_notif='${fecha_hora_notif}', leida_notif='${leida_notif}' WHERE id_notif = ${id}`;
     await conexion.query(query);
     res.json('Notificacion Actualizado con exito');
@@ -41,6 +41,28 @@ notificaciones.delete = async (req, res) => {
     const id = req.params.id_notif;
     await conexion.query('DELETE FROM notif_detalle WHERE id_notif =$1', [id]);
     const response = await conexion.query('DELETE FROM notificaciones WHERE id_notif =$1', [id]);
-    res.json(`Notificacion ${id} Eliminado Satisfactoriamente`) 
+    res.json(`Notificacion ${id} Eliminado Satisfactoriamente`)
+}
+function convertirFecha(fecha) {
+    var nFecha = new Date(fecha);
+    let dia = nFecha.getDate();
+    let mes = nFecha.getMonth();
+    let anio = nFecha.getFullYear();
+    let hora = nFecha.getHours();
+    let minutos = nFecha.getMinutes();
+    let segundos = nFecha.getSeconds();
+    let diaCnv = '';
+    let mesCnv = '';
+    console.log(mes);
+    if (mes < 10) {
+        mesCnv = '0' + mes;
+        if (dia < 10) {
+            diaCnv = '0' + dia;
+        }
+    } else {
+        mesCnv = mes + '';
+    }
+    console.log(mesCnv);
+    return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
 }
 module.exports = notificaciones;

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
 import { NotificacionService } from 'src/app/services/notificacion.service';
+import { Notificacion } from 'src/app/modelos/Notificacion';
 
 @Component({
   selector: 'app-menu-movil',
@@ -24,7 +25,8 @@ export class MenuMovilComponent implements OnInit {
     contrasena_usuario: '',
     presentacion: '',
     telefono: '',
-    genero: ''};
+    genero: ''
+  };
   file: any;
   image = '';
   publicacion: Publicacion = {
@@ -37,13 +39,14 @@ export class MenuMovilComponent implements OnInit {
   };
   // tslint:disable-next-line: variable-name
   event_name = 'publicar';
+  event_name_notificar = 'notificar';
   esMovil = false;
   tipoArchivo: string;
   constructor(private usuarioService: UsuarioService,
-              private publicacionService: PublicacionService,
-              private webService: WebSocketService,
-			  private notificacioneService:NotificacionService,
-              private router: Router) { }
+    private publicacionService: PublicacionService,
+    private webService: WebSocketService,
+    private notificacioneService: NotificacionService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getUsuario();
@@ -72,13 +75,21 @@ export class MenuMovilComponent implements OnInit {
     this.usuario.fecha_nac = this.formato(usuario.fecha_nac_usuario);
     this.usuario.genero = usuario.genero;
   }
+  guardarnotificacion(notificacion: Notificacion) {
+    this.notificacioneService.guardarNotificacion(notificacion).subscribe(
+      (res: any) => {
+        this.webService.emit(this.event_name_notificar, notificacion.contenido_notif);
+      }
+    );
+
+  }
   // Convierte fecha  recivida a formato entendible por html5
   formato(fecha_nac_usuario: string): string {
-   const fecha = fecha_nac_usuario.slice(0, -14);
-   const dia = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$3');
-   const mes = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$2');
-   const anio = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$1');
-   return anio + '-' + mes + '-' + dia;
+    const fecha = fecha_nac_usuario.slice(0, -14);
+    const dia = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$3');
+    const mes = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$2');
+    const anio = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$1');
+    return anio + '-' + mes + '-' + dia;
   }
   // Elimina o cierra sesion ademas de eliminar token de sesion
   // tslint:disable-next-line: typedef
@@ -114,9 +125,9 @@ export class MenuMovilComponent implements OnInit {
   // devuelve en variable tipoArchivo si el archivo es imagen o video
   // tslint:disable-next-line: typedef
   verificarTipo(file: any) {
-    if (file.type.includes('image')){
+    if (file.type.includes('image')) {
       this.tipoArchivo = 'imagen';
-    } else if (file.type.includes('video')){
+    } else if (file.type.includes('video')) {
       this.tipoArchivo = 'video';
     }
   }
@@ -154,17 +165,21 @@ export class MenuMovilComponent implements OnInit {
     }
     this.publicacionService.publicar(this.publicacion, this.file).subscribe(
       (res: any) => {
-		this.notificar("El usuario "+this.usuario.nom_usuario+" ha realizado una publicacion","Informacion")
+        let notificacion: Notificacion = {
+          id_notif: 0,
+          contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha realizado una publicacion",
+          fecha_hora_notif: new Date(),
+          leida_notif:false,
+          id_usuario: this.usuario.id_usuario,
+        };
+        this.guardarnotificacion(notificacion);
         this.webService.emit(this.event_name, res);
         this.cerrarModal();
       },
       err => { }
     );
   }
-    //Metodo Notificar
-  notificar(mensaje: string, tipo_notificacion: string) {
-    this.notificacioneService.notificar(mensaje,tipo_notificacion);
-  }
+
   // Detecta si el dispositivo es un celular
   // tslint:disable-next-line: typedef
   public detectarMovil() {

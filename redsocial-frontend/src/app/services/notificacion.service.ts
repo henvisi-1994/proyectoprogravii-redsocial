@@ -22,26 +22,10 @@ export class NotificacionService {
   }
   // Almacena en bd mediante  NgModel de Usuario enviado a servidor backend
   // tslint:disable-next-line: typedef
-  publicar(notificacion: Notificacion) {
+  guardarNotificacion(notificacion: Notificacion) {
     return this.http.post(`${this.API_URI}/notificar`, notificacion);
   }
-  convertirFecha(fecha: Date): string {
-    let dia = fecha.getDate();
-    let mes = fecha.getMonth();
-    let anio = fecha.getFullYear();
-    let hora = fecha.getHours();
-    let minutos = fecha.getMinutes();
-    let segundos = fecha.getSeconds();
-    let diaCnv = '';
-    let mesCnv = '';
-    if (mes < 10) {
-      mesCnv = '0' + mes;
-      if (dia < 10) {
-        diaCnv = '0' + dia;
-      }
-    }
-    return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
-  }
+  
   // Actualiza en bd mediante  NgModel de Usuario y su id  enviado a servidor backend
   updateNotificacion(id_notif: number, updateNotificacion: Notificacion) {
     return this.http.put(`${this.API_URI}/updateNotificacion/${id_notif}`, updateNotificacion);
@@ -99,5 +83,32 @@ export class NotificacionService {
         break;
     }
     }
+    // Almacena en bd mediante  NgModel de Usuario enviado a servidor backend
+  // tslint:disable-next-line: typedef
+  publicar(notificacion: Notificacion) {
+    
+  }
+  convertirFecha(fecha: Date): string {
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth();
+    let anio = fecha.getFullYear();
+    let hora = fecha.getHours();
+    let minutos = fecha.getMinutes();
+    let segundos = fecha.getSeconds();
+    let diaCnv = '';
+    let mesCnv = '';
+    console.log(mes);
+    if (mes < 10) {
+      mesCnv = '0' + mes;
+      if (dia < 10) {
+        diaCnv = '0' + dia;
+      }
+    } else {
+      mesCnv = mes + '';
+    }
+    console.log(mesCnv);
+    return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
+  }
 }
+
 
