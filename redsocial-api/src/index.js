@@ -18,7 +18,7 @@ const RedisStore = require('connect-redis')(ExpressSession) //Almacenar sesiones
 const publicaciones = [];
 const comentarios = [];
 const redisClient = redis.createClient({
-    host: '192.168.1.8',
+    host: 'localhost',
     port: '6379',
     password: '', //Nota: Configurar clave de servidor Redis
     db: '1',
