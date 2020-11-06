@@ -8,7 +8,7 @@
       <h2>
         Regístrate para ver fotos y videos de tus amigos.
       </h2>
-        <form class="grupo-formulario" (ngSubmit)="registrarse()" #f="ngForm">
+       <form class="grupo-formulario" (ngSubmit)="registrarse()" #f="ngForm">
         <input 
           type="email" name="email" placeholder="Correo Electronico" 
           [(ngModel)]="usuario.email_user" required pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
