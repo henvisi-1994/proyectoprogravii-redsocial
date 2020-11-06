@@ -1,0 +1,103 @@
+import { Notificacion } from './../modelos/Notificacion';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment.prod';
+declare var Push;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NotificacionService {
+  API_URI = environment.API_URI; // URL de Backend
+  constructor(private http: HttpClient) { }
+  // Obtiene Usuarios desde bd mediante servidor backend
+  // tslint:disable-next-line: typedef
+  getNotificaciones() {
+    return this.http.get(`${this.API_URI}/notificaciones`);
+  }
+  // Obtiene Usuarios desde bd mediante servidor backend
+  // tslint:disable-next-line: typedef
+  getNotificacion(id_notif: number) {
+    return this.http.get(`${this.API_URI}/notificacion/${id_notif}`);
+  }
+  // Almacena en bd mediante  NgModel de Usuario enviado a servidor backend
+  // tslint:disable-next-line: typedef
+  publicar(notificacion: Notificacion) {
+    return this.http.post(`${this.API_URI}/notificar`, notificacion);
+  }
+  convertirFecha(fecha: Date): string {
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth();
+    let anio = fecha.getFullYear();
+    let hora = fecha.getHours();
+    let minutos = fecha.getMinutes();
+    let segundos = fecha.getSeconds();
+    let diaCnv = '';
+    let mesCnv = '';
+    if (mes < 10) {
+      mesCnv = '0' + mes;
+      if (dia < 10) {
+        diaCnv = '0' + dia;
+      }
+    }
+    return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
+  }
+  // Actualiza en bd mediante  NgModel de Usuario y su id  enviado a servidor backend
+  updateNotificacion(id_notif: number, updateNotificacion: Notificacion) {
+    return this.http.put(`${this.API_URI}/updateNotificacion/${id_notif}`, updateNotificacion);
+  }
+  // Elimina Usuarios teniendo id  desde bd mediante servidor backend
+  deleteNotificacion(id_notif: number) {
+    return this.http.delete(`${this.API_URI}/deleteNotificacion/${id_notif}`);
+  }
+  notificar(mensaje: string, tipo_notificacion: string) {
+    
+    switch (tipo_notificacion) {
+      case "Informacion":
+        Push.create("Informacion", {
+          body: mensaje,
+          timeout: 4000,
+          onClick: function () {
+              window.focus();
+              this.close();
+          }
+      });
+        break;
+        case "Advertencia":
+        Push.create("Advertencia", {
+          body: mensaje,
+          timeout: 4000,
+          onClick: function () {
+              window.focus();
+              this.close();
+          }
+      });
+        break;
+        case "Error":
+        Push.create("Error", {
+          body: mensaje,
+          timeout: 4000,
+          onClick: function () {
+              window.focus();
+              this.close();
+          }
+      });
+        break;
+        case "Satisfactorio":
+        Push.create("Satisfactorio", {
+          body: mensaje,
+          timeout: 4000,
+          onClick: function () {
+              window.focus();
+              this.close();
+          }
+      });
+        break;
+  
+    
+      default:
+        break;
+    }
+    }
+}
+

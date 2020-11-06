@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
+import { NotificacionService } from 'src/app/services/notificacion.service';
 
 @Component({
   selector: 'app-menu-movil',
@@ -41,6 +42,7 @@ export class MenuMovilComponent implements OnInit {
   constructor(private usuarioService: UsuarioService,
               private publicacionService: PublicacionService,
               private webService: WebSocketService,
+			  private notificacioneService:NotificacionService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -152,11 +154,16 @@ export class MenuMovilComponent implements OnInit {
     }
     this.publicacionService.publicar(this.publicacion, this.file).subscribe(
       (res: any) => {
+		this.notificar("El usuario "+this.usuario.nom_usuario+" ha realizado una publicacion","Informacion")
         this.webService.emit(this.event_name, res);
         this.cerrarModal();
       },
       err => { }
     );
+  }
+    //Metodo Notificar
+  notificar(mensaje: string, tipo_notificacion: string) {
+    this.notificacioneService.notificar(mensaje,tipo_notificacion);
   }
   // Detecta si el dispositivo es un celular
   // tslint:disable-next-line: typedef
