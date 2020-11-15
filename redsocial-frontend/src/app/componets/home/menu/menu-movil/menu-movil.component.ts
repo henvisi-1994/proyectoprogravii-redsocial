@@ -78,7 +78,11 @@ export class MenuMovilComponent implements OnInit {
   guardarnotificacion(notificacion: Notificacion) {
     this.notificacioneService.guardarNotificacion(notificacion).subscribe(
       (res: any) => {
-        this.webService.emit(this.event_name_notificar, notificacion.contenido_notif);
+        notificacion.id_notif=res.id_notif,
+        notificacion.contenido_notif=res.contenido_notif,
+        notificacion.fecha_hora_notif=res.fecha_hora_notif,
+        notificacion.id_usuario=res.id_usuario;
+        this.webService.emit(this.event_name_notificar,res);  
       }
     );
 

@@ -5,6 +5,7 @@ import { WebSocketService } from 'src/app/services/web-socket.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Comentario } from 'src/app/modelos/Comentario';
 import { NotificacionService } from 'src/app/services/notificacion.service';
+import { Notificacion } from 'src/app/modelos/Notificacion';
 
 @Component({
   selector: 'app-publicaciones',
@@ -27,7 +28,8 @@ export class PublicacionesComponent implements OnInit {
     contrasena_usuario: '',
     presentacion: '',
     telefono: '',
-    genero: ''};
+    genero: ''
+  };
   comentario: Comentario = {
     id_com: 0,
     contenido_com: '',
@@ -37,24 +39,26 @@ export class PublicacionesComponent implements OnInit {
   };
   // tslint:disable-next-line: variable-name
   event_name = 'comentar';
+  //
+  event_name_notificar_comentario = 'notificar';
   // tslint:disable-next-line: variable-name
   accion_comentario: string;
 
   constructor(private publicacionService: PublicacionService,
-              private webService: WebSocketService,
-              private comentarioService: ComentarioService,
-              private notificacioneService:NotificacionService,
-              private usuarioService: UsuarioService) { }
-              
+    private webService: WebSocketService,
+    private comentarioService: ComentarioService,
+    private notificacioneService: NotificacionService,
+    private usuarioService: UsuarioService) { }
+
 
   ngOnInit(): void {
     this.getPublicaciones();
     this.getUsuario();
     // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-notificacion').subscribe((data: any) => {
-      this.notificar(data,"Informacion");
+      this.notificar(data[0].contenido_notif, "Informacion");
     });
-    
+
     this.webService.listen('obtener-publicacion').subscribe((data: any) => {
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
@@ -73,6 +77,7 @@ export class PublicacionesComponent implements OnInit {
     });
     // obtiene comentarios desde el servidor mediante socket
     this.webService.listen('obtener-comentario').subscribe((data: any) => {
+
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < data.length; i++) {
         this.comentarios.push(data[i][0]);
@@ -96,7 +101,7 @@ export class PublicacionesComponent implements OnInit {
 
   //Metodo Notificar
   notificar(mensaje: string, tipo_notificacion: string) {
-    this.notificacioneService.notificar(mensaje,tipo_notificacion);
+    this.notificacioneService.notificar(mensaje, tipo_notificacion);
   }
   // obtiene usuario desde bd
   // tslint:disable-next-line: typedef
@@ -122,11 +127,11 @@ export class PublicacionesComponent implements OnInit {
   }
   // convierte fecha en formato aceptado por html5
   formatoFechUsu(fecha_nac_usuario: string): string {
-   const fecha = fecha_nac_usuario.slice(0, -14);
-   const dia = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$3');
-   const mes = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$2');
-   const anio = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$1');
-   return anio + '-' + mes + '-' + dia;
+    const fecha = fecha_nac_usuario.slice(0, -14);
+    const dia = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$3');
+    const mes = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$2');
+    const anio = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$1');
+    return anio + '-' + mes + '-' + dia;
   }
   // Obtiene publicaciones desde bd
   // tslint:disable-next-line: typedef
@@ -144,13 +149,16 @@ export class PublicacionesComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let index = 0; index < comentario.length; index++) {
       this.getComentario(comentario[index].id_pub);
+      
     }
   }
   // obtiene comentario de determinada publicacion definida por variable id_pub
   // tslint:disable-next-line: typedef
   // tslint:disable-next-line: variable-name
   getComentario(id_pub: number) {
+
     this.comentarioService.getComentarios(id_pub).subscribe(
+      
       (res: any) => {
         // tslint:disable-next-line: prefer-for-of
         for (let index = 0; index < res.length; index++) {
@@ -193,29 +201,45 @@ export class PublicacionesComponent implements OnInit {
     const mesCnv = meses[parseInt(mes)];
     return dia + ' de ' + mesCnv + ' del ' + anio + ' a las ' + tiempo;
   }
-   // Comenta publicacion determinada por variable id_pub
+  // Comenta publicacion determinada por variable id_pub
   // tslint:disable-next-line: variable-name
- // tslint:disable-next-line: typedef
+  // tslint:disable-next-line: typedef
   public comentar(id_pub) {
     this.comentario.id_pub = id_pub;
     this.comentario.id_usuario = this.usuario.id_usuario;
     this.comentarioService.comentar(this.comentario).subscribe(
       (res: any) => {
+        let notificacion: Notificacion = {
+          id_notif: 0,
+          contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha comentado una publicacion de: "+res[0].autor_publicacion,
+          fecha_hora_notif: new Date(),
+          leida_notif:false,
+          id_usuario: this.usuario.id_usuario,
+        };
+        this.guardarnotificacion(notificacion);
         this.webService.emit(this.event_name, res);
         this.comentario.contenido_com = '';
       }
     );
   }
+  //GuardaNotificaciones de COmentarios
+  guardarnotificacion(notificacion: Notificacion) {
+    this.notificacioneService.guardarNotificacion(notificacion).subscribe(
+      (res: any) => {
+        this.webService.emit(this.event_name_notificar_comentario, res);
+      }
+    );
+  }
   // Realiza conteo de comentarios de publicacion determinada por variable id_pub
   // tslint:disable-next-line: typedef
-  public contarComentario(id_pub: number){
-   // tslint:disable-next-line: variable-name
-   const cant_com = this.comentarios.filter(comentario => comentario.id_pub == id_pub).length;
-   if (cant_com <= 1){
-     return ' ' + cant_com + ' comentario';
-   } else {
+  public contarComentario(id_pub: number) {
+    // tslint:disable-next-line: variable-name
+    const cant_com = this.comentarios.filter(comentario => comentario.id_pub == id_pub).length;
+    if (cant_com <= 1) {
+      return ' ' + cant_com + ' comentario';
+    } else {
       return ' ' + cant_com + ' comentarios';
-   }
+    }
   }
 
 }

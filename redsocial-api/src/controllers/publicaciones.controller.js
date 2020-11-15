@@ -5,13 +5,13 @@ const publicaciones = {};
 
 
 publicaciones.getpublicaciones = async (req, res) => {
-    const response = await conexion.query("SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario INNER JOIN tipo_pub on publicacion.id_type=tipo_pub.id_type order by publicacion.id_pub DESC");
+    const response = await conexion.query("SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario  order by publicacion.id_pub DESC");
     res.status(200).json(response.rows);
 }
 
 publicaciones.getpublicacion = async (req, res) => {
     const id = req.params.id_pub;
-    const response = await conexion.query(`SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario INNER JOIN tipo_pub on publicacion.id_type=tipo_pub.id_type  where id_pub = ${id} order by publicacion.id_pub DESC`);
+    const response = await conexion.query(`SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario   where id_pub = ${id} order by publicacion.id_pub DESC`);
     res.status(200).json(response.rows);
 }
 
