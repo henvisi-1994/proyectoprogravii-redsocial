@@ -2,6 +2,7 @@ import { UsuarioService } from './../../../services/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/modelos/Usuario';
+import { NotificacionService } from 'src/app/services/notificacion.service';
 
 @Component({
   selector: 'app-registro',
@@ -25,6 +26,7 @@ export class RegistroComponent implements OnInit {
     alertaEdad;
     alertaGenero;
   constructor(private usuarioService: UsuarioService,
+    private notificacionService:NotificacionService,
               private router: Router, ) { }
   ngOnInit(): void {
     this.getGeneros();
@@ -53,7 +55,8 @@ export class RegistroComponent implements OnInit {
           (res: any) => {
             const token = res.token;
             localStorage.setItem('token', token);
-            alert('Usuario registrado con exito');
+            //alert('Usuario registrado con exito');
+            this.notificacionService.notificar('Usuario Registrado con exito','Informacion');
             this.limpiar();
           },
           err => {
@@ -84,7 +87,6 @@ export class RegistroComponent implements OnInit {
   public getGeneros(){
     this.usuarioService.getGeneros().subscribe(
       (res: any) => {
-        console.log(res);
         this.generos = res;
       }, err => {}
     );

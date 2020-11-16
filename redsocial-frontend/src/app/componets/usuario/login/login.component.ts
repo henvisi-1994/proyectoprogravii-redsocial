@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/modelos/Usuario';
+import { NotificacionService } from 'src/app/services/notificacion.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
     id_genero: 0 };
     token = '';
   constructor(private usuarioService: UsuarioService,
+              private notificacionService:NotificacionService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -40,7 +42,8 @@ export class LoginComponent implements OnInit {
       },
       // Errores al enviar datos al servicio de aporte almacenado en  err
       err => {
-         console.error(err.error.message);
+         this.notificacionService.notificar(err.error,'Error');
+         
 
       }
     );
