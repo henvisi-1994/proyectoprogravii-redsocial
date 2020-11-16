@@ -6,12 +6,12 @@ comentarios.registro = async(req, res) => {
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_com) FROM comentario LIMIT 1");
     const id = result.rows[0].max;
-    const response = await conexion.query(`SELECT * FROM comentario INNER JOIN usuario on comentario.id_usuario = usuario.id_usuario where id_com = ${id}`);
+    const response = await conexion.query(`select *from view_get_comentarios where id_com=${id}`);
     res.status(200).json(response.rows);
 }
 comentarios.getcomentarios = async (req, res) => {
     const id = req.params.id_pub;
-    const response = await conexion.query(`SELECT * from comentario INNER JOIN usuario on comentario.id_usuario = usuario.id_usuario where id_pub = ${id}`);
+    const response = await conexion.query(`select *from view_get_comentarios where id_pub=${id}`);
     res.status(200).json(response.rows);
 }
 
