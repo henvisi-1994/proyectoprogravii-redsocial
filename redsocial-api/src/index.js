@@ -18,8 +18,8 @@ const RedisStore = require('connect-redis')(ExpressSession) //Almacenar sesiones
 const publicaciones = [];
 const comentarios = [];
 const redisClient = redis.createClient({
-    host: 'localhost',
-    port: '6379',
+    host: 'ec2-3-225-139-129.compute-1.amazonaws.com',
+    port: '12329',
     password: '', //Nota: Configurar clave de servidor Redis
     db: '1',
 });
@@ -75,7 +75,7 @@ app.use(require('./routes/usuarios.route'));
 app.use(require('./routes/publicaciones.route'));
 app.use(require('./routes/comentarios.route'));
 app.use(require('./routes/notificaciones.route'));
-
+app.use(require('./routes/mensaje.route'));
 
 
 const server=app.listen(app.get('port'),()=>{
@@ -102,4 +102,24 @@ io.on('connection',(socket)=>{
         socket.emit('obtener-notificacion',data);
         socket.broadcast.emit('obtener-notificacion',data);
     })
+	//Chat
+    socket.on('new-message', message => {
+        messages.push(message)
+        io.sockets.emit('new-message', messages)
+      })
+  
+      socket.on('writing', user => {
+        io.sockets.emit('writing', user)
+      })
+  
+      socket.on('delete-message', id => {
+        let index = -1
+        let deleteMessages = messages.filter((message, i) => {
+          return message.id == id ? index = i : false
+        })
+  
+        messages.splice(index, 1)
+  
+        io.sockets.emit('new-message', messages)
+      })
 })

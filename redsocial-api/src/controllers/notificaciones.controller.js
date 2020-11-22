@@ -18,7 +18,6 @@ notificaciones.getnotificacion = async (req, res) => {
 notificaciones.registro = async (req, res) => {
     const { contenido_notif, fecha_hora_notif, leida_notif, id_usuario } = req.body;
     let query = `INSERT INTO public.notificaciones(contenido_notif,fecha_hora_notif, leida_notif) VALUES ('${contenido_notif}','${convertirFecha(fecha_hora_notif)}','${leida_notif}')`;
-    console.log(query);
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_notif) FROM notificaciones LIMIT 1");
     const id_notif = result.rows[0].max;
@@ -62,7 +61,6 @@ function convertirFecha(fecha) {
     } else {
         mesCnv = mes + '';
     }
-    console.log(mesCnv);
     return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
 }
 module.exports = notificaciones;
