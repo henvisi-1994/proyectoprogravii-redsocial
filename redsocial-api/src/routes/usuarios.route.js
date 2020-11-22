@@ -15,5 +15,16 @@ router.put('/updateContrasena/:id_usuario',usuarios.updateContrasena);
 router.put('/confirmContrasena/:id_usuario',usuarios.confirmContrasena);
 router.delete('/deleteUsuario/:id_usuario',validacion.verifyToken,usuarios.delete);
 
+//amigos
+router.post('/registrarAmigo',amigos.registro);
+router.put('/updateAmigo/:id_usuario',validacion.verifyToken,amigos.update);
+router.get('/aceptarAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.aceptar_amistad);
+router.get('/bloquearAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.bloquear_amistad);
+router.get('/desbloquearAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.desbloquear_amistad);
+router.get('/seguirAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.seguir_amigo);
+router.get('/dejarseguirAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.dejar_seguir_amigo);
+router.delete('/deleteAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.delete);
+router.get('/amigo/:id_usuario',amigos.getamigos);
+router.get('/seguidores/:id_usuario',amigos.getcantSeguid);
 
 module.exports= router;
