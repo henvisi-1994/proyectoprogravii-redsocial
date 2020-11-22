@@ -15,7 +15,7 @@ usuarios.registro = async(req, res) => {
     const {nombres_user,apellidos_user,fecha_nac,email_user,contrasena_usuario,presentacion,telefono,id_genero } = req.body;
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(contrasena_usuario, salt);
-    let query = `INSERT INTO public.usuario(nombres_usuario, apellidos_usuario, fecha_nac_usuario, email_usuario, contrasena_usuario, presentacion_usuario, telefono_usuario, id_genero) VALUES ('${nombres_user}','${apellidos_user}','${fecha_nac}','${email_user}','${hash}','${presentacion}','${telefono}','${id_genero}')`;
+    let query = `INSERT INTO public.usuario(nombres_usuario, apellidos_usuario, fecha_nac_usuario, email_usuario, contrasena_usuario, presentacion_usuario, telefono_usuario, id_genero,nom_usuario) VALUES ('${nombres_user}','${apellidos_user}','${fecha_nac}','${email_user}','${hash}','${presentacion}','${telefono}','${id_genero}','${nom_usuario}')`;
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_usuario) FROM usuario LIMIT 1");
     const token = jwt.sign({ _id: result.rows[0].max }, SECRET_KEY)
@@ -27,7 +27,7 @@ usuarios.registro = async(req, res) => {
 usuarios.update = async (req, res) => {
     const id = req.params.id_usuario;
     const {nombres_user,apellidos_user,fecha_nac,email_user,presentacion,telefono,id_genero } = req.body;
-    let query = `UPDATE usuario SET nombres_usuario='${nombres_user}', apellidos_usuario='${apellidos_user}', fecha_nac_usuario='${fecha_nac}', email_usuario='${email_user}',presentacion_usuario='${presentacion}', telefono_usuario='${telefono}', id_genero='${id_genero}' WHERE id_usuario = ${id}`;
+    let query = `UPDATE usuario SET nombres_usuario='${nombres_user}', apellidos_usuario='${apellidos_user}', fecha_nac_usuario='${fecha_nac}', email_usuario='${email_user}',presentacion_usuario='${presentacion}', telefono_usuario='${telefono}', id_genero='${id_genero}', nom_usuario= ${nom_usuario} WHERE id_usuario = ${id}`;
     await conexion.query(query);
     res.json('Usuario Actualizado con exito');
 }
