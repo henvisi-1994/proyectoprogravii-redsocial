@@ -40,7 +40,8 @@ export class NotificacionService {
       case "Informacion":
         Push.create("Informacion", {
           body: mensaje,
-          timeout: 4000,
+          icon: '../assets/img/informacion4.png',
+          timeout: 8000,
           onClick: function () {
               window.focus();
               this.close();
@@ -50,6 +51,7 @@ export class NotificacionService {
         case "Advertencia":
         Push.create("Advertencia", {
           body: mensaje,
+          icon: '../assets/img/advertencia.png',
           timeout: 4000,
           onClick: function () {
               window.focus();
@@ -60,6 +62,7 @@ export class NotificacionService {
         case "Error":
         Push.create("Error", {
           body: mensaje,
+          icon: '../assets/img/cancelar.png',
           timeout: 4000,
           onClick: function () {
               window.focus();
@@ -70,6 +73,7 @@ export class NotificacionService {
         case "Satisfactorio":
         Push.create("Satisfactorio", {
           body: mensaje,
+          icon: '../assets/img/comprobar.png',
           timeout: 4000,
           onClick: function () {
               window.focus();
@@ -110,5 +114,4 @@ export class NotificacionService {
     return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
   }
 }
-
 

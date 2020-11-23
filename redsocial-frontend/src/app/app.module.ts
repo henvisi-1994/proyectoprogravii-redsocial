@@ -23,6 +23,7 @@ import { ConfiguracionComponent } from './componets/usuario/configuracion/config
 import { InformacionPersonalComponent } from './componets/usuario/configuracion/informacion-personal/informacion-personal.component';
 import { CambioContrasenaComponent } from './componets/usuario/configuracion/cambio-contrasena/cambio-contrasena.component';
 import { MenuConfiguracionComponent } from './componets/usuario/configuracion/menu-configuracion/menu-configuracion.component';
+import { MensajeComponent } from './componets/home/mensaje/mensaje.component';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
@@ -30,6 +31,7 @@ const routes: Route[] = [
   {
     path: 'home', component: PrincipalComponent,
     children: [{ path: '', component: HomeComponent },
+	 { path: 'chat', component: MensajeComponent },
     { path: 'publicacion/:id_pub', component: PublicacionComponent }
     ],
     canActivate: [AuthGuard]
@@ -61,7 +63,8 @@ const routes: Route[] = [
     ConfiguracionComponent,
     InformacionPersonalComponent,
     CambioContrasenaComponent,
-    MenuConfiguracionComponent
+    MenuConfiguracionComponent,
+	MensajeComponent
   ],
   imports: [
     BrowserModule,

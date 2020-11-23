@@ -16,11 +16,12 @@ const ExpressSession = require('express-session');
 const { Socket } = require('dgram');
 const RedisStore = require('connect-redis')(ExpressSession) //Almacenar sesiones con en Redis
 const publicaciones = [];
+const messages = [];
 const comentarios = [];
 const redisClient = redis.createClient({
-    host: 'ec2-3-225-139-129.compute-1.amazonaws.com',
-    port: '12329',
-    password: '', //Nota: Configurar clave de servidor Redis
+    host: 'localhost',
+    port: '6379',
+    password: 'p5424ac3f9acc79931dccbbd1998a8c35455c8123fd06e3e529b31e6f2861a18e', //Nota: Configurar clave de servidor Redis
     db: '1',
 });
 
@@ -76,8 +77,6 @@ app.use(require('./routes/publicaciones.route'));
 app.use(require('./routes/comentarios.route'));
 app.use(require('./routes/notificaciones.route'));
 app.use(require('./routes/mensaje.route'));
-app.use(require('./routes/eventos.route'));
-app.use(require('./routes/reacciones.route'))
 
 
 
@@ -101,18 +100,20 @@ io.on('connection',(socket)=>{
     socket.on('escribir-comentario',function (data) {
         socket.broadcast.emit('notificar-comentario',data);
     })
-	 socket.on('notificar',function (data) {
+    socket.on('notificar',function (data) {
         socket.emit('obtener-notificacion',data);
         socket.broadcast.emit('obtener-notificacion',data);
     })
-	//Chat
+
+    //Chat
     socket.on('new-message', message => {
         messages.push(message)
-        io.sockets.emit('new-message', messages)
+        socket.emit('new-message', messages)
+        socket.broadcast.emit('new-message', messages);
       })
   
       socket.on('writing', user => {
-        io.sockets.emit('writing', user)
+        socket.emit('writing', user)
       })
   
       socket.on('delete-message', id => {
@@ -123,6 +124,6 @@ io.on('connection',(socket)=>{
   
         messages.splice(index, 1)
   
-        io.sockets.emit('new-message', messages)
+        sockets.emit('new-message', messages)
       })
 })
