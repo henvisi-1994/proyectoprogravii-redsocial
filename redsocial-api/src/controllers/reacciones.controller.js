@@ -6,6 +6,7 @@ const reacciones = {};
 //obtener reaaciones segun pub
 reacciones.getreacciones = async (req, res) => {
     const id = req.params.id_pub;
+    const response = await conexion.query(`SELECT * FROM cant_reac WHERE publicacion.id_pub = ${id}`);
     res.status(200).json(response.rows);
 }
 //obtener reaccion segun usuario
