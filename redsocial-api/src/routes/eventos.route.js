@@ -23,9 +23,11 @@ router.put('/updateOrganizador/:id_evento',organizador.update);
 router.delete('/deleteOrganizador/:id_evento',organizador.delete);
 //invitados_evento
 router.get('/invitados',invitados_evento.getinvitados);
-router.get('/invitado/:id_invitado',invitados_evento.getinvitado);
+router.get('/invitado/:id_usuario',invitados_evento.getinvitado);
+router.get('/estadisticaAsistencia/:id_evento',invitados_evento.getestadistica);
 router.post('/registrarInvitado',invitados_evento.registro);
 router.put('/updateInvitados/:id_invitado',invitados_evento.update);
+router.put('/cambiarEstado/:id_usuario',invitados_evento.cambiar_estado);
 router.delete('/deleteInvitados/:id_invitado',invitados_evento.delete);
 
 module.exports= router;
