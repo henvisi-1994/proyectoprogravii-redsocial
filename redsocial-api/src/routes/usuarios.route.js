@@ -4,6 +4,7 @@ const validacion = require('../validaciones.js');
 //Usuarios
 const usuarios = require('../controllers/usuarios.controller')
 const generos = require('../controllers/generos.controller')
+const amigos = require('../controllers/amigos.controller')
 router.post('/login',usuarios.loginUser);
 router.get('/logout',validacion.verifyToken,usuarios.Logout);
 router.get('/usuarios',validacion.verifyToken,usuarios.getusuarios);
