@@ -21,14 +21,8 @@ export class PublicacionService {
   }
   // Almacena en bd mediante  NgModel de Usuario enviado a servidor backend
   // tslint:disable-next-line: typedef
-  publicar(publicacion: Publicacion, file: File) {
-    const form = new FormData();
-    form.append('id_usuario', publicacion.id_usuario.toString());
-    form.append('fecha_bub', this.convertirFecha(publicacion.fecha_bub));
-    form.append('file', file);
-    form.append('url', this.API_URI);
-    form.append('id_type', publicacion.id_type.toString());
-    return this.http.post(`${this.API_URI}/publicar`, form);
+  publicar(publicacion: Publicacion) {
+    return this.http.post(`${this.API_URI}/publicar`, publicacion);
   }
   convertirFecha(fecha: Date): string {
     let dia = fecha.getDate();

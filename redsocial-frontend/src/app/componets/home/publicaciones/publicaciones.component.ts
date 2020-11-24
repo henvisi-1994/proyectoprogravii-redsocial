@@ -1,3 +1,4 @@
+import { MultimediaPubService } from './../../../services/multimedia-pub.service';
 import { ComentarioService } from './../../../services/comentario.service';
 import { PublicacionService } from './../../../services/publicacion.service';
 import { Component, OnInit } from '@angular/core';
@@ -6,7 +7,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { Comentario } from 'src/app/modelos/Comentario';
 import { NotificacionService } from 'src/app/services/notificacion.service';
 import { Notificacion } from 'src/app/modelos/Notificacion';
-
+declare var $: any;
 @Component({
   selector: 'app-publicaciones',
   templateUrl: './publicaciones.component.html',
@@ -28,8 +29,7 @@ export class PublicacionesComponent implements OnInit {
     contrasena_usuario: '',
     presentacion: '',
     telefono: '',
-    genero: ''
-  };
+    genero: ''};
   comentario: Comentario = {
     id_com: 0,
     contenido_com: '',
@@ -43,12 +43,15 @@ export class PublicacionesComponent implements OnInit {
   event_name_notificar_comentario = 'notificar';
   // tslint:disable-next-line: variable-name
   accion_comentario: string;
+  contador: number;
+  imagenes: any;
 
   constructor(private publicacionService: PublicacionService,
-    private webService: WebSocketService,
-    private comentarioService: ComentarioService,
-    private notificacioneService: NotificacionService,
-    private usuarioService: UsuarioService) { }
+              private webService: WebSocketService,
+              private comentarioService: ComentarioService,
+              private notificacioneService: NotificacionService,
+              private multimediaService: MultimediaPubService,
+              private usuarioService: UsuarioService) { }
 
 
   ngOnInit(): void {
@@ -64,6 +67,10 @@ export class PublicacionesComponent implements OnInit {
       for (let index = 0; index < data.length; index++) {
         this.publicaciones.push(data[index][0]);
       }
+      // tslint:disable-next-line: prefer-for-of
+      for (let index = 0; index < data.length; index++) {
+       this.imagenes.push(data[index][0]);
+      }
       const hash = {};
       // elimina publicaciones con id_pub repetido
       this.publicaciones = this.publicaciones.filter(publicacion => hash[publicacion.id_pub] ? false : hash[publicacion.id_pub] = true);
@@ -73,6 +80,7 @@ export class PublicacionesComponent implements OnInit {
       });
       // sobrer escribe arreglo publicaciones  con array ordenado
       this.publicaciones = publicacionesOrdenadas;
+
 
     });
     // obtiene comentarios desde el servidor mediante socket
@@ -140,8 +148,43 @@ export class PublicacionesComponent implements OnInit {
       (res: any) => {
         this.publicaciones = res;
         this.getComentarios(res);
+        this.getImagenes(res);
       }
     );
+  }
+  getImagenes(publicaciones: any): void {
+    // tslint:disable-next-line: prefer-for-of
+    for (let index = 0; index < publicaciones.length; index++) {
+      this.getImagen(publicaciones[index].id_pub);
+    }
+  }
+  // tslint:disable-next-line: variable-name
+  getImagen(id_pub: number): void{
+    this.multimediaService.getImagen(id_pub).subscribe(
+      (res: any) => {
+        // tslint:disable-next-line: prefer-for-of
+        for (let index = 0; index < res.length; index++) {
+          this.imagenes.push(res[index]);
+        }
+      }
+    );
+  }
+  procesarImagen(imagenes: any, id_pub: number){
+    const arrayImagenes: any = [];
+    arrayImagenes.push({imagenes, id_pub});
+    console.log(arrayImagenes);
+  }
+  adelante(): void {
+    if (this.contador < (this.imagenes.length - 1)) {
+      this.contador = this.contador + 1;
+    } else {
+      this.contador = 0;
+    }
+  }
+  atras(): void {
+    if (this.contador > 0) {
+      this.contador = this.contador - 1;
+    }
   }
   // Obtiene comentarios desde variable comentario
   // tslint:disable-next-line: typedef
@@ -149,7 +192,7 @@ export class PublicacionesComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let index = 0; index < comentario.length; index++) {
       this.getComentario(comentario[index].id_pub);
-      
+
     }
   }
   // obtiene comentario de determinada publicacion definida por variable id_pub
@@ -158,7 +201,7 @@ export class PublicacionesComponent implements OnInit {
   getComentario(id_pub: number) {
 
     this.comentarioService.getComentarios(id_pub).subscribe(
-      
+
       (res: any) => {
         // tslint:disable-next-line: prefer-for-of
         for (let index = 0; index < res.length; index++) {

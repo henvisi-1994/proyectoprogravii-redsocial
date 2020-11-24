@@ -11,18 +11,41 @@ publicaciones.getpublicaciones = async (req, res) => {
 
 publicaciones.getpublicacion = async (req, res) => {
     const id = req.params.id_pub;
-    const response = await conexion.query(`SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario   where id_pub = ${id} order by publicacion.id_pub DESC`);
+    const response = await conexion.query(`SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario where id_pub = ${id} order by publicacion.id_pub DESC`);
     res.status(200).json(response.rows);
 }
 
-publicaciones.registro = async(req, res) => {
-    const {fecha_bub,url,id_usuario,id_type } = req.body;
-    const urli = `${url}/publicaciones/${req.file.filename}`;
-    let query = `INSERT INTO public.publicacion( contenido_pub, fecha_bub, id_usuario, id_type) VALUES ('${urli}','${fecha_bub}','${id_usuario}','${id_type}')`;
-    await conexion.query(query);
-    const result = await conexion.query("SELECT  MAX(id_pub) FROM publicacion LIMIT 1");
-    const id = result.rows[0].max;
-    const response = await conexion.query(`SELECT * FROM publicacion INNER JOIN usuario on publicacion.id_usuario = usuario.id_usuario where id_pub = ${id}`);
-    res.status(200).json(response.rows);
+publicaciones.registro = async (req, res) => {
+    const { fecha_bub, id_usuario } = req.body;
+    if (!isNaN(id_usuario)) {
+        let query = `INSERT INTO public.publicacion(fecha_bub, id_usuario) VALUES ('${convertirFecha(fecha_bub)}','${id_usuario}')`;
+       console.log(query);
+        await conexion.query(query);
+        const result = await conexion.query("SELECT  MAX(id_pub) FROM publicacion LIMIT 1");
+        const id = result.rows[0].max;
+        res.status(200).json(id);
+    }
+}
+function convertirFecha(fecha) {
+    var nFecha = new Date(fecha);
+    let dia = nFecha.getDate();
+    let mes = nFecha.getMonth();
+    let anio = nFecha.getFullYear();
+    let hora = nFecha.getHours();
+    let minutos = nFecha.getMinutes();
+    let segundos = nFecha.getSeconds();
+    let diaCnv = '';
+    let mesCnv = '';
+    if (mes < 10) {
+        mesCnv = '0' + mes;
+        if (dia < 10) {
+            diaCnv = '0' + dia;
+        } else {
+            diaCnv = dia.toString();
+        }
+    } else {
+        mesCnv = mes.toString();
+    }
+    return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
 }
 module.exports = publicaciones;
