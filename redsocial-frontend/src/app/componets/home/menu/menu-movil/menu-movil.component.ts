@@ -189,6 +189,20 @@ export class MenuMovilComponent implements OnInit {
       this.tipoArchivo = 'video';
     }
   }
+  adelante(): void {
+    this.verificarTipo(this.list_archivos[this.contador]);
+    if (this.contador < (this.archivos.length - 1)) {
+      this.contador = this.contador + 1;
+    } else {
+      this.contador = 0;
+    }
+  }
+  atras(): void {
+    this.verificarTipo(this.list_archivos[this.contador]);
+    if (this.contador > 0) {
+      this.contador = this.contador - 1;
+    }
+  }
   // Abre ventana Modal
   // tslint:disable-next-line: variable-name
   public abrirModal(nombre_modal: string): void {

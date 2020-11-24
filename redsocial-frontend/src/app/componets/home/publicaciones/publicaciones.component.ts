@@ -44,7 +44,7 @@ export class PublicacionesComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   accion_comentario: string;
   contador: number;
-  imagenes: any;
+  imagenes: any = [];
 
   constructor(private publicacionService: PublicacionService,
               private webService: WebSocketService,

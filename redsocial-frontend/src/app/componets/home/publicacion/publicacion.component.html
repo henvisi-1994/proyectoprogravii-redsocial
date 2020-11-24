@@ -29,7 +29,7 @@
         <div *ngFor="let comentario of comentarios">
           <p *ngIf="comentario.id_pub == publicacion.id_pub">
             <span class="usuario">{{comentario.nom_usuario}}</span>{{comentario.contenido_com}}
-            <span class="fecha">{{formato(comentario.fecha_hora_com)}}</span>
+           <!-- <span class="fecha">{{formato(comentario.fecha_hora_com)}}</span>-->
           </p>
         </div>
         <textarea class="texto_comentario" name="" id="" cols="30" rows="1" placeholder="Escribe tu comentario ..." (keypress)="notificarComentario()" (change)="comentar(publicacion.id_pub)" [(ngModel)]="comentario.contenido_com"></textarea>

@@ -20,6 +20,9 @@ export class UsuarioService {
   getUsuario() {
     return this.http.get(`${this.API_URI}/usuarioauth`);
   }
+  getPerfilusuario(usuario: string){
+    return this.http.get(`${this.API_URI}/usuario/${usuario}`);
+  }
 
 // Elimina Usuarios teniendo id  desde bd mediante servidor backend
 
