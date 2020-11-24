@@ -1,6 +1,6 @@
 <main class="contenedor">
   <article class="principal">
-    <div class="img-presentacion"> <img src="http://lorempixel.com/400/200" /> </div>
+    <div class="img-presentacion"> <img src="../../../../assets/images/logo.png" /> </div>
     <div class="registro">
       <h1>
         Red Social
@@ -9,30 +9,30 @@
         Regístrate para ver fotos y videos de tus amigos.
       </h2>
        <form class="grupo-formulario" (ngSubmit)="registrarse()" #f="ngForm">
-        <input 
-          type="email" name="email" placeholder="Correo Electronico" 
+        <input
+          type="email" name="email" placeholder="Correo Electronico"
           [(ngModel)]="usuario.email_user" required pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
           title="ejemplo@dominio.com">
-        <input 
-          type="text" name="nombres" placeholder="Nombres" 
+        <input
+          type="text" name="nombres" placeholder="Nombres"
           [(ngModel)]="usuario.nombres_user" required pattern="^[A-Za-zÁÉÍÓÚñáéíóúÑ ]+$"
           title="Solo letras.">
-        <input 
-          type="text" name="apellidos" placeholder="Apellidos" 
+        <input
+          type="text" name="apellidos" placeholder="Apellidos"
           [(ngModel)]="usuario.apellidos_user" required pattern="^[A-Za-zÁÉÍÓÚñáéíóúÑ ]+$"
           title="Solo letras.">
-        <input 
-          type="date" name="fecha_nacimiento" 
-          [(ngModel)]="usuario.fecha_nac" required 
+        <input
+          type="date" name="fecha_nacimiento"
+          [(ngModel)]="usuario.fecha_nac" required
           title="Ingrese una fecha válida.">
           <span class="label danger"></span>
           <p style="color:red;">{{ alertaEdad }}</p>
-        <input 
-          type="text" name="username" placeholder="Nombre de usuario" 
+        <input
+          type="text" name="username" placeholder="Nombre de usuario"
           [(ngModel)]="usuario.nom_usuario" required pattern="^[A-Za-z0-9_.!-]{3,16}$"
           title="Admite letras, números y los simbolos '_, ., ! y -' y sin tildes.">
-        <input 
-          type="password" name="contrasena" placeholder="Ingrese contraseña" 
+        <input
+          type="password" name="contrasena" placeholder="Ingrese contraseña"
           [(ngModel)]="usuario.contrasena_usuario" required pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$"
           title="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.">
         <label for="">Genero</label>
