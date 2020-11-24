@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AmistadesService } from 'src/app/services/amistades.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -21,7 +22,12 @@ export class MenuPrincipalComponent implements OnInit {
     presentacion: '',
     telefono: '',
     genero: ''};
-  constructor(private usuarioService: UsuarioService, private router: Router) { }
+    solicitudes: any;
+    cantSolicitudes = 0;
+  usuarioBuscar: string;
+  constructor(private usuarioService: UsuarioService,
+              private router: Router,
+              private amigosService: AmistadesService) { }
 
   ngOnInit(): void {
     this.getUsuario();
@@ -44,6 +50,27 @@ almacenarUsuario(usuario: any) {
   this.usuario.email_user = usuario.email_usuario;
   this.usuario.fecha_nac = this.formato(usuario.fecha_nac_usuario);
   this.usuario.genero = usuario.genero;
+}
+getSolicitudesAmistad(id_usuario: number){
+  console.log('entro');
+  this.amigosService.getsoliicitudesAmistad(id_usuario).subscribe(
+    (res: any) => {
+      this.solicitudes = res;
+      console.table(res);
+      this.cantSolicitudes = res.length;
+    }
+  );
+}
+// tslint:disable-next-line: variable-name
+aceptar(id_usuario: number, id_amigo: number): void{
+  this.amigosService.aceptarAmigo(id_usuario, id_amigo).subscribe(
+    (res: any) => {
+    }
+  );
+}
+buscar(){
+  let ruta = '/home/usuarios/' + this.usuarioBuscar;
+  this.router.navigate([ruta]);
 }
 formato(fecha_nac_usuario: string): string {
  const fecha = fecha_nac_usuario.slice(0, -14);

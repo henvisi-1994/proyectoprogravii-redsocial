@@ -4,7 +4,7 @@ amigos.registro = async(req, res) => {
     const {es_aceptada, fecha_emision_amigo, es_seguido, es_seguidor, es_bloqueado, id_usuario, id_amigo } = req.body;
     let query = `INSERT INTO amigos(es_aceptada, fecha_emision_amigo, es_seguido, es_seguidor, es_bloqueado, id_usuario, id_amigo) VALUES ('${es_aceptada}', '${fecha_emision_amigo}','${es_seguido}', '${es_seguidor}', '${es_bloqueado}', '${id_usuario}', '${id_amigo}')`;
     await conexion.query(query);
-    const response = await conexion.query(`SELECT * from amigos,usuario where amigos.id_amigo = usuario.id_usuario and amigos.id_usuario = ${id_usuario}`);
+    const response = await conexion.query(`SELECT * from amigos,usuario where amigos.id_amigo = usuario.id_usuario and amigos.id_usuario = ${id_usuario} and es_aceptada = false `);
       res.status(200).json(response.rows);
 }
 //Actualiza datos de Usuario mediante id
@@ -60,6 +60,11 @@ amigos.delete = async (req, res) => {
 amigos.getamigos = async (req, res) => {
     const id = req.params.id_usuario;
     const response = await conexion.query(`SELECT * from amigos,usuario where amigos.id_amigo = usuario.id_usuario and amigos.id_usuario = ${id} and es_aceptada = true`);
+    res.status(200).json(response.rows);
+}
+amigos.getSolicitudAmigos = async (req, res) => {
+    const id = req.params.id_usuario;
+    const response = await conexion.query(`SELECT es_aceptada, fecha_emision_amigo,es_seguido, es_bloqueado, amigos.id_usuario,amigos.id_amigo,usuario.nom_usuario, usuario.imagen_usuario from amigos,usuario where amigos.id_amigo = usuario.id_usuario and amigos.id_usuario = ${id} and es_aceptada = false`);
     res.status(200).json(response.rows);
 }
 amigos.getcantSeguid = async (req, res) => {

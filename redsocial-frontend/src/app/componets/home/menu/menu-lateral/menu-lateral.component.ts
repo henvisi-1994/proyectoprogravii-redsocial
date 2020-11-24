@@ -10,6 +10,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class MenuLateralComponent implements OnInit {
   usuario = {
     id_usuario: 0,
+    nom_usu: '',
     nombres_user: '',
     apellidos_user: '',
     email_user: '',
@@ -36,9 +37,14 @@ getUsuario() {
 almacenarUsuario(usuario: any) {
   this.usuario.nombres_user = usuario.nombres_usuario;
   this.usuario.apellidos_user = usuario.apellidos_usuario;
+  this.usuario.nom_usu = usuario.nom_usuario;
   this.usuario.presentacion = usuario.presentacion_usuario;
   this.usuario.email_user = usuario.email;
   this.usuario.genero = usuario.genero;
+}
+public ingresar(){
+  let ruta= '/home/perfil/' + this.usuario.nom_usu;
+  this.router.navigate([ruta]);
 }
 public cerrarSesion() {
   this.usuarioService.cerrarSesion().subscribe(

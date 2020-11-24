@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, Route, CanActivate } from '@angular/router';
@@ -18,6 +18,8 @@ import { MenuInfoComponent } from './componets/home/menu/menu-info/menu-info.com
 import { PublicacionesComponent } from './componets/home/publicaciones/publicaciones.component';
 import { HistoriasComponent } from './componets/home/historias/historias.component';
 import { PublicacionComponent } from './componets/home/publicacion/publicacion.component';
+import { ListaAmigosComponent } from './componets/home/amigos/lista-amigos/lista-amigos.component';
+import { BuscarUsuarioComponent } from './componets/usuario/buscar-usuario/buscar-usuario.component';
 import { PrincipalConfigComponent } from './componets/usuario/configuracion/principal-config/principal-config.component';
 import { ConfiguracionComponent } from './componets/usuario/configuracion/configuracion/configuracion.component';
 import { InformacionPersonalComponent } from './componets/usuario/configuracion/informacion-personal/informacion-personal.component';
@@ -31,7 +33,9 @@ const routes: Route[] = [
   {
     path: 'home', component: PrincipalComponent,
     children: [{ path: '', component: HomeComponent },
-	 { path: 'chat', component: MensajeComponent },
+    { path: 'chat', component: MensajeComponent },
+    { path: 'amigos', component: ListaAmigosComponent },
+    { path: 'usuarios/:usuario', component: BuscarUsuarioComponent },
     { path: 'publicacion/:id_pub', component: PublicacionComponent }
     ],
     canActivate: [AuthGuard]
@@ -57,6 +61,8 @@ const routes: Route[] = [
     MenuLateralComponent,
     MenuMovilComponent,
     PublicacionesComponent,
+    ListaAmigosComponent,
+    BuscarUsuarioComponent,
     HistoriasComponent,
     PublicacionComponent,
     PrincipalConfigComponent,
@@ -64,7 +70,7 @@ const routes: Route[] = [
     InformacionPersonalComponent,
     CambioContrasenaComponent,
     MenuConfiguracionComponent,
-	MensajeComponent
+    MensajeComponent
   ],
   imports: [
     BrowserModule,

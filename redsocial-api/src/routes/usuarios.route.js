@@ -26,5 +26,6 @@ router.get('/dejarseguirAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amig
 router.delete('/deleteAmigo/:id_usuario/:id_amigo',validacion.verifyToken,amigos.delete);
 router.get('/amigo/:id_usuario',amigos.getamigos);
 router.get('/seguidores/:id_usuario',amigos.getcantSeguid);
+router.get('/solocitudesAmistad/:id_usuario', validacion.verifyToken, amigos.getSolicitudAmigos);
 
 module.exports= router;
