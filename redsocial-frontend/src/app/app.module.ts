@@ -26,6 +26,9 @@ import { InformacionPersonalComponent } from './componets/usuario/configuracion/
 import { CambioContrasenaComponent } from './componets/usuario/configuracion/cambio-contrasena/cambio-contrasena.component';
 import { MenuConfiguracionComponent } from './componets/usuario/configuracion/menu-configuracion/menu-configuracion.component';
 import { MensajeComponent } from './componets/home/mensaje/mensaje.component';
+import { ReaccionPubComponent } from './componets/home/reaccion-pub/reaccion-pub.component';
+import { ReaccionComComponent } from './componets/home/reaccion-com/reaccion-com.component';
+import { ReaccionCdetComponent } from './componets/home/reaccion-cdet/reaccion-cdet.component';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
@@ -70,7 +73,10 @@ const routes: Route[] = [
     InformacionPersonalComponent,
     CambioContrasenaComponent,
     MenuConfiguracionComponent,
-    MensajeComponent
+    MensajeComponent,
+    ReaccionPubComponent,
+    ReaccionComComponent,
+    ReaccionCdetComponent
   ],
   imports: [
     BrowserModule,
