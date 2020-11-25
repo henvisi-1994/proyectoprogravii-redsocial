@@ -59,19 +59,7 @@ usuarios.delete = async (req, res) => {
     res.json(`usuario ${id} Eliminado Satisfactoriamente`)
 }
 
-/**
-usuarios.loginUser = async (req, res) => {
-    console.log('Yo me encargo de esto')
-    const { email_user, contrasena_usuario } = req.body;
-    let query = `SELECT * FROM usuario where email_usuario = '${email_user}'`;
-    const user = await conexion.query(query);
-    if (user.rows == 0) return res.status(401).json({ message: "Usuario no registrado" });
-    if (!bcrypt.compareSync(contrasena_usuario, user.rows[0].contrasena_usuario)) return res.status(401).json({ message: "Password erroneo" })
-   const token = jwt.sign({ _id: user.rows[0].id_usuario},SECRET_KEY);
-    res.status(200).json({ token })
-}
-*/
-
+// Login de ususario con sesiones de Redis
 usuarios.loginUser = async (req, res, next) => {
     console.log('ID Session User: ' + req.sessionID);
     passport.authenticate('local-login', (err, usuario, info) => {
@@ -83,38 +71,32 @@ usuarios.loginUser = async (req, res, next) => {
                 return res.status(400).send('Usuario o Contraseña no válidos')
             }
             req.logIn(usuario, (err) => {
-                console.log(usuario)
                 if (err) {
                     next(err);
                 }
                 const token = jwt.sign({_id: usuario.id_usuario}, SECRET_KEY);
                 req.session.id_usuario = usuario.id_usuario
-                console.log({token})
-                console.log('ID Session User: ' + req.sessionID)
-                console.log('Se ha almacenado la sesion del usuario: ' + req.session.id_usuario)
-                console.log('Datos de usuario en req')
-                console.log(req.user)
                 user = req.user;
                 res.json({ user, token })
             })
         } catch (error) {
-            console.log("este es el error: " + error)
+            console.log("Este es el error: " + error)
         }
     })(req, res);
 };
 
+// Cierre de sesión y destruccion de la cookie
 usuarios.Logout = async (req, res) => {
     res.clearCookie('sessionID')
     req.session.destroy(err => {
         if (err) {
-            console.log('ha ocurrido un error')
+            console.log('Ha ocurrido un error')
         }
     })
     req.logout();
     console.log('ID Session User TERMINADA: ' + req.sessionID)
     res.status(200).json('Sesion Terminada');
 }
-
 
 usuarios.authUsuario= async(req,res) => {
     const token = req.headers.authorization.split(' ')[1];

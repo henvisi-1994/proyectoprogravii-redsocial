@@ -2,7 +2,7 @@
 const path = require('path')
 const cors = require('cors');
 require('./passport/autenticacion')
-const morgan = require('morgan'); //Importación de Middleware
+const morgan = require('morgan');
 const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
@@ -10,49 +10,49 @@ const socketIO = require('socket.io')
 
 
 //Sessions
-const passport = require('passport')//Para validar inicio de session con passport
+const passport = require('passport')
 const redis = require('redis')
 const ExpressSession = require('express-session');
 const { Socket } = require('dgram');
-const RedisStore = require('connect-redis')(ExpressSession) //Almacenar sesiones con en Redis
+const RedisStore = require('connect-redis')(ExpressSession)
 const publicaciones = [];
 const messages = [];
 const comentarios = [];
 const redisClient = redis.createClient({
     host: 'localhost',
     port: '6379',
-    password: 'p5424ac3f9acc79931dccbbd1998a8c35455c8123fd06e3e529b31e6f2861a18e', //Nota: Configurar clave de servidor Redis
+    password: 'p5424ac3f9acc79931dccbbd1998a8c35455c8123fd06e3e529b31e6f2861a18e',
     db: '1',
 });
 
 var expiryDate = (3.154e+10);
 
 const SessionMiddleware = ExpressSession({
-    store: new RedisStore({ client: redisClient }), //Aqui se pone el hash de configuración, tal como puerto, contraseña, ip del servidor de redis...
+    store: new RedisStore({ client: redisClient }),
     secret: "secretkey",
-    resave: false, //Si ponemos en true guarda demasiadas sessiones
+    resave: false,
     saveUninitialized: false,
     name: 'sessionID',
     cookie: {
         secure: false,
         expires: true,
-        maxAge: expiryDate, // 86400000 --> 24 Horas //3.154e+10 --> 1 año
+        maxAge: expiryDate, //Expira en 1 año
     }
 })
 
+//Midelwares
 app.use(SessionMiddleware)
-//midelwares
-app.use(morgan('dev')); //Permite ver en consola el intercambio de datos mediante las peticiones http
-app.use(bodyParser.json()); //Para leer peticiones application/JSON
-app.use(bodyParser.urlencoded({ extended: true })) //Para leer peticiones http (get/post)
-app.use(passport.initialize()); //Inicializa la libreria passport
-app.use(passport.session()); //Llama a la función session de passport
+app.use(morgan('dev')); 
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })) 
+app.use(passport.initialize()); 
+app.use(passport.session()); 
 
-//comunicar con otro servidor
-app.use(cors({ //Cors permite la comunicacion entre dos servidores
-    origin: ['http://localhost:4200'], //frontend server
+//Comunicación con otro servidor
+app.use(cors({
+    origin: ['http://localhost:4200'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true // true enable set cookie
+    credentials: true 
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -68,17 +68,15 @@ app.use(function (req, res, next) {
 
 app.set('port',process.env.PORT || 4000)
 
-//static files
+//Archivos estáticos
 app.use(express.static(path.join(__dirname,'public')));
 
-//rutas
+//Rutas
 app.use(require('./routes/usuarios.route'));
 app.use(require('./routes/publicaciones.route'));
 app.use(require('./routes/comentarios.route'));
 app.use(require('./routes/notificaciones.route'));
 app.use(require('./routes/mensaje.route'));
-
-
 
 const server=app.listen(app.get('port'),()=>{
     console.log('server on port', app.get('port'));
