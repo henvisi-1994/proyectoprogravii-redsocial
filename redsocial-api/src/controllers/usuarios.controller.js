@@ -10,7 +10,11 @@ usuarios.getusuarios = async (req, res) => {
     const response = await conexion.query("select *from usuario");
     res.status(200).json(response.rows);
 }
-
+usuarios.getusuario = async (req, res) => {
+    const id = req.params.id_usuario;
+    const response = await conexion.query(`select *from usuario where id_usuario = ${id}`);
+    res.status(200).json(response.rows);
+}
 usuarios.registro = async(req, res) => {
     const {nombres_user,apellidos_user,fecha_nac,email_user,contrasena_usuario,presentacion,telefono,id_genero,nom_usuario } = req.body;
     let salt = bcrypt.genSaltSync(10);

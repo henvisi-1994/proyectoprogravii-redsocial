@@ -18,6 +18,7 @@ const RedisStore = require('connect-redis')(ExpressSession)
 const publicaciones = [];
 const messages = [];
 const comentarios = [];
+const eventos = [];
 const redisClient = redis.createClient({
     host: 'localhost',
     port: '6379',
@@ -89,6 +90,11 @@ io.on('connection',(socket)=>{
         publicaciones.push(data);
         socket.emit('obtener-publicacion',publicaciones);
         socket.broadcast.emit('obtener-publicacion',publicaciones);
+    })
+    socket.on('enviar-invitacion', function(data){
+        eventos.push(data[0]);
+        socket.emit('obtener-invitacion',eventos);
+        socket.broadcast.emit('obtener-invitacion',eventos);
     })
     socket.on('comentar',function (data) {
         comentarios.push(data);

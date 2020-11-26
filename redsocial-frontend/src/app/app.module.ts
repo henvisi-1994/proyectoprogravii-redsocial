@@ -1,3 +1,4 @@
+import { InvitacionEventoComponent } from './componets/home/eventos/invitacion-evento/invitacion-evento.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,6 +30,8 @@ import { MensajeComponent } from './componets/home/mensaje/mensaje.component';
 import { ReaccionPubComponent } from './componets/home/reaccion-pub/reaccion-pub.component';
 import { ReaccionComComponent } from './componets/home/reaccion-com/reaccion-com.component';
 import { ReaccionCdetComponent } from './componets/home/reaccion-cdet/reaccion-cdet.component';
+import { PrincipalEventoComponent } from './componets/home/eventos/principal-evento/principal-evento.component';
+import { EventoComponent } from './componets/home/eventos/evento/evento.component';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
@@ -39,8 +42,10 @@ const routes: Route[] = [
     { path: 'chat', component: MensajeComponent },
     { path: 'amigos', component: ListaAmigosComponent },
     { path: 'usuarios/:usuario', component: BuscarUsuarioComponent },
-    { path: 'publicacion/:id_pub', component: PublicacionComponent }
-    ],
+    { path: 'publicacion/:id_pub', component: PublicacionComponent },
+    { path: 'evento', component: PrincipalEventoComponent},
+    { path: 'evento/:id_evento', component: EventoComponent}
+  ],
     canActivate: [AuthGuard]
   },
   {
@@ -64,6 +69,9 @@ const routes: Route[] = [
     MenuLateralComponent,
     MenuMovilComponent,
     PublicacionesComponent,
+    InvitacionEventoComponent,
+    PrincipalEventoComponent,
+    EventoComponent,
     ListaAmigosComponent,
     BuscarUsuarioComponent,
     HistoriasComponent,

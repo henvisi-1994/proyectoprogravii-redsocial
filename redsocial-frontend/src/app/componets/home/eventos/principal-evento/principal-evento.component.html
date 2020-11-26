@@ -1,0 +1,74 @@
+<div class="contenedor">
+    <div class="barra_lateral">
+        <h2 class="etiqueta">Detalles del evento</h2>
+        <form action="">
+            <label class="etiqueta">Nombre del evento</label>
+            <input type="text" class="form-control"  name="nombre_evento" [(ngModel)]="evento.nombre_evento">
+            <label class="etiqueta">Fecha y hora del evento</label>
+            <input type="datetime-local" class="form-control" name="fecha_hora_evento" [(ngModel)]="evento.fecha_hora_evento" >
+            <label class="etiqueta">Fecha y hora de finalización</label>
+            <input type="datetime-local" class="form-control" name="fecha_finalizacion"  [(ngModel)]="evento.fecha_finalizacion">
+            <label class="etiqueta">Lugar del Evento</label>
+            <input type="text" class="form-control" name="lugar_evento"  [(ngModel)]="evento.lugar_evento">
+            <label class="etiqueta">Ingrese un logo</label>
+            <input type="file" class="form-control"  (change)="onFileChange($event)"  accept="image/*" >
+            <button class="btn-crear" (click)="guardarEvento()">Crear Evento</button>
+        </form>
+    </div>
+    <div class="wraper">
+        <div class="vista-previa">
+            <h5>Vista previa del evento</h5>
+            <h3>{{formato(evento.fecha_hora_evento)}}</h3>
+            <h2>{{evento.nombre_evento}}</h2>
+            <div class="encabezado">
+                <ul class="barra-estado">
+                    <li>
+                        <p>Te invito {{ usuario.nom_usuario }}</p>
+                    </li>
+                    <li>
+                        <input type="button" value="Asistiré">
+                    </li>
+                    <li>
+                        <input type="button" value="Tal vez asista">
+                    </li>
+                    <li>
+                        <input type="button" value="No asistiré">
+                    </li>
+                    <li>
+                        <input type="button" value="Invitar">
+                    </li>
+                </ul>
+            </div>
+            <div class="contenido">
+                <div class="detalle">
+                    <h3>Detalle</h3>
+                    <p>1 persona asistirá, incluido {{ usuario.nom_usuario }}</p>
+                    <p>Desde el {{formato(evento.fecha_hora_evento)}}</p>
+                    <p>hasta el {{formato(evento.fecha_finalizacion)}}</p>
+                    <p>Organizado por {{ usuario.nom_usuario }}</p>
+                    <p><span style="font-weight: bold;">Lugar: </span> {{evento.lugar_evento}}</p>
+                </div>
+                <div class="lista-invitados">
+                    <h3>Lista Invitados</h3>
+                    <ul class="lista-i">
+                        <li>
+                            <span class="contador">1</span><br>
+                            <span>ASISTIRÁN</span>
+                        </li>
+                        <li>
+                            <span class="contador">0</span><br>
+                            <span>TAL VEZ ASISTAN</span>
+                        </li>
+                        <li>
+                            <span class="contador">1</span><br>
+                            <span>INVITADOS</span>
+                        </li>
+                    </ul>
+                    <hr>
+                    <p>{{ usuario.nom_usuario }}</p>
+                    <p>Organizador</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

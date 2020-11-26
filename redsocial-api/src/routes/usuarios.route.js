@@ -8,6 +8,7 @@ const amigos = require('../controllers/amigos.controller')
 router.post('/login',usuarios.loginUser);
 router.get('/logout',validacion.verifyToken,usuarios.Logout);
 router.get('/usuarios',validacion.verifyToken,usuarios.getusuarios);
+router.get('/usuario/:id_usuario',validacion.verifyToken,usuarios.getusuario);
 router.get('/generos',generos.getGeneros);
 router.get('/usuarioauth',validacion.verifyToken,usuarios.authUsuario);
 router.post('/createUsuario',usuarios.registro);

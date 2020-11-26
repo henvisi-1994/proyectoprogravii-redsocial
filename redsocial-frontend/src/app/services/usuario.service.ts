@@ -16,6 +16,9 @@ export class UsuarioService {
    getUsuarios() {
     return this.http.get(`${this.API_URI}/usuarios`);
   }
+  getUsuariobyId(id_usuario) {
+    return this.http.get(`${this.API_URI}/usuario/${id_usuario}`);
+  }
   // tslint:disable-next-line: typedef
   getUsuario() {
     return this.http.get(`${this.API_URI}/usuarioauth`);

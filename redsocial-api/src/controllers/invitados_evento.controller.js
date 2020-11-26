@@ -27,7 +27,7 @@ invitados_evento.registro = async (req, res) => {
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_invitado) FROM invitados_evento LIMIT 1");
     const id_invitado = result.rows[0].max;
-    const response = await conexion.query(`select  * from invitados_evento INNER JOIN evento on invitados_evento.id_evento = evento.id_evento INNER JOIN usuario on invitados_evento.id_usuario= usuario.id_usuario where invitados_evento.id_invitado  = ${id_invitado} ORDER by invitados_evento.id_invitado DESC`);
+    const response = await conexion.query(`select * from view_eventos where id_invitado  = ${id_invitado}`);
     res.status(200).json(response.rows);
 }
 
