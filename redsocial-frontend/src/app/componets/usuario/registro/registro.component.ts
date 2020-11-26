@@ -60,7 +60,7 @@ export class RegistroComponent implements OnInit {
             this.limpiar();
           },
           err => {
-    
+            this.notificacionService.notificar(err.error,'Error');
           }
         );
       }

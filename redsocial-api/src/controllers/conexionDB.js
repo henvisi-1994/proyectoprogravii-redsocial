@@ -15,8 +15,8 @@ const pool = new Pool({
     user: 'postgres',
     password: '1234',
     database: 'proyecto_redsocial',
-    port: '5433'
-
+    port: '5432'
+    //port: '5433'
 
 });
 module.exports=pool;
