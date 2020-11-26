@@ -78,6 +78,7 @@ app.use(require('./routes/publicaciones.route'));
 app.use(require('./routes/comentarios.route'));
 app.use(require('./routes/notificaciones.route'));
 app.use(require('./routes/mensaje.route'));
+app.use(require('./routes/eventos.route'));
 
 const server=app.listen(app.get('port'),()=>{
     console.log('server on port', app.get('port'));
