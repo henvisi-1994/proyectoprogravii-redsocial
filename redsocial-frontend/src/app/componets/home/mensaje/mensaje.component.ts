@@ -91,6 +91,7 @@ export class MensajeComponent implements OnInit {
   getUsuarios() {
     this.amigosService.getAmigos(this.usuario.id_usuario).subscribe((res: any) => {
       this.usuarios = res;
+      console.log(res);
     });
   }
   crearchat(usuario) {
