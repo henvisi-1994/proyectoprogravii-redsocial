@@ -21,7 +21,8 @@
     </ul>
   </div>
   <div class="navbar_user" id="profilemodal" style="cursor:pointer">
-    <img src="/../../../assets/images/user.jpg" alt="" />
+    <img *ngIf="usuario.imagen_usuario == ''" src="/../../../assets/images/user.jpg" alt="" />
+    <img *ngIf="usuario.imagen_usuario !== ''"src="{{usuario.imagen_usuario}}" alt="" />
     <span id="navbar_user_top">{{usuario.nombres_user}} {{usuario.apellidos_user}}<br>
       <p>{{usuario.nom_usuario}}</p>
     </span><i class="fa fa-angle-down"></i>

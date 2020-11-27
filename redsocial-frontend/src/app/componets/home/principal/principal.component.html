@@ -5,7 +5,8 @@
     <div class="left_row_profile">
       <img id="portada" src="/../../../assets/images/portada.jpg" />
       <div class="left_row_profile">
-        <img id="profile_pic" src="/../../../assets/images/user.jpg" />
+        <img id="profile_pic" *ngIf="usuario.imagen_usuario == ''" src="/../../../assets/images/user.jpg" alt="" /> <br>
+        <img id="profile_pic" *ngIf="usuario.imagen_usuario !== ''"src="{{usuario.imagen_usuario}}" alt="" /> <br>
         <span>
           <span  class="nom-user">{{usuario.nom_usuario}}</span><br>
           <span class="full-name">{{usuario.nombres_user}} {{usuario.apellidos_user}}</span>

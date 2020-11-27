@@ -1,3 +1,4 @@
+import { AmistadesService } from './../../../services/amistades.service';
 import { WebSocketService } from './../../../services/web-socket.service';
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -44,6 +45,7 @@ export class MensajeComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
+    private amigosService: AmistadesService,
     private chatService: ChatService,
     private notificacionService: NotificacionService,
     private webService: WebSocketService
@@ -87,7 +89,7 @@ export class MensajeComponent implements OnInit {
     this.usuario.genero = usuario.genero;
   }
   getUsuarios() {
-    this.usuarioService.getUsuarios().subscribe((res: any) => {
+    this.amigosService.getAmigos(this.usuario.id_usuario).subscribe((res: any) => {
       this.usuarios = res;
     });
   }
