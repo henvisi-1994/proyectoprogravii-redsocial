@@ -32,6 +32,7 @@ import { ReaccionComComponent } from './componets/home/reaccion-com/reaccion-com
 import { ReaccionCdetComponent } from './componets/home/reaccion-cdet/reaccion-cdet.component';
 import { PrincipalEventoComponent } from './componets/home/eventos/principal-evento/principal-evento.component';
 import { EventoComponent } from './componets/home/eventos/evento/evento.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
@@ -98,7 +99,8 @@ const routes: Route[] = [
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    }],
+    },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
