@@ -52,7 +52,16 @@ usuarios.updateContrasena = async(req, res) => {
     await conexion.query(query);
     res.json('Contraseña Actualizada con exito');
 }
-
+//Actualiza datos de Usuario mediante id
+usuarios.updateImagen = async (req, res) => {
+    const id = req.params.id_usuario;
+    const{url} = req.body;
+    const urli = `${url}/usuarios/${req.file.filename}`;
+     let query = `UPDATE usuario SET imagen_usuario = '${urli}' WHERE id_usuario = ${id}`;
+     console.log(query);
+    await conexion.query(query);
+    res.json('Usuario Actualizado con exito');
+}
 usuarios.confirmContrasena = async(req,res) => {
     const id = req.params.id_usuario;
     const{contrasena_usuario} = req.body;

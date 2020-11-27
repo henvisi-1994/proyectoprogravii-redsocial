@@ -49,7 +49,17 @@
       <p>¿Tienes una cuenta? <a [routerLink]="['/login']">Inicia sesión</a></p>
     </div>
   </article>
-
+  <div id="cambiarImagenModal" class="modalContainer">
+    <div class="modal-content">
+      <span class="close" (click)="cerrarModal('cambiarImagenModal')">×</span>
+      <div class="contenedor-botones">
+        <br>
+        <button (click)="cambiarImagen()">Guardar</button>
+        <input id="file-input" type="file" (change)="onFileChange($event)" name="file"accept="image/*" />
+        <img  src="{{image}" id="image-id" class="img-publicacion">
+      </div>
+    </div>
+  </div>
 </main>
 <footer>
   <ul>

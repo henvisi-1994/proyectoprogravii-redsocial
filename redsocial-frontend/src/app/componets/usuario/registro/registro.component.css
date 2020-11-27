@@ -156,6 +156,60 @@ padding-right: 4%;
   margin: 15px;
   text-align: center;
 }
+.modalContainer {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalContainer .modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid lightgray;
+  border-top: 10px solid #58abb7;
+  width: 75%;
+  overflow: auto;
+}
+
+.modalContainer .close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modalContainer .close:hover,
+.modalContainer .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modalContainer .modal-content button {
+  border: 0;
+  color: #73b6ecbd;
+  background-color: white;
+  background-color: 0;
+  float: right;
+  margin-top: 6%;
+  margin-bottom: 1%;
+  font-size: 1.2rem;
+}
+.modalContainer .modal-content button:hover {
+  color: #185586bd;
+}
+.modalContainer .modal-content button:visited {
+  color: #185586bd;
+}
+
 footer{
 margin-top: 90%;
 margin-bottom: 3%;

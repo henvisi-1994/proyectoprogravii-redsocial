@@ -25,6 +25,7 @@ export class RegistroComponent implements OnInit {
     edad;
     alertaEdad;
     alertaGenero;
+  file: File;
   constructor(private usuarioService: UsuarioService,
     private notificacionService:NotificacionService,
               private router: Router, ) { }
@@ -35,10 +36,10 @@ export class RegistroComponent implements OnInit {
   // tslint:disable-next-line: typedef
 
   public registrarse(){
-    
+
     var genero = this.usuario.id_genero;
     var fecha = this.usuario.fecha_nac;
-    
+
     const convertAge = new Date(fecha);
     const timeDiff = Math.abs(Date.now() - convertAge.getTime());
     this.edad = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
@@ -55,9 +56,9 @@ export class RegistroComponent implements OnInit {
           (res: any) => {
             const token = res.token;
             localStorage.setItem('token', token);
-            //alert('Usuario registrado con exito');
             this.notificacionService.notificar('Usuario Registrado con exito','Informacion');
             this.limpiar();
+            this.abrirModal('cambiarImagenModal');
           },
           err => {
             this.notificacionService.notificar(err.error,'Error');
@@ -66,6 +67,55 @@ export class RegistroComponent implements OnInit {
       }
     }
   }
+  cambiarImagen() {
+    this.usuarioService.getUsuario().subscribe(
+      (res: any) => {
+        this.guardarImagen(res[0].id_usuario);
+      }, err => { }
+    );
+  }
+  public onFileChange(event): void {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      // tslint:disable-next-line: typedef
+      reader.onload = function load() {
+        this.image = reader.result;
+      }.bind(this);
+      this.file = file;
+    }
+  }
+ // Abre ventana Modal
+  // tslint:disable-next-line: variable-name
+  public abrirModal(nombre_modal: string): void {
+    const modal = document.getElementById(nombre_modal);
+    const body = document.getElementsByTagName('body')[0];
+    modal.style.display = 'block';
+    body.style.position = 'static';
+    body.style.height = '100%';
+    body.style.overflow = 'hidden';
+  }
+  public cerrarModal(nombre_modal: string): void {
+    const modal = document.getElementById(nombre_modal);
+    const body = document.getElementsByTagName('body')[0];
+    modal.style.display = 'none';
+
+    body.style.position = 'inherit';
+    body.style.height = 'auto';
+    body.style.overflow = 'visible';
+  }
+  guardarImagen(id_usuario) {
+    // tslint:disable-next-line: variable-name
+    // tslint:disable-next-line: radix
+    this.usuarioService.updateImagenUsuario(id_usuario, this.file).subscribe(
+          (res:any) => {
+          alert(res);
+          this.cerrarModal('cambiarImagenModal');
+        }
+    );
+  }
+
   // limpia el objeto usuario
   // tslint:disable-next-line: typedef
   limpiar() {

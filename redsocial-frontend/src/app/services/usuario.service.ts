@@ -50,6 +50,12 @@ export class UsuarioService {
     console.log(id_usuario);
     return this.http.put(`${this.API_URI}/updateUsuario/${id_usuario}`, updateUsuario);
   }
+  updateImagenUsuario( id_usuario: number, file: File) {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('url', this.API_URI);
+    return this.http.put(`${this.API_URI}/updateImagen/${id_usuario}`, form);
+  }
   loginUsuario(loginUsuario: Usuario): any {
     return this.http.post(`${this.API_URI}/login`, loginUsuario);
   }
