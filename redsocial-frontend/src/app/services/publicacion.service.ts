@@ -24,6 +24,11 @@ export class PublicacionService {
   publicar(publicacion: Publicacion) {
     return this.http.post(`${this.API_URI}/publicar`, publicacion);
   }
+  // tslint:disable-next-line: typedef
+  // tslint:disable-next-line: variable-name
+  eliminarPublicacion(id_pub: number){
+    return this.http.delete(`${this.API_URI}/eliminarPublicacion/${id_pub}`);
+  }
   convertirFecha(fecha: Date): string {
     let dia = fecha.getDate();
     let mes = fecha.getMonth();
@@ -37,10 +42,13 @@ export class PublicacionService {
       mesCnv = '0' + mes;
       if (dia < 10) {
         diaCnv = '0' + dia;
+      } else {
+        diaCnv = dia.toString();
       }
     } else {
-      mesCnv = mes + '';
+      mesCnv = mes.toString();
     }
+    console.log(mesCnv);
     return anio + '-' + mesCnv + '-' + dia + ' ' + hora + ':' + minutos + ':' + segundos;
   }
 }

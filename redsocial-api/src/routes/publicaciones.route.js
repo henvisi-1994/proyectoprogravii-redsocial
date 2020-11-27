@@ -12,6 +12,7 @@ router.get('/publicaciones',validacion.verifyToken,publicaciones.getpublicacione
 router.get('/publicacion/:id_pub',validacion.verifyToken,publicaciones.getpublicacion);
 router.post('/publicar',validacion.verifyToken,publicaciones.registro);
 router.post('/guardarImagen',validacion.verifyToken,uploader,multimedia.registro);
+router.delete('/eliminarPublicacion/:id_pub', validacion.verifyToken,publicaciones.delete);
 router.get('/imagen/:id_pub',validacion.verifyToken,multimedia.getPublicacion);
 router.get('/filtros',validacion.verifyToken,filtro.getFiltros);
 

@@ -26,6 +26,15 @@ publicaciones.registro = async (req, res) => {
         res.status(200).json(id);
     }
 }
+publicaciones.delete = async (req, res) => {
+    const id = req.params.id_pub;
+    let query = `delete from publicacion where id_pub = ${id}`
+    let qmultimedia = `delete from multimedia_publicacion where id_pub = ${id}`
+    console.log('entro');
+    await conexion.query(qmultimedia);
+    await conexion.query(query);
+    res.status(200).json('Publicacion eliminada con exito');
+}
 function convertirFecha(fecha) {
     var nFecha = new Date(fecha);
     let dia = nFecha.getDate();

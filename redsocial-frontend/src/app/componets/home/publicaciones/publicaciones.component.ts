@@ -1,3 +1,4 @@
+import { AmistadesService } from 'src/app/services/amistades.service';
 import { MultimediaPubService } from './../../../services/multimedia-pub.service';
 import { ComentarioService } from './../../../services/comentario.service';
 import { PublicacionService } from './../../../services/publicacion.service';
@@ -29,7 +30,8 @@ export class PublicacionesComponent implements OnInit {
     contrasena_usuario: '',
     presentacion: '',
     telefono: '',
-    genero: ''};
+    genero: ''
+  };
   comentario: Comentario = {
     id_com: 0,
     contenido_com: '',
@@ -39,37 +41,42 @@ export class PublicacionesComponent implements OnInit {
   };
   // tslint:disable-next-line: variable-name
   event_name = 'comentar';
-  //
   event_name_notificar_comentario = 'notificar';
   // tslint:disable-next-line: variable-name
   accion_comentario: string;
-  contador: number;
   imagenes: any = [];
+  contador: number;
+  amigos: any;
 
   constructor(private publicacionService: PublicacionService,
               private webService: WebSocketService,
+              private amigoService: AmistadesService,
               private comentarioService: ComentarioService,
               private notificacioneService: NotificacionService,
               private multimediaService: MultimediaPubService,
               private usuarioService: UsuarioService) { }
 
-
   ngOnInit(): void {
     this.getPublicaciones();
     this.getUsuario();
+    this.getAmigos();
     // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-notificacion').subscribe((data: any) => {
       this.notificar(data[0].contenido_notif, "Informacion");
     });
-
+    // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-publicacion').subscribe((data: any) => {
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
-        this.publicaciones.push(data[index][0]);
+        if (this.esAmigo) {
+          this.publicaciones.push(data[index][0]);
+        }
       }
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
-       this.imagenes.push(data[index][0]);
+        if (this.esAmigo) {
+          this.imagenes.push(data[index][0]);
+        }
       }
       const hash = {};
       // elimina publicaciones con id_pub repetido
@@ -81,11 +88,14 @@ export class PublicacionesComponent implements OnInit {
       // sobrer escribe arreglo publicaciones  con array ordenado
       this.publicaciones = publicacionesOrdenadas;
 
-
+    });
+    this.webService.listen('publicacion-eliminada').subscribe((data: any)=> {
+      this.publicaciones = [];
+      this.imagenes = [];
+      this.getPublicaciones();
     });
     // obtiene comentarios desde el servidor mediante socket
     this.webService.listen('obtener-comentario').subscribe((data: any) => {
-
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < data.length; i++) {
         this.comentarios.push(data[i][0]);
@@ -104,13 +114,18 @@ export class PublicacionesComponent implements OnInit {
     this.webService.listen('notificar-comentario').subscribe((data: any) => {
       this.accion_comentario = data + ' esta escribiendo...';
     });
-
   }
-
-  //Metodo Notificar
-  notificar(mensaje: string, tipo_notificacion: string) {
-    this.notificacioneService.notificar(mensaje, tipo_notificacion);
+  getAmigos() {
+    this.amigoService.getAmigos(this.usuario.id_usuario).subscribe(
+      (res: any) => {
+        this.amigos = res;
+      }
+    );
   }
+    //Metodo Notificar
+    notificar(mensaje: string, tipo_notificacion: string) {
+      this.notificacioneService.notificar(mensaje, tipo_notificacion);
+    }
   // obtiene usuario desde bd
   // tslint:disable-next-line: typedef
   getUsuario() {
@@ -134,6 +149,7 @@ export class PublicacionesComponent implements OnInit {
     this.usuario.genero = usuario.genero;
   }
   // convierte fecha en formato aceptado por html5
+  // tslint:disable-next-line: variable-name
   formatoFechUsu(fecha_nac_usuario: string): string {
     const fecha = fecha_nac_usuario.slice(0, -14);
     const dia = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$3');
@@ -147,6 +163,7 @@ export class PublicacionesComponent implements OnInit {
     this.publicacionService.getPublicaciones().subscribe(
       (res: any) => {
         this.publicaciones = res;
+        console.log(res);
         this.getComentarios(res);
         this.getImagenes(res);
       }
@@ -159,7 +176,7 @@ export class PublicacionesComponent implements OnInit {
     }
   }
   // tslint:disable-next-line: variable-name
-  getImagen(id_pub: number): void{
+  getImagen(id_pub: number): void {
     this.multimediaService.getImagen(id_pub).subscribe(
       (res: any) => {
         // tslint:disable-next-line: prefer-for-of
@@ -169,9 +186,9 @@ export class PublicacionesComponent implements OnInit {
       }
     );
   }
-  procesarImagen(imagenes: any, id_pub: number){
+  procesarImagen(imagenes: any, id_pub: number) {
     const arrayImagenes: any = [];
-    arrayImagenes.push({imagenes, id_pub});
+    arrayImagenes.push({ imagenes, id_pub });
     console.log(arrayImagenes);
   }
   adelante(): void {
@@ -188,20 +205,18 @@ export class PublicacionesComponent implements OnInit {
   }
   // Obtiene comentarios desde variable comentario
   // tslint:disable-next-line: typedef
-  getComentarios(comentario: any) {
+  getComentarios(publicaciones: any) {
     // tslint:disable-next-line: prefer-for-of
-    for (let index = 0; index < comentario.length; index++) {
-      this.getComentario(comentario[index].id_pub);
+    for (let index = 0; index < publicaciones.length; index++) {
 
+      this.getComentario(publicaciones[index].id_pub);
     }
   }
   // obtiene comentario de determinada publicacion definida por variable id_pub
   // tslint:disable-next-line: typedef
   // tslint:disable-next-line: variable-name
-  getComentario(id_pub: number) {
-
+  getComentario(id_pub: number): void {
     this.comentarioService.getComentarios(id_pub).subscribe(
-
       (res: any) => {
         // tslint:disable-next-line: prefer-for-of
         for (let index = 0; index < res.length; index++) {
@@ -212,10 +227,42 @@ export class PublicacionesComponent implements OnInit {
       }
     );
   }
+  eliminarPublicacion(id_pub: number): void {
+   this.publicacionService.eliminarPublicacion(id_pub).subscribe(
+      (res: any) => {
+        this.webService.emit('eliminar-publicacion', res);
+      }
+    );
+  }
+  // tslint:disable-next-line: variable-name
+  esAmigo(id_usuario: number): boolean {
+    const existe = this.amigos.filter(amigo => amigo.id_amigo == id_usuario);
+    if (existe.length > 0 && this.usuario.id_usuario == id_usuario) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // tslint:disable-next-line: variable-name
+  verificarPropiedad(id_usuario: number, id_pub: number): boolean {
+    const existe = this.publicaciones.filter(publicacion => publicacion.id_usuario == id_usuario && publicacion.id_pub == id_pub);
+    if (existe.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   // notifica quien esta escribiendo comentario
   // tslint:disable-next-line: typedef
   public notificarComentario() {
     this.webService.emit('escribir-comentario', this.usuario.nom_usuario);
+  }
+  guardarnotificacion(notificacion: Notificacion) {
+    this.notificacioneService.guardarNotificacion(notificacion).subscribe(
+      (res: any) => {
+        this.webService.emit(this.event_name_notificar_comentario, res);
+      }
+    );
   }
   // convierte fecha a formato texto
   // tslint:disable-next-line: typedef
@@ -246,8 +293,7 @@ export class PublicacionesComponent implements OnInit {
   }
   // Comenta publicacion determinada por variable id_pub
   // tslint:disable-next-line: variable-name
-  // tslint:disable-next-line: typedef
-  public comentar(id_pub) {
+  public comentar(id_pub: number): void {
     this.comentario.id_pub = id_pub;
     this.comentario.id_usuario = this.usuario.id_usuario;
     this.comentarioService.comentar(this.comentario).subscribe(
@@ -265,17 +311,10 @@ export class PublicacionesComponent implements OnInit {
       }
     );
   }
-  //GuardaNotificaciones de COmentarios
-  guardarnotificacion(notificacion: Notificacion) {
-    this.notificacioneService.guardarNotificacion(notificacion).subscribe(
-      (res: any) => {
-        this.webService.emit(this.event_name_notificar_comentario, res);
-      }
-    );
-  }
   // Realiza conteo de comentarios de publicacion determinada por variable id_pub
-  // tslint:disable-next-line: typedef
-  public contarComentario(id_pub: number) {
+  // tslint:disable-next-line: variable-name
+  public contarComentario(id_pub: number): string {
+    // tslint:disable-next-line: triple-equals
     // tslint:disable-next-line: variable-name
     const cant_com = this.comentarios.filter(comentario => comentario.id_pub == id_pub).length;
     if (cant_com <= 1) {
@@ -284,5 +323,4 @@ export class PublicacionesComponent implements OnInit {
       return ' ' + cant_com + ' comentarios';
     }
   }
-
 }
