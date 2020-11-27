@@ -10,6 +10,7 @@ import { WebSocketService } from 'src/app/services/web-socket.service';
 import { Notificacion } from 'src/app/modelos/Notificacion';
 import { NotificacionService } from 'src/app/services/notificacion.service';
 declare var Caman;
+
 @Component({
   selector: 'app-menu-movil',
   templateUrl: './menu-movil.component.html',
@@ -98,14 +99,25 @@ export class MenuMovilComponent implements OnInit {
               private publicacionService: PublicacionService,
               private filtroService: FiltrosService,
               private multimediaService: MultimediaPubService,
-              private webService: WebSocketService,
               private notificacioneService: NotificacionService,
+              private webService: WebSocketService,
               private router: Router) { }
-
   ngOnInit(): void {
     this.getUsuario();
     this.detectarMovil();
-
+    this.getFiltros();
+  }
+  getFiltros() {
+    this.filtroService.getFiltros().subscribe(
+      (res: any) => {
+        // tslint:disable-next-line: prefer-for-of
+        for (let index = 0; index < res.length; index++) {
+          this.filtros.push({id_filtro: res[index].id_filtro,
+                             nombre_filtro: res[index].nombre_filtro,
+                             imagen_filtro: res[index].imagen_filtro});
+        }
+      }
+    );
   }
   // Obtiene usuario de sesion
   // tslint:disable-next-line: typedef
@@ -115,6 +127,18 @@ export class MenuMovilComponent implements OnInit {
         this.almacenarUsuario(res[0]);
       }, err => { }
     );
+  }
+  guardarnotificacion(notificacion: Notificacion) {
+    this.notificacioneService.guardarNotificacion(notificacion).subscribe(
+      (res: any) => {
+        notificacion.id_notif=res.id_notif,
+        notificacion.contenido_notif=res.contenido_notif,
+        notificacion.fecha_hora_notif=res.fecha_hora_notif,
+        notificacion.id_usuario=res.id_usuario;
+        this.webService.emit(this.event_name_notificar,res);
+      }
+    );
+
   }
   // Almacena en objeto usuario campos recividos desde la bd
   // tslint:disable-next-line: typedef
@@ -129,19 +153,8 @@ export class MenuMovilComponent implements OnInit {
     this.usuario.fecha_nac = this.formato(usuario.fecha_nac_usuario);
     this.usuario.genero = usuario.genero;
   }
-  guardarnotificacion(notificacion: Notificacion) {
-    this.notificacioneService.guardarNotificacion(notificacion).subscribe(
-      (res: any) => {
-        notificacion.id_notif=res.id_notif,
-        notificacion.contenido_notif=res.contenido_notif,
-        notificacion.fecha_hora_notif=res.fecha_hora_notif,
-        notificacion.id_usuario=res.id_usuario;
-        this.webService.emit(this.event_name_notificar,res);
-      }
-    );
-
-  }
   // Convierte fecha  recivida a formato entendible por html5
+  // tslint:disable-next-line: variable-name
   formato(fecha_nac_usuario: string): string {
     const fecha = fecha_nac_usuario.slice(0, -14);
     const dia = fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, '$3');
@@ -150,8 +163,7 @@ export class MenuMovilComponent implements OnInit {
     return anio + '-' + mes + '-' + dia;
   }
   // Elimina o cierra sesion ademas de eliminar token de sesion
-  // tslint:disable-next-line: typedef
-  public cerrarSesion() {
+  public cerrarSesion(): void {
     this.usuarioService.cerrarSesion().subscribe(
       (res: any) => {
         localStorage.removeItem('token');
@@ -160,29 +172,49 @@ export class MenuMovilComponent implements OnInit {
     );
   }
   // Almacena y muestra archivo en ventana modal al escoger archivo en ventana de administracion de archivos
-  // tslint:disable-next-line: typedef
-  public onFileChange(event) {
+  public onFileChange(event): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      if (file.type.includes('image') || file.type.includes('video')) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        // tslint:disable-next-line: typedef
-        reader.onload = function load() {
-
-          this.abrirModal();
-          this.image = reader.result;
-        }.bind(this);
-        this.file = file;
-        this.verificarTipo(file);
+      // tslint:disable-next-line: variable-name
+      this.list_archivos = event.target.files;
+      if (this.list_archivos.length === 1) {
+        if (file.type.includes('image') || file.type.includes('video')) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          // tslint:disable-next-line: typedef
+          reader.onload = function load() {
+            this.abrirModal('publicarModal');
+            this.image = reader.result;
+          }.bind(this);
+          this.file = file;
+          this.verificarTipo(file);
+        } else {
+          console.log('ha ocurrido un error');
+        }
       } else {
-        console.log('ha ocurrido un error');
+        this.guardarArchivos(this.list_archivos);
       }
     }
   }
+  // tslint:disable-next-line: variable-name
+  guardarArchivos(list_archivos): void {
+    // tslint:disable-next-line: prefer-for-of
+    for (let index = 0; index < list_archivos.length; index++) {
+      this.obtenerImagen(list_archivos[index]);
+    }
+    this.verificarTipo(list_archivos[0]);
+    this.abrirModal('publicarMultipleModal');
+  }
+  obtenerImagen(archivo: File): any {
+    const reader = new FileReader();
+    reader.readAsDataURL(archivo);
+    // tslint:disable-next-line: typedef
+    reader.onload = function load() {
+      this.archivos.push(reader.result);
+    }.bind(this);
+  }
   // devuelve en variable tipoArchivo si el archivo es imagen o video
-  // tslint:disable-next-line: typedef
-  verificarTipo(file: any) {
+  verificarTipo(file: any): void {
     if (file.type.includes('image')) {
       this.tipoArchivo = 'imagen';
     } else if (file.type.includes('video')) {
@@ -225,8 +257,7 @@ export class MenuMovilComponent implements OnInit {
     body.style.overflow = 'visible';
   }
   // Realiza publicacion
-  // tslint:disable-next-line: typedef
-  public publicar() {
+  public publicar(): void {
     this.publicacion.id_usuario = this.usuario.id_usuario;
     this.guardarPublicacion(this.publicacion);
     if (this.list_archivos.length == 1) {
@@ -289,10 +320,8 @@ export class MenuMovilComponent implements OnInit {
   cambiarPestana(pestana: any): void {
     this.tabAct = pestana;
   }
-
   // Detecta si el dispositivo es un celular
-  // tslint:disable-next-line: typedef
-  public detectarMovil() {
+  public detectarMovil(): void {
     if (navigator.userAgent.match(/Android/i)
       || (navigator.userAgent.match(/webOS/i))
       || (navigator.userAgent.match(/iPhone/i))
@@ -553,3 +582,4 @@ export class MenuMovilComponent implements OnInit {
     this.router.navigate([ruta]);
   }
 }
+

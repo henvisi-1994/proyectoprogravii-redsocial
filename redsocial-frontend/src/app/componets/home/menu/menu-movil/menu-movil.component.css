@@ -1279,6 +1279,7 @@ body {
   border: 1px solid lightgray;
   border-top: 10px solid #58abb7;
   width: 75%;
+  overflow: auto;
 }
 
 .modalContainer .close {
@@ -1301,7 +1302,7 @@ body {
   background-color: 0;
   float: right;
   margin-top: 6%;
-  margin-bottom: 6%;
+  margin-bottom: 1%;
   font-size: 1.2rem;
 }
 .modalContainer .modal-content button:hover {
@@ -1312,4 +1313,72 @@ body {
 }
 .img-publicacion {
   width: 100%;
+}
+.controles {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.control::before {
+  content: "\A";
+  white-space: pre;
+}
+ul.menu {
+  clear: both;
+  float: left;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+ul.menu li {
+  float: left;
+}
+ul.menu li a {
+  padding: 0.3em;
+  display: block;
+  text-decoration: none;
+}
+.ctr-filt {
+  background-color: white;
+  width: 19.5rem;
+  margin-left: -7.8%;
+  overflow: auto;
+}
+.menu {
+  overflow: auto;
+}
+
+/* Botones*/
+.contenedor-botones {
+  width: 100%;
+  position: relative;
+}
+.botones {
+  font-size: 30px;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  text-align: center;
+  font-weight: bold;
+  position: absolute;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  -webkit-transition: all 0.3% ease;
+  -o-transition: all 0.3% ease;
+  transition: all 0.3% ease;
+}
+.botones:hover {
+  cursor: pointer;
+  transform: scale(1.2, 1.2);
+}
+.btnAdelante {
+  right: 3%;
+  top: calc(60% - 70px);
+}
+.btnAtras {
+  left: 3%;
+  top: calc(60% - 70px);
 }

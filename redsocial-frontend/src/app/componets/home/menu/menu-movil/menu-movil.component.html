@@ -2,7 +2,8 @@
   <div class="mobilemenu_profile">
     <img id="mobilemenu_portada" src="/../../../assets/images/portada.jpg" />
     <div class="mobilemenu_profile">
-      <img id="mobilemenu_profile_pic" src="/../../../assets/images/user.jpg" /><br>
+      <img id="mobilemenu_profile_pic" *ngIf="usuario.imagen_usuario == ''" src="/../../../assets/images/user.jpg" alt="" /> <br>
+      <img id="mobilemenu_profile_pic" *ngIf="usuario.imagen_usuario !== ''"src="{{usuario.imagen_usuario}}" alt="" /> <br>
       <span>{{usuario.nom_usuario}}<br>
         <p>150k seguidores / 50 seguidos</p>
       </span>
@@ -12,18 +13,19 @@
         <li><a href="index.html" id="mobilemenu-selected"><img src="/../../../assets/img/home.png"></a></li>
         <li *ngIf="esMovil == true">
           <div class="image-upload">
-              <label for="file-input">
-                <img src="/../../../assets/img/publicar.png" alt="Click aquí para subir tu foto"
-                  title="Click aquí para subir tu foto">
-              </label>
-              <input id="file-input" type="file" (change)="onFileChange($event)" name="file" accept="video/*,image/*" />
+            <label for="file-input">
+              <img src="/../../../assets/img/publicar.png" alt="Click aquí para subir tu foto"
+                title="Click aquí para subir tu foto">
+            </label>
+            <input id="file-input" type="file" (change)="onFileChange($event)" name="file" multiple
+              accept="video/*,image/*" />
           </div>
         </li>
         <li><a (click)="ingresar()"><img src="/../../../assets/img/perfilM.png" alt=""></a></li>
         <li><a [routerLink]="['amigos']"><img src="/../../../assets/img/notificacionesM.png" alt=""></a></li>
         <li><a href="messages.html"><img src="/../../../assets/img/mensajeM.png" alt=""></a></li>
-        <li class="primarymenu"><img src="/../../../assets/img/explode.png" alt=""></li>
         <li><a  [routerLink]="['evento']">Crear Evento</a></li>
+        <li class="primarymenu"><img src="/../../../assets/img/explode.png" alt=""></li>
       </ul>
       <hr>
       <ul>
@@ -79,4 +81,3 @@
     </div>
   </div>
 </div>
-
