@@ -1,5 +1,5 @@
 export interface Historias {
   id_historia: number;
-  imagen_historia: File;
+  imagen_historia: string;
   id_usuario: number;
 }

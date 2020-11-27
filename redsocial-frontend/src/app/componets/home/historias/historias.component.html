@@ -1,28 +1,54 @@
 <div class="historias">
   <ul>
     <li>
-      <div class="historia_usuario">
-        <img src="/../../../assets/images/user-7.jpg"  alt="" /> <br>
-        Francine Smith
+      <div class="image-upload">
+        <label for="file-input">
+          <img src="/../../../assets/img/publicar.png" alt="Click aquí para subir tu foto"
+            title="Click aquí para subir tu foto">
+        </label>
+        <input id="file-input" type="file" (change)="onFileChange($event)" name="file" multiple
+          accept="image/*" />
       </div>
     </li>
-    <li>
+    <li *ngFor="let amigo of amigos">
       <div class="historia_usuario">
-        <img src="/../../../assets/images/user-2.jpg" alt="" /> <br>
-        Jake Parker
-      </div>
-    </li>
-    <li>
-      <div class="historia_usuario">
-        <img src="/../../../assets/images/user-6.jpg"  alt="" /> <br>
-        Marina Polson
-      </div>
-    </li>
-    <li>
-      <div class="historia_usuario">
-        <img src="/../../../assets/images/user-5.jpg" alt="" /> <br>
-        Juan Perez
+        <img src="{{amigo.imagen_usuario}}" alt="" (click)="abrirHistoria(amigo.id_amigo)" /> <br>
+        {{amigo.nom_usuario}}
       </div>
     </li>
   </ul>
+</div>
+
+<div id="mostarHistoriaModal" class="modalContainer">
+  <div class="modal-content">
+    <span class="close" (click)="cerrarModal('mostarHistoriaModal')">×</span>
+    <div class="contenedor-botones">
+      <br>
+      <div class="row border-radius">
+        <div class="feed">
+          <div class="feed_title">
+           <!-- <img src="{{historia.imagen_usuario}}" alt="" />-->
+            <span><b>{{historia.nom_usuario}}</b>
+            </span>
+          </div>
+          <div class="feed_content">
+            <div class="feed_content_image contenedor-botones">
+              <img src="{{historia.imagen_historia}}" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="publicarModal" class="modalContainer">
+  <div class="modal-content">
+    <span class="close" (click)="cerrarModal('publicarModal')">×</span>
+    <div class="contenedor-botones">
+      <br>
+      <button (click)="publicar()">Publicar</button>
+      <img  src="{{ image }}" id="image-id" class="img-publicacion">
+    </div>
+  </div>
 </div>

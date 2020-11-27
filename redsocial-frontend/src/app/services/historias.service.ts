@@ -16,8 +16,8 @@ export class HistoriasService {
   }
     // Obtiene Usuarios desde bd mediante servidor backend
   // tslint:disable-next-line: typedef
-  getHistoriaUsuario(id_historia: number) {
-    return this.http.get(`${this.API_URI}/historias/${id_historia}`);
+  getHistoriaUsuario(id_usuario: number) {
+    return this.http.get(`${this.API_URI}/historia/${id_usuario}`);
   }
   // Almacena en bd mediante  NgModel de Usuario enviado a servidor backend
   // tslint:disable-next-line: typedef

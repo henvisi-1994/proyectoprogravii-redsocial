@@ -3,12 +3,12 @@ const router = Router();
 const validacion = require('../validaciones.js');
 const publicaciones = require('../controllers/publicaciones.controller');
 const multimedia = require('../controllers/multimedia_publicciones.controller');
+const historias = require('../controllers/historias.controller');
 const filtro = require('../controllers/filtros.controller')
 const storage = require('../controllers/multer')
+const storage_historias = require('../controllers/multer_historias')
 const multer = require('multer');
 const uploader = multer ({ storage }).single('file');
-const historias = require('../controllers/historias.controller');
-const storage_historias = require('../controllers/multer_historias')
 const uploader_historias = multer ({ storage_historias }).single('file');
 
 router.get('/publicaciones',validacion.verifyToken,publicaciones.getpublicaciones);
