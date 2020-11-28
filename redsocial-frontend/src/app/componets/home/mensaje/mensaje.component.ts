@@ -72,6 +72,7 @@ export class MensajeComponent implements OnInit {
     this.usuarioService.getUsuario().subscribe(
       (res: any) => {
         this.almacenarUsuario(res[0]);
+        localStorage.setItem('id_usuario', res[0].id_usuario);
       },
       (err) => {}
     );
@@ -89,9 +90,9 @@ export class MensajeComponent implements OnInit {
     this.usuario.genero = usuario.genero;
   }
   getUsuarios() {
-    this.amigosService.getAmigos(this.usuario.id_usuario).subscribe((res: any) => {
+    let id_usuario = parseInt(localStorage.getItem('id_usuario'));
+    this.amigosService.getAmigos(id_usuario).subscribe((res: any) => {
       this.usuarios = res;
-      console.log(res);
     });
   }
   crearchat(usuario) {
@@ -102,7 +103,12 @@ export class MensajeComponent implements OnInit {
     };
     this.chatService.chatear(chat).subscribe((res: any) => {
       this.nomb_chat = usuario.nom_usuario;
-      this.notificar(res + ' de ' + usuario.nom_usuario, 'Informacion');
+      this.notificar(
+        'Se ha realizado con exito creacion de chat' +
+          ' de ' +
+          usuario.nom_usuario,
+        'Informacion'
+      );
     });
   }
   //Metodo Notificar
@@ -267,18 +273,17 @@ export class MensajeComponent implements OnInit {
       return false;
     }
   }
-  verificartexto(mensaje)
-  {
-    if(typeof mensaje.nameFile != 'undefined')
-    {
-      if(mensaje.toString().indexOf('image') == -1&&(mensaje.nameFile.toString().indexOf('docx') == -1)&&(mensaje.nameFile.toString().indexOf('pdf') == -1))
-    {
+  verificartexto(mensaje) {
+    if (typeof mensaje.nameFile != 'undefined') {
+      if (
+        mensaje.toString().indexOf('image') == -1 &&
+        mensaje.nameFile.toString().indexOf('docx') == -1 &&
+        mensaje.nameFile.toString().indexOf('pdf') == -1
+      ) {
         return true;
-    }
-    else{
-      return false;
-    }
-
+      } else {
+        return false;
+      }
     }
   }
 }

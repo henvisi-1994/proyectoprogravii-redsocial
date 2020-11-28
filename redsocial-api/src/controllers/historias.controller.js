@@ -17,7 +17,7 @@ historias.gethistoriausuario = async (req, res) => {
 
 historias.registro = async(req, res) => {
     const {url,id_usuario} = req.body;
-    const urli = `${url}/historias/${req.file.originalname}`;
+    const urli = `${url}/historias/${req.file.filename}`;
     let query = `INSERT INTO public.historias( imagen_historia, id_usuario) VALUES ('${urli}','${id_usuario}')`;
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_historia) FROM historias LIMIT 1");
