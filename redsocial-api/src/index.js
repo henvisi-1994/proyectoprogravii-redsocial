@@ -22,7 +22,7 @@ const eventos = [];
 const redisClient = redis.createClient({
     host: 'localhost',
     port: '6379',
-    password: 'p5424ac3f9acc79931dccbbd1998a8c35455c8123fd06e3e529b31e6f2861a18e',
+    password: '',
     db: '1',
 });
 

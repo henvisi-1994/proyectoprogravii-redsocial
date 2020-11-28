@@ -11,8 +11,8 @@ usuarios.getusuarios = async (req, res) => {
     res.status(200).json(response.rows);
 }
 usuarios.getusuario = async (req, res) => {
-    const id = req.params.id_usuario;
-    const response = await conexion.query(`select *from usuario where id_usuario = ${id}`);
+    const busqueda = req.params.usuario;
+    const response = await conexion.query(`select *from usuario where nombres_usuario ilike '%${busqueda}%' or apellidos_usuario ilike  '%${busqueda}%' or email_usuario ilike  '%${busqueda}%' or nom_usuario ilike  '%${busqueda}%'`);
     res.status(200).json(response.rows);
 }
 usuarios.registro = async(req, res) => {
