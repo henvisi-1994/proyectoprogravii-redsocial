@@ -112,6 +112,12 @@ io.on('connection',(socket)=>{
     })
 
     //Chat
+    
+    socket.on('iniciar-chat',function (data) {
+        socket.emit('recibir-chat',data);
+      socket.broadcast.emit('recibir-chat', data);
+    })
+
     socket.on('new-message', message => {
         messages.push(message)
         socket.emit('new-message', messages)
@@ -132,4 +138,5 @@ io.on('connection',(socket)=>{
   
         sockets.emit('new-message', messages)
       })
+
 })

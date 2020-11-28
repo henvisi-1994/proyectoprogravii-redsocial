@@ -37,6 +37,7 @@ getUsuario() {
   this.usuarioService.getUsuario().subscribe(
     (res: any) => {
       this.almacenarUsuario(res[0]);
+      this.getSolicitudesAmistad(res[0].id_usuario);
     }, err => { }
   );
 }
@@ -52,7 +53,7 @@ almacenarUsuario(usuario: any) {
   this.usuario.genero = usuario.genero;
 }
 getSolicitudesAmistad(id_usuario: number){
-  console.log('entro');
+  console.log(id_usuario);
   this.amigosService.getsoliicitudesAmistad(id_usuario).subscribe(
     (res: any) => {
       this.solicitudes = res;
