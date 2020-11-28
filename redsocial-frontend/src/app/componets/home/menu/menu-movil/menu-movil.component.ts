@@ -172,7 +172,7 @@ export class MenuMovilComponent implements OnInit {
     );
   }
   // Almacena y muestra archivo en ventana modal al escoger archivo en ventana de administracion de archivos
-  public onFileChange(event): void {
+  public onFileChangeP(event): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       // tslint:disable-next-line: variable-name
@@ -183,7 +183,7 @@ export class MenuMovilComponent implements OnInit {
           reader.readAsDataURL(file);
           // tslint:disable-next-line: typedef
           reader.onload = function load() {
-            this.abrirModal('publicarModal');
+            this.abrirModal('pModal');
             this.image = reader.result;
           }.bind(this);
           this.file = file;
@@ -238,7 +238,7 @@ export class MenuMovilComponent implements OnInit {
   // Abre ventana Modal
   // tslint:disable-next-line: variable-name
   public abrirModal(nombre_modal: string): void {
-    const modal = document.getElementById(nombre_modal);
+    const modal = document.getElementById('pModal');
     const body = document.getElementsByTagName('body')[0];
     modal.style.display = 'block';
     body.style.position = 'static';
@@ -312,7 +312,7 @@ export class MenuMovilComponent implements OnInit {
         };
         this.guardarnotificacion(notificacion);
         localStorage.setItem('id_pub', res);
-        this.cerrarModal('publicarModal');
+        this.cerrarModal('pModal');
       },
       err => { }
     );

@@ -13,11 +13,11 @@
         <li><a href="index.html" id="mobilemenu-selected"><img src="/../../../assets/img/home.png"></a></li>
         <li *ngIf="esMovil == true">
           <div class="image-upload">
-            <label for="file-input">
+            <label for="file-input-pub">
               <img src="/../../../assets/img/publicar.png" alt="Click aquí para subir tu foto"
                 title="Click aquí para subir tu foto">
             </label>
-            <input id="file-input" type="file" (change)="onFileChange($event)" name="file" multiple
+            <input id="file-input-pub" type="file" (change)="onFileChangeP($event)" name="file" multiple
               accept="video/*,image/*" />
           </div>
         </li>
@@ -38,9 +38,9 @@
   </div>
 </div>
 <!-- Publicar -->
-<div id="publicarModal" class="modalContainer">
+<div id="pModal" class="modalContainer">
   <div class="modal-content">
-    <span class="close" (click)="cerrarModal('publicarModal')">×</span>
+    <span class="close" (click)="cerrarModal('pModal')">×</span>
     <br>
     <button (click)="publicar()">Publicar</button>
     <img src="{{ image }}" id="image-id" class="img-publicacion" alt="" *ngIf="tipoArchivo == 'imagen'">

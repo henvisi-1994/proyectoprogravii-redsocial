@@ -59,7 +59,7 @@ export class HistoriasComponent implements OnInit {
     };
     this.historiaService.publicar_historia(historia, this.file).subscribe(
       (res:any) =>{
-          this.cerrarModal('publicarModal');
+          this.cerrarModal('publicarHModal');
       }
     );
   }
@@ -79,7 +79,7 @@ export class HistoriasComponent implements OnInit {
       // tslint:disable-next-line: typedef
       reader.onload = function load() {
         this.image = reader.result;
-        this.abrirModal('publicarModal');
+        this.abrirModal('publicarHModal');
       }.bind(this);
       this.file = file;
     }
