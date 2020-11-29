@@ -9,7 +9,7 @@
         <p>{{formato(publicacion.fecha_bub)}}</p>
       </span>
     </div>
-    <div *ngIf="verificarPropiedad(publicacion.id_usuario,publicacion.id_pub)" class="feed_content">
+    <div class="feed_content">
       <div class="menu">
         <ul class="menu-publicacion">
             <li><button  class="btnPublicacion-accion"(click)="eliminarPublicacion(publicacion.id_pub)"><img src="../../../../assets/img/ícono_eliminar.png" alt="" srcset=""></button></li>

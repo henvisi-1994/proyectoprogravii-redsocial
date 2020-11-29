@@ -90,6 +90,7 @@ const io=socketIO.listen(server)
 io.on('connection',(socket)=>{
     socket.on('publicar',function(data){
         publicaciones.push(data);
+        
         socket.emit('obtener-publicacion',publicaciones);
         socket.broadcast.emit('obtener-publicacion',publicaciones);
     })
@@ -110,9 +111,12 @@ io.on('connection',(socket)=>{
         socket.emit('obtener-notificacion',data);
         socket.broadcast.emit('obtener-notificacion',data);
     })
+    socket.on('eliminar-publicacion', function (data) {
+        socket.emit('publicacion-eliminada',data);
+        socket.broadcast.emit('publicacion-eliminada',data);
+    })
 
     //Chat
-    
     socket.on('iniciar-chat',function (data) {
         socket.emit('recibir-chat',data);
       socket.broadcast.emit('recibir-chat', data);

@@ -272,7 +272,7 @@ export class MenuMovilComponent implements OnInit {
       const id_pub = parseInt(localStorage.getItem('id_pub'));
       // tslint:disable-next-line: radix
       this.guardarMultimedia(this.multimedia, id_pub, this.file);
-      this.cerrarModal('publicarModal');
+      this.cerrarModal('pModal');
     } else {
       const id_pub = parseInt(localStorage.getItem('id_pub'));
       // tslint:disable-next-line: prefer-for-of

@@ -68,13 +68,13 @@ export class PublicacionesComponent implements OnInit {
     this.webService.listen('obtener-publicacion').subscribe((data: any) => {
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
-        if (this.esAmigo) {
+        if (this.esAmigo(this.usuario.id_usuario)) {
           this.publicaciones.push(data[index][0]);
         }
       }
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
-        if (this.esAmigo) {
+        if (this.esAmigo(this.usuario.id_usuario)) {
           this.imagenes.push(data[index][0]);
         }
       }
@@ -87,6 +87,9 @@ export class PublicacionesComponent implements OnInit {
       });
       // sobrer escribe arreglo publicaciones  con array ordenado
       this.publicaciones = publicacionesOrdenadas;
+      this.publicaciones = [];
+      this.imagenes = [];
+      this.getPublicaciones();
 
     });
     this.webService.listen('publicacion-eliminada').subscribe((data: any)=> {
@@ -162,12 +165,18 @@ export class PublicacionesComponent implements OnInit {
   getPublicaciones() {
     this.publicacionService.getPublicaciones().subscribe(
       (res: any) => {
-        this.publicaciones = res;
-        console.log(res);
-        this.getComentarios(res);
-        this.getImagenes(res);
+        this.filtrarPublicaciones(res);
       }
     );
+  }
+  filtrarPublicaciones(publicaciones){
+    for (let index = 0; index < publicaciones.length; index++) {
+      if (this.esAmigo(publicaciones[index].id_usuario)) {
+        this.publicaciones.push(publicaciones[index]);
+      }
+    }
+    this.getComentarios(publicaciones);
+    this.getImagenes(publicaciones);
   }
   getImagenes(publicaciones: any): void {
     // tslint:disable-next-line: prefer-for-of
@@ -237,7 +246,10 @@ export class PublicacionesComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   esAmigo(id_usuario: number): boolean {
     const existe = this.amigos.filter(amigo => amigo.id_amigo == id_usuario);
-    if (existe.length > 0 && this.usuario.id_usuario == id_usuario) {
+    console.log(existe.length)
+    console.log(id_usuario)
+    console.log(this.usuario.id_usuario)
+    if (existe.length > 0 || id_usuario == this.usuario.id_usuario) {
       return true;
     } else {
       return false;
@@ -245,11 +257,13 @@ export class PublicacionesComponent implements OnInit {
   }
   // tslint:disable-next-line: variable-name
   verificarPropiedad(id_usuario: number, id_pub: number): boolean {
-    const existe = this.publicaciones.filter(publicacion => publicacion.id_usuario == id_usuario && publicacion.id_pub == id_pub);
-    if (existe.length > 0) {
-      return true;
-    } else {
-      return false;
+    if (typeof id_usuario != 'undefined') {
+      const existe = this.publicaciones.filter(publicacion => publicacion.id_usuario == id_usuario && publicacion.id_pub == id_pub);
+      if (existe.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
   // notifica quien esta escribiendo comentario

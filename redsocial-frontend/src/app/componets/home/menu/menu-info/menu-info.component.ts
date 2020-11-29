@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AmistadesService } from 'src/app/services/amistades.service';
 import { NotificacionService } from 'src/app/services/notificacion.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
@@ -10,10 +11,29 @@ import { WebSocketService } from 'src/app/services/web-socket.service';
 })
 export class MenuInfoComponent implements OnInit {
 
+  usuario = {
+    id_usuario: 0,
+    nom_usuario: '',
+    imagen_usuario: '',
+    nombres_user: '',
+    apellidos_user: '',
+    email_user: '',
+    celular_user: '',
+    fecha_nac: '',
+    contrasena_usuario: '',
+    presentacion: '',
+    telefono: '',
+    genero: ''
+  };
   notificaciones: any = [];
+  amigos: any;
   constructor(private notificacionService: NotificacionService,
-    private webService: WebSocketService) { }
+              private webService: WebSocketService,
+              private amigoService: AmistadesService,
+              private usuarioService: UsuarioService) { }
   ngOnInit(): void {
+    this.getAmigos();
+    this.getUsuario();
     this.obtenerNotificaciones();
     // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-notificacion').subscribe((data: any) => {
@@ -27,13 +47,58 @@ export class MenuInfoComponent implements OnInit {
       this.notificaciones = notificacionesOrdenadas;
     });
   }
+  getUsuario() {
+    this.usuarioService.getUsuario().subscribe(
+      (res: any) => {
+        this.almacenarUsuario(res[0]);
+      }, err => { }
+    );
+  }
+  // almacena usuario desde variable usuario obtenido desde bd
+  // tslint:disable-next-line: typedef
+  almacenarUsuario(usuario: any) {
+    this.usuario.id_usuario = usuario.id_usuario;
+    this.usuario.nombres_user = usuario.nombres_usuario;
+    this.usuario.apellidos_user = usuario.apellidos_usuario;
+    this.usuario.nom_usuario = usuario.nom_usuario;
+    this.usuario.imagen_usuario = usuario.imagen_usuario;
+    this.usuario.presentacion = usuario.presentacion_usuario;
+    this.usuario.email_user = usuario.email_usuario;
+    this.usuario.genero = usuario.genero;
+  }
+  getAmigos() {
+    this.amigoService.getAmigos(this.usuario.id_usuario).subscribe(
+      (res: any) => {
+        this.amigos = res;
+      }
+    );
+  }
+  esAmigo(id_usuario: number): boolean {
+    const existe = this.amigos.filter(amigo => amigo.id_amigo == id_usuario);
+    console.log(existe.length)
+    console.log(id_usuario)
+    console.log(this.usuario.id_usuario)
+    if (existe.length > 0 || id_usuario == this.usuario.id_usuario) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   obtenerNotificaciones() {
     this.notificacionService.getNotificaciones().subscribe(
       (res: any) => {
-        this.notificaciones = res;
+        this.filtrarNotificaciones(res);
+        //this.notificaciones = res;
       }
     );
     console.log(this.notificaciones);
+  }
+  filtrarNotificaciones(notificacion){
+    for (let index = 0; index < notificacion.length; index++) {
+      if (this.esAmigo(notificacion[index].id_usuario)) {
+        this.notificaciones.push(notificacion[index]);
+      }
+    }
   }
   public formato(texto) {
     if (texto) {
