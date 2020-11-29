@@ -16,6 +16,11 @@ const pool = new Pool({
     password: '1234',
     database: 'proyecto_redsocial',
     port: '5433'
+    /*host: 'localhost',
+    user: 'postgres',
+    password: 'liga2020',
+    database: 'bd_proyecto_progravii',
+    port: '5432'*/
     //port: '5433'
 
 });

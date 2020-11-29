@@ -22,7 +22,7 @@ export class MenuInfoComponent implements OnInit {
       const notificacionesOrdenadas = this.notificaciones.sort((a, b) => {
         return a.id_notif - b.id_notif;
       });
-     
+
       // sobre escribe comentario con comentarios ordenados
       this.notificaciones = notificacionesOrdenadas;
     });
@@ -33,6 +33,7 @@ export class MenuInfoComponent implements OnInit {
         this.notificaciones = res;
       }
     );
+    console.log(this.notificaciones);
   }
   public formato(texto) {
     if (texto) {
