@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AmistadesService } from 'src/app/services/amistades.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-menu-principal',
@@ -27,10 +28,19 @@ export class MenuPrincipalComponent implements OnInit {
   usuarioBuscar: string;
   constructor(private usuarioService: UsuarioService,
               private router: Router,
-              private amigosService: AmistadesService) { }
+              private amigosService: AmistadesService,
+              private webService: WebSocketService) { }
 
   ngOnInit(): void {
     this.getUsuario();
+    this.webService.listen('recibir-aceptacion').subscribe((data: any) => {
+      const id_activo = parseInt(localStorage.getItem('usuario_activo'))
+      this.getSolicitudesAmistad(id_activo);
+    });
+    this.webService.listen('recibir-solicitud').subscribe((data: any) => {
+      const id_activo = parseInt(localStorage.getItem('usuario_activo'))
+      this.getSolicitudesAmistad(id_activo);
+    });
   }
     // tslint:disable-next-line: typedef
 getUsuario() {
@@ -38,6 +48,7 @@ getUsuario() {
     (res: any) => {
       this.almacenarUsuario(res[0]);
       this.getSolicitudesAmistad(res[0].id_usuario);
+      localStorage.setItem('usuario_activo', res[0].id_usuario)
     }, err => { }
   );
 }
@@ -56,7 +67,6 @@ getSolicitudesAmistad(id_usuario: number){
   this.amigosService.getsoliicitudesAmistad(id_usuario).subscribe(
     (res: any) => {
       this.solicitudes = res;
-      console.table(res);
       this.cantSolicitudes = res.length;
     }
   );
@@ -65,6 +75,7 @@ getSolicitudesAmistad(id_usuario: number){
 aceptar(id_usuario: number, id_amigo: number): void{
   this.amigosService.aceptarAmigo(id_usuario, id_amigo).subscribe(
     (res: any) => {
+      this.webService.emit('aceptar-solicitud', res);
     }
   );
 }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Amigo } from 'src/app/modelos/Amigo';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-buscar-usuario',
@@ -26,19 +27,23 @@ export class BuscarUsuarioComponent implements OnInit {
     telefono: '',
     genero: ''
   };
+  amigos: any;
   constructor(private route: ActivatedRoute,
               private usuarioService: UsuarioService,
               private amigosService: AmistadesService,
-              private router: Router) { }
+              private router: Router,
+              private webService: WebSocketService) { }
 
   ngOnInit(): void {
     this.usuario = this.route.snapshot.paramMap.get('usuario');
     this.getUsuario();
+    this.getAmigos();
   }
   buscarUsuarios(id_usuario: number): void {
     this.usuarioService.getPerfilusuario(this.usuario).subscribe(
       (res: any) => {
         this.filtrar_usuarios(res, id_usuario);
+        
       }
     );
   }
@@ -57,8 +62,28 @@ export class BuscarUsuarioComponent implements OnInit {
     this.usuarioService.getUsuario().subscribe(
       (res: any) => {
         this.buscarUsuarios(res[0].id_usuario);
+        localStorage.setItem('id_user', res[0].id_usuario)
       }, err => { }
     );
+  }
+  // almacena usuario desde variable usuario obtenido desde bd
+  // tslint:disable-next-line: typedef
+  getAmigos() {
+    let id_usuario = parseInt(localStorage.getItem('id_user'))
+    this.amigosService.getAmigos(id_usuario).subscribe(
+      (res: any) => {
+        this.amigos = res;
+      }
+    );
+  }
+  esAmigo(id_usuario: number): boolean {
+    let user = parseInt(localStorage.getItem('id_user'))
+    const existe = this.amigos.filter(amigo => amigo.id_amigo == id_usuario);
+    if (existe.length > 0 || id_usuario == user) {
+      return true;
+    } else {
+      return false;
+    }
   }
   // tslint:disable-next-line: variable-name
   addAmigo(id_usuario: number): void {
@@ -84,6 +109,7 @@ export class BuscarUsuarioComponent implements OnInit {
   guardarAmigo(amigo: Amigo) {
     this.amigosService.saveAmigo(amigo).subscribe(
       (res: any) => {
+        this.webService.emit('enviar-solicitud', res);
         alert('Haz enviado solicitud de amistad');
       }
     );

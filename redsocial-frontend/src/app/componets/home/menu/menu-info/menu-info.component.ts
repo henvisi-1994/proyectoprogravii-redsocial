@@ -32,8 +32,8 @@ export class MenuInfoComponent implements OnInit {
               private amigoService: AmistadesService,
               private usuarioService: UsuarioService) { }
   ngOnInit(): void {
-    this.getAmigos();
     this.getUsuario();
+    this.getAmigos();
     this.obtenerNotificaciones();
     // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-notificacion').subscribe((data: any) => {
@@ -67,7 +67,8 @@ export class MenuInfoComponent implements OnInit {
     this.usuario.genero = usuario.genero;
   }
   getAmigos() {
-    this.amigoService.getAmigos(this.usuario.id_usuario).subscribe(
+    let id_usuario = parseInt(localStorage.getItem('id_user'))
+    this.amigoService.getAmigos(id_usuario).subscribe(
       (res: any) => {
         this.amigos = res;
       }
@@ -75,9 +76,6 @@ export class MenuInfoComponent implements OnInit {
   }
   esAmigo(id_usuario: number): boolean {
     const existe = this.amigos.filter(amigo => amigo.id_amigo == id_usuario);
-    console.log(existe.length)
-    console.log(id_usuario)
-    console.log(this.usuario.id_usuario)
     if (existe.length > 0 || id_usuario == this.usuario.id_usuario) {
       return true;
     } else {
@@ -91,7 +89,6 @@ export class MenuInfoComponent implements OnInit {
         //this.notificaciones = res;
       }
     );
-    console.log(this.notificaciones);
   }
   filtrarNotificaciones(notificacion){
     for (let index = 0; index < notificacion.length; index++) {

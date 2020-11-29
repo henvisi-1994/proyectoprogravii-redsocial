@@ -3,7 +3,7 @@ const amigos = {};
 amigos.registro = async(req, res) => {
     const {es_aceptada, fecha_emision_amigo, es_seguido, es_seguidor, es_bloqueado, id_usuario, id_amigo } = req.body;
     let query = `INSERT INTO amigos(es_aceptada, fecha_emision_amigo, es_seguido, es_seguidor, es_bloqueado, id_usuario, id_amigo) VALUES ('${es_aceptada}', '${fecha_emision_amigo}','${es_seguido}', '${es_seguidor}', '${es_bloqueado}', '${id_usuario}', '${id_amigo}')`;
-    let queryAmigo = `INSERT INTO amigos(es_aceptada, fecha_emision_amigo, es_seguido, es_seguidor, es_bloqueado, id_usuario, id_amigo) VALUES ('${es_aceptada}', '${fecha_emision_amigo}','${es_seguido}', '${es_seguidor}', '${es_bloqueado}', '${id_amigo}', '${id_usuario}')`;
+    let queryAmigo = `INSERT INTO amigos(es_aceptada, fecha_emision_amigo, es_seguido, es_seguidor, es_bloqueado, id_usuario, id_amigo) VALUES ('true', '${fecha_emision_amigo}','${es_seguido}', '${es_seguidor}', '${es_bloqueado}', '${id_amigo}', '${id_usuario}')`;
     await conexion.query(query);
     await conexion.query(queryAmigo);
     const response = await conexion.query(`SELECT * from amigos,usuario where amigos.id_amigo = usuario.id_usuario and amigos.id_usuario = ${id_usuario} and es_aceptada = false `);
@@ -57,6 +57,7 @@ amigos.delete = async (req, res) => {
     const id = req.params.id_amigo;
     const id_usuario = req.params.id_usuario;
     const response = await conexion.query(`DELETE FROM amigos WHERE id_amigo = ${id} and id_usuario =${id_usuario}`);
+    const response1 = await conexion.query(`DELETE FROM amigos WHERE id_amigo = ${id_usuario} and id_usuario =${id}`);
     res.json(`usuario ${id} Eliminado Satisfactoriamente`)
 }
 amigos.getamigos = async (req, res) => {

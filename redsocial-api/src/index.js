@@ -14,6 +14,7 @@ const passport = require('passport')
 const redis = require('redis')
 const ExpressSession = require('express-session');
 const { Socket } = require('dgram');
+const { SSL_OP_NO_TICKET } = require('constants');
 const RedisStore = require('connect-redis')(ExpressSession)
 const publicaciones = [];
 const messages = [];
@@ -89,8 +90,7 @@ const io=socketIO.listen(server)
 
 io.on('connection',(socket)=>{
     socket.on('publicar',function(data){
-        publicaciones.push(data);
-        
+        publicaciones.push(data[0]);
         socket.emit('obtener-publicacion',publicaciones);
         socket.broadcast.emit('obtener-publicacion',publicaciones);
     })
@@ -114,6 +114,14 @@ io.on('connection',(socket)=>{
     socket.on('eliminar-publicacion', function (data) {
         socket.emit('publicacion-eliminada',data);
         socket.broadcast.emit('publicacion-eliminada',data);
+    })
+    socket.on('aceptar-solicitud', function (data) {
+        socket.emit('recibir-aceptacion', data);
+        socket.broadcast.emit('recibir-aceptacion',data);
+    })
+    socket.on('enviar-solicitud', function (data) {
+        socket.emit('recibir-solicitud', data);
+        socket.broadcast.emit('recibir-solicitud',data);
     })
 
     //Chat

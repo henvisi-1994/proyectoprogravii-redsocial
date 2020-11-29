@@ -57,9 +57,11 @@ export class PublicacionesComponent implements OnInit {
               private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
-    this.getPublicaciones();
     this.getUsuario();
-    this.getAmigos();
+    this.getAmigos(); 
+    this.getPublicaciones();
+    
+    
     // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-notificacion').subscribe((data: any) => {
       this.notificar(data[0].contenido_notif, "Informacion");
@@ -67,20 +69,22 @@ export class PublicacionesComponent implements OnInit {
     // obtiene publicaciones desde el servidor mediante socket
     this.webService.listen('obtener-publicacion').subscribe((data: any) => {
       // tslint:disable-next-line: prefer-for-of
+      console.log(data)
       for (let index = 0; index < data.length; index++) {
-        if (this.esAmigo(this.usuario.id_usuario)) {
-          this.publicaciones.push(data[index][0]);
+        
+        if (this.esAmigo(data[index].id_usuario)) {
+          this.publicaciones.push(data[index]);
         }
       }
       // tslint:disable-next-line: prefer-for-of
       for (let index = 0; index < data.length; index++) {
-        if (this.esAmigo(this.usuario.id_usuario)) {
-          this.imagenes.push(data[index][0]);
+        if (this.esAmigo(data[index].id_usuario)) {
+          this.imagenes.push(data[index]);
         }
       }
       const hash = {};
       // elimina publicaciones con id_pub repetido
-      this.publicaciones = this.publicaciones.filter(publicacion => hash[publicacion.id_pub] ? false : hash[publicacion.id_pub] = true);
+      //this.publicaciones = this.publicaciones.filter(publicacion => hash[publicacion.id_pub] ? false : hash[publicacion.id_pub] = true);
       // Ordena desendentemente las publicaciones
       const publicacionesOrdenadas = this.publicaciones.sort((a, b) => {
         return b.id_pub - a.id_pub;
@@ -119,11 +123,13 @@ export class PublicacionesComponent implements OnInit {
     });
   }
   getAmigos() {
-    this.amigoService.getAmigos(this.usuario.id_usuario).subscribe(
+    let id_usuario = parseInt(localStorage.getItem('id_user'))
+    this.amigoService.getAmigos(id_usuario).subscribe(
       (res: any) => {
         this.amigos = res;
       }
     );
+    
   }
     //Metodo Notificar
     notificar(mensaje: string, tipo_notificacion: string) {
@@ -135,6 +141,7 @@ export class PublicacionesComponent implements OnInit {
     this.usuarioService.getUsuario().subscribe(
       (res: any) => {
         this.almacenarUsuario(res[0]);
+        localStorage.setItem('id_user', res[0].id_usuario)
       }, err => { }
     );
   }
@@ -246,9 +253,6 @@ export class PublicacionesComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   esAmigo(id_usuario: number): boolean {
     const existe = this.amigos.filter(amigo => amigo.id_amigo == id_usuario);
-    console.log(existe.length)
-    console.log(id_usuario)
-    console.log(this.usuario.id_usuario)
     if (existe.length > 0 || id_usuario == this.usuario.id_usuario) {
       return true;
     } else {

@@ -4,7 +4,7 @@
     <div class="feed_title">
       <img *ngIf="publicacion.imagen_usuario == ''" src="../../assets/images/user-7.jpg" alt="" />
       <img *ngIf="publicacion.imagen_usuario !== ''" src="{{publicacion.imagen_usuario}}" alt="" />
-      <span><b>{{publicacion.nom_usuario}}</b> compartio <a
+      <span><b>{{publicacion.nom_usuario}}</b><a
           [routerLink]="['/home/publicacion',publicacion.id_pub]">{{publicacion.cont_type}}</a><br>
         <p>{{formato(publicacion.fecha_bub)}}</p>
       </span>
