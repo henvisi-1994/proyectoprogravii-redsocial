@@ -10,16 +10,27 @@ section{
   
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: initial;
   padding: 0 40px;
   background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
 }
 .cta{
   display: inline-block;
-  padding: 0 70px;
+  padding: 0 20px;
   width: 50px;
+  justify-content: center;
   border: 1px solid #fff;
-  border-radius: 50px;
+  border-radius: 70px;
+  background: #fff;
+}
+.ctatext{
+  display: inline-block;
+  padding: 0 20px;
+  height: 10px;
+  width: 50px;
+  justify-content: center;
+  border: 1px solid #fff;
+  border-radius: 70px;
   background: #fff;
 }
 .modal-container{

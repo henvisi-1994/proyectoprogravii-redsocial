@@ -18,6 +18,7 @@ export class ReaccionPubComponent implements OnInit {
 
   @Input() id_pub:number; 
   @Input() id_usuario:number; 
+  @Input() nom_usuario:string;
   publicaciones: any = [];
   reaccionestop: any = [];
   Reacciones: any = [];
@@ -68,6 +69,9 @@ export class ReaccionPubComponent implements OnInit {
                 this.webService.listen('obtener-notificacion').subscribe((data: any) => {
                   this.notificar(data[0].contenido_notif, "Informacion");
                 });
+                this.webService.listen('obtener-reaccion').subscribe((data:any)=>{
+                  this.Reacciones=data;
+                })
             
                 this.webService.listen('obtener-publicacion').subscribe((data: any) => {
                   // tslint:disable-next-line: prefer-for-of
@@ -143,7 +147,8 @@ export class ReaccionPubComponent implements OnInit {
     modal.style.opacity="1"
     modal.style.visibility="visible";
     modal1.classList.toggle("modal-close");
-    console.log(this.id_pub+" "+this.id_usuario)
+    localStorage.setItem('pub',this.id_pub.toString());
+    console.log(this.id_pub+" "+this.id_usuario+ " "+this.nom_usuario)
   }
   // obtiene usuario desde bd
   // tslint:disable-next-line: typedef
@@ -281,22 +286,21 @@ export class ReaccionPubComponent implements OnInit {
   // Comenta publicacion determinada por variable id_pub
   // tslint:disable-next-line: variable-name
   // tslint:disable-next-line: typedef
-  public reaccionar(id_pub) {
-    this.Reaccion.id_pub = id_pub;
+  public reaccionar(id_reac) {
+    this.Reaccion.id_pub = parseInt(localStorage.getItem('pub'));
     this.Reaccion.id_usuario = this.usuario.id_usuario;
-    this.Reaccion.id_reac=1;
+    this.Reaccion.id_reac=id_reac;
     this.ReaccionpubService.publicar(this.Reaccion).subscribe(
       (res: any) => {
         let notificacion: Notificacion = {
           id_notif: 0,
-          contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha reaccionado una publicacion de: "+res[0].autor_publicacion,
+          contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha reaccionado una publicacion",
           fecha_hora_notif: new Date(),
           leida_notif:false,
           id_usuario: this.usuario.id_usuario,
         };
         this.guardarnotificacion(notificacion);
         this.webService.emit(this.event_name, res);
-        this.Reaccion.id_reac = 0;
       }
     );
   }
@@ -310,19 +314,67 @@ export class ReaccionPubComponent implements OnInit {
   }
   // Realiza conteo de Reaccion de publicacion determinada por variable id_pub
   // tslint:disable-next-line: typedef
-  public contarReaccion(id_pub: number) {
+  public contarReaccion() {
     // tslint:disable-next-line: variable-name
-    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub).length;
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub).length;
     if (cant_reac <= 1) {
       return ' ' + cant_reac + ' reaccionan';
     } else {
-      const reacc1= this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub && Reaccion.id_reac==1).length;
-      const reacc2= this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub && Reaccion.id_reac==2).length;
-      const reacc3= this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub && Reaccion.id_reac==3).length;
-      const reacc4= this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub && Reaccion.id_reac==4).length;
-      const reacc5= this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub && Reaccion.id_reac==5).length;
-      const reacc6= this.Reacciones.filter(Reaccion => Reaccion.id_pub == id_pub && Reaccion.id_reac==6).length;
       return ' ' + cant_reac + ' reaccionaron';
+    }
+  }
+  public contarRmeGusta()
+  {
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub && Reaccion.id_reac==1).length;
+    if (cant_reac <= 1) {
+      return ' ' + cant_reac + ' le gusto';
+    } else {
+      return ' ' + cant_reac + ' les gustaron';
+    }
+  }
+  public contarRmeEncanta()
+  {
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub && Reaccion.id_reac==2).length;
+    if (cant_reac <= 1) {
+      return ' ' + cant_reac + ' le encanto';
+    } else {     
+      return ' ' + cant_reac + ' les encantaron';
+    }
+  }
+  public contarRmeImporta()
+  {
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub && Reaccion.id_reac==3).length;
+    if (cant_reac <= 1) {
+      return ' ' + cant_reac + ' le importo';
+    } else {
+      return ' ' + cant_reac + ' les importaron';
+    }
+  }
+  public contarRmeEntristece()
+  {
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub && Reaccion.id_reac==4).length;
+    if (cant_reac <= 1) {
+      return ' ' + cant_reac + ' le entristece';
+    } else {
+      return ' ' + cant_reac + ' les entristecio';
+    }
+  }
+  public contarRmeSorprende()
+  {
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub && Reaccion.id_reac==5).length;
+    if (cant_reac <= 1) {
+      return ' ' + cant_reac + ' le sorprende';
+    } else {
+      return ' ' + cant_reac + ' les sorprendieron';
+    }
+  }
+  public contarRmeEnoja()
+  {
+    const cant_reac = this.Reacciones.filter(Reaccion => Reaccion.id_pub == this.id_pub && Reaccion.id_reac==6).length;
+    if (cant_reac <= 1) {
+      return ' ' + cant_reac + ' le enojo';
+    } else {
+      return ' ' + cant_reac + ' les enojaron';
     }
   }
 

@@ -24,15 +24,7 @@
     </div>
     <div class="feed_footer">
       <ul class="feed_footer_left">
-        <li class="hover-orange selected-orange" >
-          <div class="box" id="reaccion">
-            Two
-          </div>
-          <img src="/../../assets/img/corazon.png" alt=""> 22k
-        </li>
-        <li>
-          <span><b>Jimmy, Andrea</b> and 47 more liked this</span>
-        </li>
+        <app-reaccion-pub [id_pub]="publicacion.id_pub" [id_usuario]="usuario.id_usuario" [nom_usuario]="usuario.nom_usuario"></app-reaccion-pub>
       </ul>
       <ul class="feed_footer_right">
         <li>

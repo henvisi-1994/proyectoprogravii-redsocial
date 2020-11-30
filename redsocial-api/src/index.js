@@ -20,6 +20,7 @@ const publicaciones = [];
 const messages = [];
 const comentarios = [];
 const eventos = [];
+const reacciones=[];
 const redisClient = redis.createClient({
     host: 'localhost',
     port: '6379',
@@ -81,6 +82,7 @@ app.use(require('./routes/notificaciones.route'));
 app.use(require('./routes/mensaje.route'));
 app.use(require('./routes/eventos.route'));
 app.use(require('./routes/historia.route'));
+app.use(require('./routes/reacciones.route'));
 
 const server=app.listen(app.get('port'),()=>{
     console.log('server on port', app.get('port'));
@@ -122,6 +124,11 @@ io.on('connection',(socket)=>{
     socket.on('enviar-solicitud', function (data) {
         socket.emit('recibir-solicitud', data);
         socket.broadcast.emit('recibir-solicitud',data);
+    })
+    socket.on('reaccionar',function(data){
+        reacciones.push(data[0]);
+        socket.emit('obtener-reaccion',reacciones);
+        socket.broadcast.emit('obtener-reaccion',reacciones);
     })
 
     //Chat
