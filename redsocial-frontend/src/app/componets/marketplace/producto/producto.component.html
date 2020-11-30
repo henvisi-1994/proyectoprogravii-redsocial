@@ -1,0 +1,86 @@
+<div class="contenedor">
+  <div class="barra_lateral">
+    <h1 class="titulo-registro">Registro de Productos</h1>
+    <div class="contenido-form">
+      <label class="etiqueta">Producto</label>
+      <input class="form-control" name="titulo" type="text" maxlength="50" />
+    </div>
+    <div class="contenido-form">
+      <label class="etiqueta">Descripcion Producto</label>
+      <textarea
+        class="form-control"
+        name="descripcion-producto"
+        cols="30"
+        rows="2"
+      ></textarea>
+    </div>
+    <div class="contenido-form">
+      <label class="etiqueta">Precio</label>
+      <input class="form-control" name="titulo" type="text" maxlength="50" />
+    </div>
+    <div class="contenido-form">
+      <label class="etiqueta">Categoria</label>
+      <select>
+        <option>casas</option>
+        <option>ropa</option>
+      </select>
+    </div>
+    <div class="contenido-form">
+      <label class="etiqueta">Tienda</label>
+      <select>
+        <option>Patito</option>
+        <option>Henny</option>
+      </select>
+      <button (click)="control_botontn()" class="btntienda">+</button>
+    </div>
+    <div *ngIf="existetienda">
+      <div class="contenido-form">
+        <label class="etiqueta">Nombre de Tienda</label>
+        <input
+          class="form-control"
+          name="nombtienda"
+          type="text"
+          maxlength="50"
+        />
+      </div>
+      <div class="contenido-form">
+        <label class="etiqueta">Lugar</label>
+        <input
+          class="form-control"
+          name="lugartienda"
+          type="text"
+          maxlength="50"
+        />
+      </div>
+    </div>
+
+    <div class="contenido-form">
+      <label class="etiqueta">Imagen</label>
+      <input class="form-control" name="titulo" type="file" />
+    </div>
+    <button class="btncomp">Guardar</button>
+  </div>
+  <div class="contenido">
+    <h1 class="titulo-vistap">Vista Previa</h1>
+    <div class="contvistap">
+      <h2 class="titulovistpre">Titulo</h2>
+      <h3 class="precio">Precio</h3>
+      <img
+        class="imagen-pro"
+        src="file:///C|/Users/FrankNarvaez/Documents/LogoCarrera.png"
+        width="200"
+        height="200"
+      />
+      <p class="desc">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis est
+        mattis, dictum lacus tincidunt, accumsan diam. Aenean sem mauris, congue
+        eu quam id, efficitur scelerisque elit. Nam urna est, blandit a arcu sit
+        amet, bibendum iaculis nunc. Cras eget tincidunt lectus. Phasellus felis
+        urna, auctor eget neque a, vestibulum mollis sem. Suspendisse malesuada
+        orci velit, sed tristique ipsum convallis vitae. Morbi dignissim
+        venenatis nisi, viverra ullamcorper elit rutrum eget. Aenean viverra
+        bibendum tempor. Aliquam eget faucibus ligula, eu iaculis quam.
+      </p>
+    </div>
+  </div>
+</div>

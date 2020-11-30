@@ -33,6 +33,8 @@ import { ReaccionCdetComponent } from './componets/home/reaccion-cdet/reaccion-c
 import { PrincipalEventoComponent } from './componets/home/eventos/principal-evento/principal-evento.component';
 import { EventoComponent } from './componets/home/eventos/evento/evento.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ProductoComponent } from './componets/marketplace/producto/producto.component';
+import { PrincipalTiendaComponent } from './componets/marketplace/principal-tienda/principal-tienda.component';
 const routes: Route[] = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
@@ -45,7 +47,9 @@ const routes: Route[] = [
     { path: 'usuarios/:usuario', component: BuscarUsuarioComponent },
     { path: 'publicacion/:id_pub', component: PublicacionComponent },
     { path: 'evento', component: PrincipalEventoComponent},
-    { path: 'evento/:id_evento', component: EventoComponent}
+    { path: 'evento/:id_evento', component: EventoComponent},
+    { path: 'marketplace/crear', component: ProductoComponent },
+    { path: 'marketplace/principal-tienda', component: PrincipalTiendaComponent }
   ],
     canActivate: [AuthGuard]
   },
@@ -85,7 +89,9 @@ const routes: Route[] = [
     MensajeComponent,
     ReaccionPubComponent,
     ReaccionComComponent,
-    ReaccionCdetComponent
+    ReaccionCdetComponent,
+    ProductoComponent,
+    PrincipalTiendaComponent
   ],
   imports: [
     BrowserModule,
