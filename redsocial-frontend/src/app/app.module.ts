@@ -49,7 +49,7 @@ const routes: Route[] = [
     { path: 'evento', component: PrincipalEventoComponent},
     { path: 'evento/:id_evento', component: EventoComponent},
     { path: 'marketplace/crear', component: ProductoComponent },
-    { path: 'marketplace/principal-tienda', component: PrincipalTiendaComponent }
+    { path: 'marketplace', component: PrincipalTiendaComponent }
   ],
     canActivate: [AuthGuard]
   },

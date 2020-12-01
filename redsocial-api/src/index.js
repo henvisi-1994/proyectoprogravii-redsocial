@@ -15,12 +15,16 @@ const redis = require('redis')
 const ExpressSession = require('express-session');
 const { Socket } = require('dgram');
 const { SSL_OP_NO_TICKET } = require('constants');
+const productos = require('./controllers/producto.controller');
+const marketplace = require('./controllers/marketplace.controller');
 const RedisStore = require('connect-redis')(ExpressSession)
 const publicaciones = [];
 const messages = [];
 const comentarios = [];
 const eventos = [];
-const reacciones=[];
+const productos = [];
+const tiendas = [];
+const detalles=[];
 const redisClient = redis.createClient({
     host: 'localhost',
     port: '6379',
@@ -83,6 +87,7 @@ app.use(require('./routes/mensaje.route'));
 app.use(require('./routes/eventos.route'));
 app.use(require('./routes/historia.route'));
 app.use(require('./routes/reacciones.route'));
+app.use(require('./routes/markplaces.route'));
 
 const server=app.listen(app.get('port'),()=>{
     console.log('server on port', app.get('port'));
@@ -129,6 +134,21 @@ io.on('connection',(socket)=>{
         reacciones.push(data[0]);
         socket.emit('obtener-reaccion',reacciones);
         socket.broadcast.emit('obtener-reaccion',reacciones);
+    })
+    socket.on('producto',function(data){
+        productos.push(data[0]);
+        socket.emit('obtener-producto',productos);
+        socket.broadcast.emit('obtener-producto',productos);
+    })
+    socket.on('detalle',function(data){
+        detalles.push(data[0]);
+        socket.emit('obtener-detalle',detalles);
+        socket.broadcast.emit('obtener-detalle',detalles);
+    })
+    socket.on('tienda',function(data){
+        tiendas.push(data[0]);
+        socket.emit('obtener-tienda',tiendas);
+        socket.broadcast.emit('obtener-tienda',tiendas);
     })
 
     //Chat
