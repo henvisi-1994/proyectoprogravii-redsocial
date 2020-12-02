@@ -29,6 +29,7 @@ export class ProductoService {
     form.append('precio_product', producto.precio_product.toString());
     form.append('file', file);
     form.append('url', this.API_URI);
+    form.append('id_mark', producto.id_mark.toString());
     return this.http.post(`${this.API_URI}/registrarProducto`, form);
   }
 
@@ -40,6 +41,7 @@ export class ProductoService {
     form.append('precio_product', updateProducto.precio_product.toString());
     form.append('file', file);
     form.append('url', this.API_URI);
+    form.append('id_mark', updateProducto.id_mark.toString());
     return this.http.put(`${this.API_URI}/updateProducto/${id_producto}`, form);
   }
   // Elimina Usuarios teniendo id  desde bd mediante servidor backend

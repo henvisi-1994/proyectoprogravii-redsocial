@@ -23,7 +23,7 @@ router.delete('/deleteProducto/:id_producto',producto.delete);
 
 //marketplace
 router.get('/marketplace',marketplace.getmarketplaces);
-router.post('/registrarMarkeplace',marketplace.registro);
+router.post('/registrarMarketplace',marketplace.registro);
 router.put('/updateMarketplace/:id_mark',marketplace.update);
 router.delete('/deleteMarketplace/:id_mark',marketplace.delete);
 

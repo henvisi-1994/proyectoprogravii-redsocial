@@ -14,9 +14,9 @@ productos.getproducto = async (req, res) => {
 }
 
 productos.registro = async (req, res) => {
-    const {nombre_producto, descripcion_producto, imagen_product, precio_product,id_mark} = req.body;
+    const {nombre_producto, descripcion_producto, url, precio_product,id_mark} = req.body;
     const urli = `${url}/productos/${req.file.filename}`;
-    let query = `INSERT INTO public.productos(nombre_producto, descripcion_producto, imagen_product, precio_product) VALUES ('${nombre_producto}','${descripcion_producto}','${urli}','${precio_product}','${id_mark}')`;
+    let query = `INSERT INTO public.productos(nombre_producto, descripcion_producto, imagen_product, precio_product,id_mark) VALUES ('${nombre_producto}','${descripcion_producto}','${urli}','${precio_product}','${id_mark}')`;
     console.log(query);
     await conexion.query(query);
     const result = await conexion.query("SELECT  MAX(id_producto) FROM productos LIMIT 1");
@@ -28,7 +28,7 @@ productos.registro = async (req, res) => {
 //Actualiza datos de eventos mediante id
 productos.update = async (req, res) => {
     const id = req.params.id_producto;
-    const { nombre_producto, descripcion_producto, imagen_product, precio_product,id_mark} = req.body;
+    const { nombre_producto, descripcion_producto, url, precio_product,id_mark} = req.body;
     const urli = `${url}/productos/${req.file.filename}`;
     let query = `UPDATE productos SET nombre_producto='${nombre_producto}', descripcion_producto='${descripcion_producto}', imagen_product='${urli}', precio_product='${precio_product}', id_mark='${id_mark}' WHERE id_producto = ${id}`;
     await conexion.query(query);

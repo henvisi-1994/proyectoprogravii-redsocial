@@ -14,6 +14,7 @@
     <div class="contenido-form">
       <label class="etiqueta">Descripcion Producto</label>
       <textarea
+      [(ngModel)]="producto.descripcion_producto"
         class="form-control"
         name="descripcion-producto"
         cols="30"
@@ -32,19 +33,18 @@
     </div>
     <div class="contenido-form">
       <label class="etiqueta">Categoria</label>
-      <select>
+      <select name="categoria" (change)= "obtenerCategoria($event.target.value)">
         <option
           *ngFor="let categoria of catalogos"
-          [value]="detalleprod.id_catalogo"
-        >
+          [value]="categoria.id_catalogo">
           {{ categoria.nombre_catalogo }}
         </option>
       </select>
     </div>
     <div class="contenido-form">
       <label class="etiqueta">Tienda</label>
-      <select>
-        <option *ngFor="let tienda of tiendas" [value]="producto.id_mark">
+      <select name="tienda" (change)="obtenerTienda($event.target.value)">
+        <option *ngFor="let tienda of tiendas" [value]="tienda.id_mark">
           {{ tienda.contenido_mark }}
         </option>
       </select>
@@ -82,7 +82,7 @@
         (change)="onFileChange($event)"
       />
     </div>
-    <button class="btncomp" (click)="guardar()">Guardar</button>
+    <button class="btncomp" (click)="guardar()" name="guardar">Guardar</button>
   </div>
   <div class="contenido">
     <h1 class="titulo-vistap">Vista Previa</h1>

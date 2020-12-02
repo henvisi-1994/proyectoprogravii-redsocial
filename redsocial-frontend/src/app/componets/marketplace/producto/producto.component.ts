@@ -22,10 +22,17 @@ export class ProductoComponent implements OnInit {
   producto: Producto = {
     id_producto: 0,
     nombre_producto: '',
-    descripcion_producto: '',
-    imagen_product:'',
+    descripcion_producto: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis est
+    mattis, dictum lacus tincidunt, accumsan diam. Aenean sem mauris, congue
+    eu quam id, efficitur scelerisque elit. Nam urna est, blandit a arcu sit
+    amet, bibendum iaculis nunc. Cras eget tincidunt lectus. Phasellus felis
+    urna, auctor eget neque a, vestibulum mollis sem. Suspendisse malesuada
+    orci velit, sed tristique ipsum convallis vitae. Morbi dignissim
+    venenatis nisi, viverra ullamcorper elit rutrum eget. Aenean viverra
+    bibendum tempor. Aliquam eget faucibus ligula, eu iaculis quam.`,
+    imagen_product: '',
     precio_product: 0,
-    id_mark:0,
+    id_mark: 0,
   };
   detalleprod: DetalleProd = {
     id_catalogo: 0,
@@ -36,28 +43,28 @@ export class ProductoComponent implements OnInit {
     id_mark: 0,
     contenido_mark: '',
     lugar_mark: '',
-    id_usuario:0,
+    id_usuario: 0,
   };
   catalogos: any;
   tiendas: any;
   constructor(private productoService: ProductoService,
-    private catalogoService: CatalogoService,
-    private marketPlaceService:MarketplaceService,
-    private usuarioService:UsuarioService,
-    private detalleProdService:DetalleProdService,) {}
+              private catalogoService: CatalogoService,
+              private marketPlaceService: MarketplaceService,
+              private usuarioService: UsuarioService,
+              private detalleProdService: DetalleProdService, ) { }
 
   ngOnInit(): void {
     this.getMarketplace();
     this.getCatalogo();
     this.getUsuario();
   }
-  control_botontn() {
+  control_botontn(): void {
     this.existetienda = true;
   }
-  control_botoncat() {
+  control_botoncat(): void {
     this.existecategoria = true;
   }
-  public onFileChange(event) {
+  public onFileChange(event): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -70,86 +77,95 @@ export class ProductoComponent implements OnInit {
     }
   }
 
-  guardarProducto(){
+  guardarProducto(): void {
     this.productoService.guardarProducto(this.producto, this.file).subscribe(
       (res: any) => {
-        localStorage.setItem('id_producto',res[0].id_producto);
+        this.guardarDetalle(res[0].id_producto);
         this.limpiar();
       }
     );
   }
 
-  guardarTienda(){
-    this.marketPlace.id_usuario=parseInt(localStorage.getItem('id_user'));
+  guardarTienda(): void {
+    // tslint:disable-next-line: radix
+    this.marketPlace.id_usuario = parseInt(localStorage.getItem('id_user'));
     this.marketPlaceService.guardarMarketplace(this.marketPlace).subscribe(
       (res: any) => {
-        localStorage.setItem('id_mark',res[0].id_mark);
+        localStorage.setItem('id_mark', res[0].id_mark);
         this.limpiarMarketplace();
       }
     );
   }
-  guardarDetalle(){
+  // tslint:disable-next-line: variable-name
+  guardarDetalle(id_producto: number): void {
+    this.detalleprod.id_producto = id_producto;
     this.detalleProdService.guardarDetalleProd(this.detalleprod).subscribe(
       (res: any) => {
         this.limpiarDetalle();
       }
     );
+
   }
-  limpiar(){
-    this.producto.id_producto=0;
-    this.producto.nombre_producto= '';
-    this.producto.descripcion_producto= '';
-    this.producto.imagen_product='';
-    this.producto.precio_product= 0;
+  // tslint:disable-next-line: variable-name
+  obtenerCategoria(id_catalogo: number): void {
+    this.detalleprod.id_catalogo = id_catalogo;
+  }
+  // tslint:disable-next-line: variable-name
+  obtenerTienda(id_mark: number): void {
+    this.producto.id_mark = id_mark;
+  }
+  limpiar(): void {
+    this.producto.id_producto = 0;
+    this.producto.nombre_producto = '';
+    this.producto.descripcion_producto = '';
+    this.producto.imagen_product = '';
+    this.producto.precio_product = 0;
   }
 
-  limpiarDetalle(){
-    this.detalleprod.id_producto=0;
-    this.detalleprod.id_catalogo= 0;
+  limpiarDetalle(): void {
+    this.detalleprod.id_producto = 0;
+    this.detalleprod.id_catalogo = 0;
   }
 
-  limpiarMarketplace(){
-    this.marketPlace.id_mark=0;
-    this.marketPlace.contenido_mark= '';
-    this.marketPlace.lugar_mark= '';
-    this.marketPlace.id_usuario=0;
+  limpiarMarketplace(): void {
+    this.marketPlace.id_mark = 0;
+    this.marketPlace.contenido_mark = '';
+    this.marketPlace.lugar_mark = '';
+    this.marketPlace.id_usuario = 0;
   }
 
-  getCatalogo() {
+  getCatalogo(): void {
     this.catalogoService.getcatalogo().subscribe(
       (res: any) => {
         this.catalogos = res;
       }
     );
-   }
+  }
 
-   getMarketplace() {
+  getMarketplace(): void {
     this.marketPlaceService.getMarketplace().subscribe(
       (res: any) => {
         this.tiendas = res;
       }
     );
-   }
+  }
 
-   getUsuario() {
+  getUsuario(): void {
     this.usuarioService.getUsuario().subscribe(
       (res: any) => {
-        localStorage.setItem('id_user',res[0]);
+        localStorage.setItem('id_user', res[0].id_usuario);
       },
-      (err) => {}
+      (err) => { }
     );
   }
-  guardar(){
-    if(this.existetienda){
+  guardar(): void {
+    if (this.existetienda) {
       this.guardarTienda();
-      this.producto.id_mark=parseInt(localStorage.getItem('id_mark'));
+      // tslint:disable-next-line: radix
+      this.producto.id_mark = parseInt(localStorage.getItem('id_mark'));
       this.guardarProducto();
-      this.detalleprod.id_producto=parseInt(localStorage.getItem('id_producto'));
-      this.guardarDetalle();
-    }else{
+    } else {
       this.guardarProducto();
-      this.detalleprod.id_producto=parseInt(localStorage.getItem('id_producto'));
-      this.guardarDetalle();
     }
   }
 
