@@ -22,15 +22,23 @@ usuarios.registro = async(req, res) => {
     let email = `SELECT * FROM public.usuario WHERE email_usuario = '${email_user}'`
     const existente = await conexion.query(email);
     emailExistente = existente.rows[0]
+
+    let usernombre = `SELECT * FROM public.usuario WHERE nom_usuario = '${nom_usuario}'`
+    const userexist = await conexion.query(usernombre);
+    usuarioExistente = userexist.rows[0]
     if (emailExistente) {
         return res.status(400).send('El correo ingresado esta actualmente en uso.')
     }else{
-        let query = `INSERT INTO public.usuario(nombres_usuario, apellidos_usuario, fecha_nac_usuario, email_usuario, contrasena_usuario, presentacion_usuario, telefono_usuario, id_genero,nom_usuario) VALUES ('${nombres_user}','${apellidos_user}','${fecha_nac}','${email_user}','${hash}','${presentacion}','${telefono}','${id_genero}','${nom_usuario}')`;
-        await conexion.query(query);
-        const result = await conexion.query("SELECT  MAX(id_usuario) FROM usuario LIMIT 1");
-        const token = jwt.sign({ _id: result.rows[0].max }, SECRET_KEY)
-    
-        res.status(200).json({ token })
+        if(usuarioExistente){
+            return res.status(400).send('El usuario ingresado esta actualmente en uso.')
+        }else{
+            let query = `INSERT INTO public.usuario(nombres_usuario, apellidos_usuario, fecha_nac_usuario, email_usuario, contrasena_usuario, presentacion_usuario, telefono_usuario, id_genero,nom_usuario) VALUES ('${nombres_user}','${apellidos_user}','${fecha_nac}','${email_user}','${hash}','${presentacion}','${telefono}','${id_genero}','${nom_usuario}')`;
+            await conexion.query(query);
+            const result = await conexion.query("SELECT  MAX(id_usuario) FROM usuario LIMIT 1");
+            const token = jwt.sign({ _id: result.rows[0].max }, SECRET_KEY)
+        
+            res.status(200).json({ token })
+        }
     }   
 }
 
