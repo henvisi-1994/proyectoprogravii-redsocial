@@ -1,7 +1,7 @@
 <div class="contenedor">
     <div class="barra_lateral">
-        <h2 class="etiqueta">Detalles del evento</h2>
-        <form action="">
+        <h2 class="titulo-registro">Detalles del evento</h2>
+        <form class= "contenido-form" action="">
             <label class="etiqueta">Nombre del evento</label>
             <input type="text" class="form-control"  name="nombre_evento" [(ngModel)]="evento.nombre_evento">
             <label class="etiqueta">Fecha y hora del evento</label>
@@ -17,7 +17,7 @@
     </div>
     <div class="wraper">
         <div class="vista-previa">
-            <h5>Vista previa del evento</h5>
+            <h5 class="titulo-vistap">Vista previa del evento</h5>
             <h3>{{formato(evento.fecha_hora_evento)}}</h3>
             <h2>{{evento.nombre_evento}}</h2>
             <div class="encabezado">
@@ -26,16 +26,13 @@
                         <p>Te invito {{ usuario.nom_usuario }}</p>
                     </li>
                     <li>
-                        <input type="button" value="Asistiré">
+                        <input class="btn"type="button" value="Asistiré">
                     </li>
                     <li>
-                        <input type="button" value="Tal vez asista">
+                        <input class="btn"type="button" value="Tal vez asista">
                     </li>
                     <li>
-                        <input type="button" value="No asistiré">
-                    </li>
-                    <li>
-                        <input type="button" value="Invitar">
+                        <input class="btn"type="button" value="No asistiré">
                     </li>
                 </ul>
             </div>

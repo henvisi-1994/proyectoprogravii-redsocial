@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { Invitado } from 'src/app/modelos/Invitado';
 import { Router } from '@angular/router';
 import { WebSocketService } from 'src/app/services/web-socket.service';
+import { AmistadesService } from 'src/app/services/amistades.service';
 
 @Component({
   selector: 'app-invitacion-evento',
@@ -39,6 +40,7 @@ export class InvitacionEventoComponent implements OnInit {
   constructor(private organizadorService: OrganizadorService,
               private invitacionService: InvitadoService,
               private webService: WebSocketService,
+              private amigosService: AmistadesService,
               private router: Router,
               private usuarioService: UsuarioService,
               private notificacionService: NotificacionService) { }
@@ -62,13 +64,6 @@ export class InvitacionEventoComponent implements OnInit {
       // sobrer escribe arreglo eventos  con array ordenado
       this.eventos = eventosOrdenados;
      });
-  }
-  getUsuarios() {
-    this.usuarioService.getUsuarios().subscribe(
-      (res: any) => {
-        this.usuarios = res;
-      }
-    );
   }
   getUsuarioId(id_usuario){
     this.usuarioService.getUsuariobyId(id_usuario).subscribe(
@@ -151,6 +146,13 @@ this.invitacionService.getInvitado(id_usuario).subscribe(
         }
     );
   }
+  getUsuarios() {
+    let id_usuario = parseInt(localStorage.getItem('id_usuario'));
+    this.amigosService.getAmigos(id_usuario).subscribe((res: any) => {
+      this.usuarios = res;
+    });
+  }
+
   cambiarEvento(estado_evento){
     let id_usuario = parseInt(localStorage.getItem('id_usuario'));
     let invitado: Invitado = {

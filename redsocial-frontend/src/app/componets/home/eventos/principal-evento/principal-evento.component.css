@@ -9,6 +9,26 @@
 	border: 1px solid #e6ecf5;
 	padding-top:1%;
 }
+.titulo-registro{
+  font-size: 1.5rem;
+  text-align: center;
+}
+.titulo-registro,
+.titulo-vistap {
+  background: #3f4257;
+  color: white;
+}
+.titulo-vistap{
+  font-size: 1.5rem;
+  margin-top: 3%;
+  text-align: center;
+}
+.contenido-form {
+  margin-top: 4%;
+  margin-bottom: 4%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
 .barra_lateral {
 	    float: left;
    border: 1px solid #e6ecf5;
@@ -18,7 +38,7 @@
 }
 .wraper {
     margin-left: 12%;
-		
+
 }
 .form-control {
 	margin:2%;
@@ -61,7 +81,7 @@
 .lista-invitados{
     margin-bottom: 2%;
 }
-.btn-crear{
+.btn-crear,.btn{
 	border-radius: 3px;
 	background: #0B173B;
 	border: 1px solid #e6ecf5;

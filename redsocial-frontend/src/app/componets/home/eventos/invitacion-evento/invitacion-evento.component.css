@@ -5,6 +5,19 @@
 	margin-top: 2.5%;
 	padding: 2%;
 }
+.btn, button{
+	border-radius: 3px;
+	background: #0B173B;
+	border: 1px solid #e6ecf5;
+	text-align: center;
+	color: white;
+	margin-left: 2%;
+	margin-right: 2%;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	height: 30px;
+	font-size: 1.2rem;
+}
 .encabezado {
 	border: 1px solid #e6ecf5;
 	width: 90%;
@@ -60,9 +73,14 @@
   background-color: white;
   background-color: 0;
   float: right;
-  margin-top: 6%;
-  margin-bottom: 6%;
-  font-size: 1.2rem;
+  height: 10px;
+  width: 200px;
+}
+.boton-invitacion{
+  color: #73b6ecbd;
+  background-color: white;
+  font-size: 0.1rem;
+  margin-top: -50%;
 }
 .modalContainer .modal-content .boton-modal:hover {
   color: #185586bd;
@@ -74,8 +92,8 @@
 
 .seleccion li{
 	list-style: none;
-	margin-left: 25%;
-	margin-right: 25%;
+	margin-left: 2%;
+	margin-right: 2%;
 	margin-top: 2%;
 	margin-bottom: 2%;
 }
