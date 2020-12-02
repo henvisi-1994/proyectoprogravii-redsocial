@@ -1,3 +1,4 @@
+import { PerfilComponent } from './componets/usuario/perfil/perfil.component';
 import { InvitacionEventoComponent } from './componets/home/eventos/invitacion-evento/invitacion-evento.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -44,6 +45,7 @@ const routes: Route[] = [
     children: [{ path: '', component: HomeComponent },
     { path: 'chat', component: MensajeComponent },
     { path: 'amigos', component: ListaAmigosComponent },
+    {path: 'perfil/:usuario', component: PerfilComponent },
     { path: 'usuarios/:usuario', component: BuscarUsuarioComponent },
     { path: 'publicacion/:id_pub', component: PublicacionComponent },
     { path: 'evento', component: PrincipalEventoComponent},
@@ -87,6 +89,7 @@ const routes: Route[] = [
     CambioContrasenaComponent,
     MenuConfiguracionComponent,
     MensajeComponent,
+    PerfilComponent,
     ReaccionPubComponent,
     ReaccionComComponent,
     ReaccionCdetComponent,
