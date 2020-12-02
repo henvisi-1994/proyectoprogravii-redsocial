@@ -1,4 +1,4 @@
 export interface DetalleProd{
   id_catalogo: number;
-  id_produto: number ;
+  id_producto: number;
 }

@@ -4,4 +4,5 @@ export interface Producto{
   descripcion_producto: string;
   imagen_product: string;
   precio_product: number;
+  id_mark:number;
 }

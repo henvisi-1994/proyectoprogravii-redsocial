@@ -15,11 +15,11 @@ router.get('/catalogo',catalogo.getcatalogo);
 router.get('/detalle',detalle.getdetalleprod);
 router.post('/registrarDetalle',detalle.registro);
 //productos
-router.get('/producto',producto.getproductos);
+router.get('/productos',producto.getproductos);
 router.get('/producto/:id_producto',producto.getproducto);
 router.post('/registrarProducto',uploader,producto.registro);
 router.put('/updateProducto/:id_producto',uploader,producto.update);
-router.delete('/deleteProductos/:id_producto',producto.delete);
+router.delete('/deleteProducto/:id_producto',producto.delete);
 
 //marketplace
 router.get('/marketplace',marketplace.getmarketplaces);

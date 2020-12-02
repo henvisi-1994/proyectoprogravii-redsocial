@@ -3,7 +3,13 @@
     <h1 class="titulo-registro">Registro de Productos</h1>
     <div class="contenido-form">
       <label class="etiqueta">Producto</label>
-      <input class="form-control" name="titulo" type="text" maxlength="50" />
+      <input
+      [(ngModel)]="producto.nombre_producto"
+        class="form-control"
+        name="titulo"
+        type="text"
+        maxlength="50"
+      />
     </div>
     <div class="contenido-form">
       <label class="etiqueta">Descripcion Producto</label>
@@ -16,20 +22,31 @@
     </div>
     <div class="contenido-form">
       <label class="etiqueta">Precio</label>
-      <input class="form-control" name="titulo" type="text" maxlength="50" />
+      <input
+      [(ngModel)]="producto.precio_product"
+        class="form-control"
+        name="precio"
+        type="text"
+        maxlength="50"
+      />
     </div>
     <div class="contenido-form">
       <label class="etiqueta">Categoria</label>
       <select>
-        <option>casas</option>
-        <option>ropa</option>
+        <option
+          *ngFor="let categoria of catalogos"
+          [value]="detalleprod.id_catalogo"
+        >
+          {{ categoria.nombre_catalogo }}
+        </option>
       </select>
     </div>
     <div class="contenido-form">
       <label class="etiqueta">Tienda</label>
       <select>
-        <option>Patito</option>
-        <option>Henny</option>
+        <option *ngFor="let tienda of tiendas" [value]="producto.id_mark">
+          {{ tienda.contenido_mark }}
+        </option>
       </select>
       <button (click)="control_botontn()" class="btntienda">+</button>
     </div>
@@ -37,6 +54,7 @@
       <div class="contenido-form">
         <label class="etiqueta">Nombre de Tienda</label>
         <input
+        [(ngModel)]="marketPlace.contenido_mark"
           class="form-control"
           name="nombtienda"
           type="text"
@@ -46,6 +64,7 @@
       <div class="contenido-form">
         <label class="etiqueta">Lugar</label>
         <input
+        [(ngModel)]="marketPlace.lugar_mark"
           class="form-control"
           name="lugartienda"
           type="text"
@@ -56,31 +75,22 @@
 
     <div class="contenido-form">
       <label class="etiqueta">Imagen</label>
-      <input class="form-control" name="titulo" type="file" />
+      <input
+        class="form-control"
+        name="titulo"
+        type="file"
+        (change)="onFileChange($event)"
+      />
     </div>
-    <button class="btncomp">Guardar</button>
+    <button class="btncomp" (click)="guardar()">Guardar</button>
   </div>
   <div class="contenido">
     <h1 class="titulo-vistap">Vista Previa</h1>
     <div class="contvistap">
-      <h2 class="titulovistpre">Titulo</h2>
-      <h3 class="precio">Precio</h3>
-      <img
-        class="imagen-pro"
-        src="file:///C|/Users/FrankNarvaez/Documents/LogoCarrera.png"
-        width="200"
-        height="200"
-      />
-      <p class="desc">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis est
-        mattis, dictum lacus tincidunt, accumsan diam. Aenean sem mauris, congue
-        eu quam id, efficitur scelerisque elit. Nam urna est, blandit a arcu sit
-        amet, bibendum iaculis nunc. Cras eget tincidunt lectus. Phasellus felis
-        urna, auctor eget neque a, vestibulum mollis sem. Suspendisse malesuada
-        orci velit, sed tristique ipsum convallis vitae. Morbi dignissim
-        venenatis nisi, viverra ullamcorper elit rutrum eget. Aenean viverra
-        bibendum tempor. Aliquam eget faucibus ligula, eu iaculis quam.
-      </p>
+      <h2 class="titulovistpre">{{ producto.nombre_producto }}</h2>
+      <h3 class="precio">${{ producto.precio_product }}</h3>
+      <img class="imagen-pro" src="{{ image }}" width="200" height="200" />
+      <p class="desc">{{producto.descripcion_producto}}</p>
     </div>
   </div>
 </div>
