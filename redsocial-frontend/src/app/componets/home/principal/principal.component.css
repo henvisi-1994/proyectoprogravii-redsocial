@@ -17,7 +17,7 @@ html, body {background-color: #EDF2F6;font-family: 'Roboto', sans-serif;height:1
 .border-radius-image {border-radius: 200px;}
 .hover-orange:hover {color: #ff5e3a;}
 .selected-orange {color: #ff5e3a;}
-.shadow {box-shadow: 3px 4px 5px rgba(209, 209, 209, 0.5);}
+.shadow {float: right; box-shadow: 3px 4px 5px rgba(209, 209, 209, 0.5);}
 
 
 /* Nav */

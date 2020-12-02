@@ -29,6 +29,10 @@ body {
   font-family: "Roboto", sans-serif;
   height: 100%;
 }
+.oscuro{
+  background-color: #1f1f1f;
+  color: #f1eded;
+}
 
 /* Personalizado */
 .border-radius {

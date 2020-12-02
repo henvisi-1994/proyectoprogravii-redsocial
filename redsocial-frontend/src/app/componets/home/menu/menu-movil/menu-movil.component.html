@@ -5,33 +5,30 @@
       <img id="mobilemenu_profile_pic" *ngIf="usuario.imagen_usuario == ''" src="/../../../assets/images/user.jpg" alt="" /> <br>
       <img id="mobilemenu_profile_pic" *ngIf="usuario.imagen_usuario !== ''"src="{{usuario.imagen_usuario}}" alt="" /> <br>
       <span>{{usuario.nom_usuario}}<br>
-        <p>150k seguidores / 50 seguidos</p>
       </span>
     </div>
     <div class="mobilemenu_menu">
       <ul>
-        <li><a href="index.html" id="mobilemenu-selected"><img src="/../../../assets/img/home.png"></a></li>
+        <li><a href="index.html" id="mobilemenu-selected"><img height="40px" src="/../../../assets/img/pagina-principal.png"></a></li>
         <li *ngIf="esMovil == true">
-          <div class="image-upload">
+          <a class="image-upload">
             <label for="file-input-pub">
-              <img src="/../../../assets/img/publicar.png" alt="Click aquí para subir tu foto"
-                title="Click aquí para subir tu foto">
+              <img height="40px" src="/../../../assets/img/imagen.png" alt=""
+                >
             </label>
             <input id="file-input-pub" type="file" (change)="onFileChangeP($event)" name="file" multiple
-              accept="video/*,image/*" />
-          </div>
+              accept="video/*,image/*" />Publicar
+          </a>
         </li>
-        <li><a (click)="ingresar()"><img src="/../../../assets/img/perfilM.png" alt=""></a></li>
-        <li><a [routerLink]="['amigos']"><img src="/../../../assets/img/notificacionesM.png" alt=""></a></li>
-        <li><a href="messages.html"><img src="/../../../assets/img/mensajeM.png" alt=""></a></li>
-        <li><a  [routerLink]="['evento']">Crear Evento</a></li>
+        <li><a (click)="ingresar()"><img height="40px" src="/../../../assets/img/perfil-del-usuario.png" alt="">Perfil</a></li>
+        <li><a  [routerLink]="['amigos']"><img height="40px" src="/../../../assets/img/seguidores.png" alt="">Amigos</a></li>
+        <li><a [routerLink]="['marketplace']"><img height="40px" src="/../../../assets/img/marketplace.png" alt="">Marketplace</a></li>
+        <li><a [routerLink]="['evento']"><img height="40px" src="/../../../assets/img/calendario.png" alt="">Eventos</a></li>
+        <li><a [routerLink]="['chat']"><img height="40px" src="/../../../assets/img/enviar-correo.png" alt="">Chats</a></li>
         <li class="primarymenu"><img src="/../../../assets/img/explode.png" alt=""></li>
       </ul>
       <hr>
       <ul>
-        <li><a href="#">Terms & Conditions</a></li>
-        <li><a href="#">FAQ's</a></li>
-        <li><a href="#">Contact</a></li>
         <li><a href="#" (click)="cerrarSesion()">Cerrar Sesion</a></li>
       </ul>
     </div>
