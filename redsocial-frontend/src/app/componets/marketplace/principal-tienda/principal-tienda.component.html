@@ -8,13 +8,14 @@
   <!-- Stats Gallery Section -->
   <div class="gallery">
     <div class="thumbnail" *ngFor="let producto of productos">
-      <h4 class="titulovistpre">{{producto.titulo}}</h4>
-      <p class="precio">${{producto.precio}}</p>
-		<a href="#"><img src="images/bkg_06.jpg" alt="" width="2000" class="imagen-pro"/></a>
+      <h4 class="titulovistpre">{{producto.nombre_producto}}</h4>
+      <p class="precio">${{producto.precio_product}}</p>
+		<a ><img src="{{producto.imagen_product}}" alt="" width="2000" class="imagen-pro"/></a>
       <p class="desc">
-        {{producto.descripcion}}
+        {{producto.descripcion_producto}}
       </p>
     </div>
 	</div>
   </div>
 <!-- Main Container Ends -->
+

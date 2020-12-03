@@ -43,21 +43,21 @@
       <ul id="mensajes">
         <li *ngFor="let mensaje of mensajes">
 
-          <p class="chat"*ngIf="(verificarimagen(mensaje.message)==false)">
-            <span class="user">{{ mensaje.user }}</span
-            ><br />{{mensaje.message}}
+          <p class="chat"*ngIf="(verificartexto(mensaje.ruta_archivo))">
+            <span class="user">{{ mensaje.nom_usuario }}</span
+            ><br />{{mensaje.mensaje}}
           </p>
-          <p class="chat" *ngIf="(verificarimagen(mensaje.message))">
-            <span class="user">{{ mensaje.user }}</span
-            ><br /><img src="{{mensaje.message}}"height="140px" alt="">
+          <p class="chat" *ngIf="(verificarimagen(mensaje.ruta_archivo))">
+            <span class="user">{{ mensaje.nom_usuario }}</span
+            ><br /><img src="{{mensaje.ruta_archivo}}"height="140px" alt="">
           </p>
-          <p class="chat" *ngIf="verificararchivo(mensaje)">
-            <span class="user">{{ mensaje.user }}</span
-            ><br /><img src="../../../../assets/chat-img/docx.svg"height="30px" alt="">
+          <p class="chat" *ngIf="verificararchivo(mensaje.ruta_archivo)">
+            <span class="user">{{ mensaje.nom_usuario }}</span
+            ><br /><a href="{{mensaje.ruta_archivo}}"><img src="../../../../assets/chat-img/docx.svg"height="30px" alt=""></a>
           </p>
-          <p class="chat" *ngIf="verificararchivopdf(mensaje)">
-            <span class="user">{{ mensaje.user }}</span
-            ><br /><img src="../../../../assets/chat-img/pdf.svg"height="30px" alt="">
+          <p class="chat" *ngIf="verificararchivopdf(mensaje.ruta_archivo)">
+            <span class="user">{{ mensaje.nom_usuario }}</span
+            ><br /><a href="{{mensaje.ruta_archivo}}"target="_blank"><img src="../../../../assets/chat-img/pdf.svg"height="30px" alt=""></a>
           </p>
         </li>
       </ul>

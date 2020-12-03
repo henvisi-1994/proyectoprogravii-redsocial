@@ -36,14 +36,10 @@ mensajes.registro = async (req, res) => {
   } = req.body;
   if (typeof req.file != "undefined") {
     const urli = `${url}/chat/${req.file.filename}`;
-    query = `INSERT INTO public.mensaje(id_mensaje, mensaje, estado, fecha_hora_mensaje, id_chat, id_usuario,ruta_archivo, file_name) VALUES ('${mensaje}','${estado}','${convertirFecha(
-      fecha_hora_mensaje
-    )}','${id_chat}','${id_usuario},'${urli},'${req.file.filename}')`;
+    query = `INSERT INTO public.mensaje(mensaje, estado, fecha_hora_mensaje, id_chat, id_usuario,ruta_archivo, file_name) VALUES ('${mensaje}','${estado}','${convertirFecha(fecha_hora_mensaje)}','${id_chat}','${id_usuario}','${urli}','${req.file.filename}')`;
   }
   else{
-    query = `INSERT INTO public.mensaje(id_mensaje, mensaje, estado, fecha_hora_mensaje, id_chat, id_usuario) VALUES ('${mensaje}','${estado}','${convertirFecha(
-        fecha_hora_mensaje
-      )}','${id_chat}','${id_usuario}')`;
+    query = `INSERT INTO public.mensaje(mensaje, estado, fecha_hora_mensaje, id_chat, id_usuario) VALUES ('${mensaje}','${estado}','${convertirFecha(fecha_hora_mensaje)}','${id_chat}','${id_usuario}')`;
 
   }
 

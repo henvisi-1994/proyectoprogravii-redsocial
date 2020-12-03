@@ -15,10 +15,10 @@ chats.registro = async (req, res) => {
     const {fecha,nomb_chat} = req.body;
     let query = `INSERT INTO public.chat(fecha, nomb_chat) VALUES ('${fecha}','${nomb_chat}')`;
     await conexion.query(query);
-    const result = await conexion.query("SELECT  MAX(id_chat) FROM chat LIMIT 1");
-    const id = result.rows[0].max;
-    const response = await conexion.query(`SELECT * FROM chat  where chat.id_chat=${id} order by chat.id_chat DESC`);
-    res.status(200).json(response.rows);
+    const result = await conexion.query("SELECT  MAX(id_chat) FROM chat LIMIT 1"); 
+    const id_chat = result.rows[0].max;
+    const resultado= await conexion.query(`SELECT id_chat, fecha, nomb_chat FROM public.chat WHERE chat.id_chat=${id_chat}`);
+    res.status(200).json(resultado.rows);
 }
 
 //Actualiza datos de notificacion mediante id

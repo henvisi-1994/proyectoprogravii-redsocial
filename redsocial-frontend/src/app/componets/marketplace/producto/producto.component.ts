@@ -7,6 +7,7 @@ import { Producto } from 'src/app/modelos/Producto';
 import { Marketplace } from 'src/app/modelos/Marketplace';
 import { DetalleProd } from 'src/app/modelos/DetalleProd';
 import { DetalleProdService } from 'src/app/services/detalleprod.service';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-producto',
@@ -22,14 +23,7 @@ export class ProductoComponent implements OnInit {
   producto: Producto = {
     id_producto: 0,
     nombre_producto: '',
-    descripcion_producto: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis est
-    mattis, dictum lacus tincidunt, accumsan diam. Aenean sem mauris, congue
-    eu quam id, efficitur scelerisque elit. Nam urna est, blandit a arcu sit
-    amet, bibendum iaculis nunc. Cras eget tincidunt lectus. Phasellus felis
-    urna, auctor eget neque a, vestibulum mollis sem. Suspendisse malesuada
-    orci velit, sed tristique ipsum convallis vitae. Morbi dignissim
-    venenatis nisi, viverra ullamcorper elit rutrum eget. Aenean viverra
-    bibendum tempor. Aliquam eget faucibus ligula, eu iaculis quam.`,
+    descripcion_producto: '',
     imagen_product: '',
     precio_product: 0,
     id_mark: 0,
@@ -47,16 +41,25 @@ export class ProductoComponent implements OnInit {
   };
   catalogos: any;
   tiendas: any;
-  constructor(private productoService: ProductoService,
-              private catalogoService: CatalogoService,
-              private marketPlaceService: MarketplaceService,
-              private usuarioService: UsuarioService,
-              private detalleProdService: DetalleProdService, ) { }
+  constructor(
+    private productoService: ProductoService,
+    private catalogoService: CatalogoService,
+    private marketPlaceService: MarketplaceService,
+    private usuarioService: UsuarioService,
+    private webService: WebSocketService,
+    private detalleProdService: DetalleProdService
+  ) {}
 
   ngOnInit(): void {
     this.getMarketplace();
     this.getCatalogo();
     this.getUsuario();
+
+    // obtiene publicaciones desde el servidor mediante socket
+    this.webService.listen('obtener-tienda').subscribe((data: any) => {
+      console.log(data);
+      this.tiendas = data;
+    });
   }
   control_botontn(): void {
     this.existetienda = true;
@@ -78,33 +81,35 @@ export class ProductoComponent implements OnInit {
   }
 
   guardarProducto(): void {
-    this.productoService.guardarProducto(this.producto, this.file).subscribe(
-      (res: any) => {
+    this.productoService
+      .guardarProducto(this.producto, this.file)
+      .subscribe((res: any) => {
         this.guardarDetalle(res[0].id_producto);
+        this.webService.emit('producto', res);
         this.limpiar();
-      }
-    );
+      });
   }
 
   guardarTienda(): void {
     // tslint:disable-next-line: radix
     this.marketPlace.id_usuario = parseInt(localStorage.getItem('id_user'));
-    this.marketPlaceService.guardarMarketplace(this.marketPlace).subscribe(
-      (res: any) => {
+    this.marketPlaceService
+      .guardarMarketplace(this.marketPlace)
+      .subscribe((res: any) => {
         localStorage.setItem('id_mark', res[0].id_mark);
+        this.webService.emit('tienda', res);
         this.limpiarMarketplace();
-      }
-    );
+      });
   }
   // tslint:disable-next-line: variable-name
   guardarDetalle(id_producto: number): void {
     this.detalleprod.id_producto = id_producto;
-    this.detalleProdService.guardarDetalleProd(this.detalleprod).subscribe(
-      (res: any) => {
+    this.detalleProdService
+      .guardarDetalleProd(this.detalleprod)
+      .subscribe((res: any) => {
+        this.webService.emit('detalle', res);
         this.limpiarDetalle();
-      }
-    );
-
+      });
   }
   // tslint:disable-next-line: variable-name
   obtenerCategoria(id_catalogo: number): void {
@@ -112,7 +117,8 @@ export class ProductoComponent implements OnInit {
   }
   // tslint:disable-next-line: variable-name
   obtenerTienda(id_mark: number): void {
-    this.producto.id_mark = id_mark;
+    console.log(id_mark);
+    localStorage.setItem('id_mark',id_mark.toString());
   }
   limpiar(): void {
     this.producto.id_producto = 0;
@@ -135,19 +141,15 @@ export class ProductoComponent implements OnInit {
   }
 
   getCatalogo(): void {
-    this.catalogoService.getcatalogo().subscribe(
-      (res: any) => {
-        this.catalogos = res;
-      }
-    );
+    this.catalogoService.getcatalogo().subscribe((res: any) => {
+      this.catalogos = res;
+    });
   }
 
   getMarketplace(): void {
-    this.marketPlaceService.getMarketplace().subscribe(
-      (res: any) => {
-        this.tiendas = res;
-      }
-    );
+    this.marketPlaceService.getMarketplace().subscribe((res: any) => {
+      this.tiendas = res;
+    });
   }
 
   getUsuario(): void {
@@ -155,7 +157,7 @@ export class ProductoComponent implements OnInit {
       (res: any) => {
         localStorage.setItem('id_user', res[0].id_usuario);
       },
-      (err) => { }
+      (err) => {}
     );
   }
   guardar(): void {
@@ -164,10 +166,11 @@ export class ProductoComponent implements OnInit {
       // tslint:disable-next-line: radix
       this.producto.id_mark = parseInt(localStorage.getItem('id_mark'));
       this.guardarProducto();
+
     } else {
+      this.producto.id_mark = parseInt(localStorage.getItem('id_mark'));
       this.guardarProducto();
+
     }
   }
-
-
 }

@@ -6,6 +6,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { Chat } from 'src/app/modelos/Chat';
 import { NotificacionService } from 'src/app/services/notificacion.service';
 import { Mensaje } from 'src/app/modelos/Mensaje';
+import { MensajeService } from 'src/app/services/mensaje.service';
 
 @Component({
   selector: 'app-mensaje',
@@ -42,16 +43,25 @@ export class MensajeComponent implements OnInit {
   };
   mensajes_chat = [];
   mensajes = [];
+  id_chat: any;
 
   constructor(
     private usuarioService: UsuarioService,
     private amigosService: AmistadesService,
     private chatService: ChatService,
     private notificacionService: NotificacionService,
-    private webService: WebSocketService
+    private webService: WebSocketService,
+    private mensajeService: MensajeService
   ) {}
 
   ngOnInit(): void {
+    this.getUsuarios();
+    this.getUsuario();
+    this.webService.listen('recibir-chat').subscribe((data: any) => {
+      localStorage.setItem('usuario',data.nom_chat);
+      localStorage.setItem('id_chat',data.id_chat);
+
+    });
     // notifica que usuario de sesion actual esta escribiendo comentario
     this.webService.listen('writing').subscribe((data: any) => {
       if (data.user !== this.usuario.nom_usuario) {
@@ -65,14 +75,24 @@ export class MensajeComponent implements OnInit {
     this.webService.listen('new-message').subscribe((data: any) => {
       this.mensajes = data;
     });
-    this.getUsuarios();
-    this.getUsuario();
+
+
   }
+  filtrar_mensajes(data: any) {
+    let usuario=localStorage.getItem('usuario');
+    let usuarioa=localStorage.getItem('nom_usuario');
+    this.mensajes = data.filter(mensaje => mensaje.nom_usuario == usuario||mensaje.nom_usuario ==usuarioa );
+    console.log(this.mensajes);
+
+
+  }
+
   getUsuario() {
     this.usuarioService.getUsuario().subscribe(
       (res: any) => {
         this.almacenarUsuario(res[0]);
         localStorage.setItem('id_usuario', res[0].id_usuario);
+        localStorage.setItem('nom_usuario',res[0].nomb_usuario);
       },
       (err) => {}
     );
@@ -103,6 +123,8 @@ export class MensajeComponent implements OnInit {
     };
     this.chatService.chatear(chat).subscribe((res: any) => {
       this.nomb_chat = usuario.nom_usuario;
+      this.id_chat = res[0].id_chat;
+      this.webService.emit("iniciar-chat",res);
       this.notificar(
         'Se ha realizado con exito creacion de chat' +
           ' de ' +
@@ -119,53 +141,50 @@ export class MensajeComponent implements OnInit {
     this.idMessages = this.idMessages + 1;
     let file = event.target.files[0];
     if (file.type.indexOf('image') !== -1) {
-      let reader = new window.FileReader();
-      reader.onload = (event) => {
-        let payload = {
-          id: this.idMessages,
-          user: this.usuario.nom_usuario,
-          nameFile: file.name,
-          message: event.target.result,
-          date: new Date(),
-        };
-        this.webService.emit('new-message', payload);
-        this.mensaje.mensaje = '';
+      let message: Mensaje = {
+        id_mensaje: 0,
+        mensaje: '',
+        estado: false,
+        fecha_hora_mensaje: new Date(),
+        id_chat: this.id_chat,
+        id_usuario: this.usuario.id_usuario,
       };
-      reader.readAsDataURL(file);
+      this.guardar_mensaje(file, message);
+      this.mensaje.mensaje = '';
     }
   }
   enviar_archivo(event) {
     this.idMessages = this.idMessages + 1;
     let file = event.target.files[0];
     if (file.type.indexOf('image') === -1) {
-      let reader = new window.FileReader();
-      reader.onload = (event) => {
-        let payload = {
-          id: this.idMessages,
-          user: this.usuario.nom_usuario,
-          message: {
-            type: file.type,
-            nameFile: file.name,
-            message: event.target.result,
-          },
-          date: new Date(),
-        };
-        this.webService.emit('new-message', payload);
-        this.mensaje.mensaje = '';
+      let message: Mensaje = {
+        id_mensaje: 0,
+        mensaje: '',
+        estado: false,
+        fecha_hora_mensaje: new Date(),
+        id_chat: this.id_chat,
+        id_usuario: this.usuario.id_usuario,
       };
-      reader.readAsArrayBuffer(file);
+      this.guardar_mensaje(file, message);
+      this.mensaje.mensaje = '';
     }
   }
+  guardar_mensaje(file: File, mensaje: Mensaje) {
+    mensaje.id_chat=parseInt(localStorage.getItem('id_chat'));
+    this.mensajeService.mensajear(mensaje, file).subscribe((res: any) => {
+      this.webService.emit('new-message', res);
+    });
+  }
   enviar() {
-    this.idMessages = this.idMessages + 1;
-    let payload = {
-      id: this.idMessages,
-      user: this.usuario.nom_usuario,
-      nameFile: '',
-      message: this.mensaje.mensaje,
-      date: new Date(),
+    let message: Mensaje = {
+      id_mensaje: 0,
+      mensaje: this.mensaje.mensaje,
+      estado: false,
+      fecha_hora_mensaje: new Date(),
+      id_chat: this.id_chat,
+      id_usuario: this.usuario.id_usuario,
     };
-    this.webService.emit('new-message', payload);
+    this.guardar_mensaje(null, message);
     this.mensaje.mensaje = '';
   }
   //Enviar por Enter
@@ -248,42 +267,53 @@ export class MensajeComponent implements OnInit {
     contentMenu.appendChild(btnDelete);
     this.ContainereContextMenu.appendChild(contentMenu);
   }
-  verificararchivo(mensaje) {
-    if (typeof mensaje.message.nameFile != 'undefined') {
-      if (mensaje.message.nameFile.toString().indexOf('docx') !== -1) {
-        return true;
-      } else {
-        return false;
+  verificararchivo(ruta) {
+    if (typeof ruta !== 'undefined') {
+      if (ruta) {
+        let extensionesValidas = '.document';
+        let extension = ruta.substring(ruta.lastIndexOf('.') + 1).toLowerCase();
+        let extensionValida = extensionesValidas.indexOf(extension);
+        if (extensionValida < 0) {
+          return false;
+        } else {
+          return true;
+        }
       }
     }
   }
-  verificararchivopdf(mensaje) {
-    if (typeof mensaje.message.nameFile != 'undefined') {
-      if (mensaje.message.nameFile.toString().indexOf('pdf') !== -1) {
-        return true;
-      } else {
-        return false;
+  verificararchivopdf(ruta) {
+    if (typeof ruta !== 'undefined') {
+      if (ruta) {
+        let extensionesValidas = '.pdf';
+        let extension = ruta.substring(ruta.lastIndexOf('.') + 1).toLowerCase();
+        let extensionValida = extensionesValidas.indexOf(extension);
+        if (extensionValida < 0) {
+          return false;
+        } else {
+          return true;
+        }
       }
     }
   }
-  verificarimagen(message) {
-    if (message.toString().indexOf('image') !== -1) {
-      return true;
-    } else {
+  verificarimagen(ruta) {
+    if (typeof ruta !== 'undefined') {
+      if (ruta) {
+        let extensionesValidas = '.png, .gif, .jpeg, .jpg';
+        let extension = ruta.substring(ruta.lastIndexOf('.') + 1).toLowerCase();
+        let extensionValida = extensionesValidas.indexOf(extension);
+        if (extensionValida < 0) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+  }
+  verificartexto(ruta) {
+    if (ruta) {
       return false;
-    }
-  }
-  verificartexto(mensaje) {
-    if (typeof mensaje.nameFile != 'undefined') {
-      if (
-        mensaje.toString().indexOf('image') == -1 &&
-        mensaje.nameFile.toString().indexOf('docx') == -1 &&
-        mensaje.nameFile.toString().indexOf('pdf') == -1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+    } else {
+      return true;
     }
   }
 }

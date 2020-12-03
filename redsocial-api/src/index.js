@@ -24,6 +24,7 @@ const comentarios = [];
 const eventos = [];
 const productos = [];
 const tiendas = [];
+const men=[];
 const detalles=[];
 const redisClient = redis.createClient({
     host: 'localhost',
@@ -153,12 +154,15 @@ io.on('connection',(socket)=>{
 
     //Chat
     socket.on('iniciar-chat',function (data) {
-        socket.emit('recibir-chat',data);
-      socket.broadcast.emit('recibir-chat', data);
+        men.push(data[0]);
+        socket.emit('recibir-chat',data[0]);
+      socket.broadcast.emit('recibir-chat', data[0]);
     })
 
+    
+
     socket.on('new-message', message => {
-        messages.push(message)
+        messages.push(message[0])
         socket.emit('new-message', messages)
         socket.broadcast.emit('new-message', messages);
       })
