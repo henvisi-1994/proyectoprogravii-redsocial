@@ -20,7 +20,7 @@ export class ReaccionPubComponent implements OnInit {
   @Input() id_usuario:number; 
   @Input() nom_usuario:string;
   publicaciones: any = [];
-  reaccionestop: any = [];
+  reaccionesuser: any = [];
   Reacciones: any = [];
   // tslint:disable-next-line: variable-name
   usuario = {
@@ -251,6 +251,29 @@ export class ReaccionPubComponent implements OnInit {
       }
     );
   }
+  getreaccionuser(id: number)
+  {
+    let confirma=0
+    for (let index=0; index< this.Reacciones.length; index++){
+      if(this.Reacciones[index].id_pub == id && this.Reacciones[index].id_usuario == this.id_usuario ){
+        confirma=confirma+ 1;
+      }else{
+        confirma= confirma+0;
+      }
+
+    }
+    return confirma;
+  }
+  getcamposreaccionuser(id: number){
+    for (let index=0; index< this.Reacciones.length; index++){
+      if(this.Reacciones[index].id_pub == id && this.Reacciones[index].id_usuario == this.id_usuario ){
+        return this.Reacciones[index];
+      }
+    }
+    return null;
+
+  }
+
   // notifica quien esta escribiendo comentario
   // tslint:disable-next-line: typedef
   public notificarreaccion() {
@@ -290,19 +313,57 @@ export class ReaccionPubComponent implements OnInit {
     this.Reaccion.id_pub = parseInt(localStorage.getItem('pub'));
     this.Reaccion.id_usuario = this.usuario.id_usuario;
     this.Reaccion.id_reac=id_reac;
-    this.ReaccionpubService.publicar(this.Reaccion).subscribe(
-      (res: any) => {
-        let notificacion: Notificacion = {
-          id_notif: 0,
-          contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha reaccionado una publicacion",
-          fecha_hora_notif: new Date(),
-          leida_notif:false,
-          id_usuario: this.usuario.id_usuario,
-        };
-        this.guardarnotificacion(notificacion);
-        this.webService.emit(this.event_name, res);
+    
+    console.log(this.Reaccion.id_pub);
+    console.log(this.getcamposreaccionuser(this.Reaccion.id_pub));
+    if(this.getreaccionuser(this.Reaccion.id_pub)>=1)
+    {
+      if(this.getcamposreaccionuser(this.Reaccion.id_pub).id_reac==this.Reaccion.id_reac){
+        
+        this.ReaccionpubService.borrar(this.Reaccion).subscribe(
+          (res: any) => {
+            let notificacion: Notificacion = {
+              id_notif: 0,
+              contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha reaccionado una publicacion",
+              fecha_hora_notif: new Date(),
+              leida_notif:false,
+              id_usuario: this.usuario.id_usuario,
+            };
+            this.guardarnotificacion(notificacion);
+            this.webService.emit(this.event_name, res);
+          }
+        );
+      }else{
+        this.ReaccionpubService.actualizar(this.Reaccion).subscribe(
+          (res: any) => {
+            let notificacion: Notificacion = {
+              id_notif: 0,
+              contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha reaccionado una publicacion",
+              fecha_hora_notif: new Date(),
+              leida_notif:false,
+              id_usuario: this.usuario.id_usuario,
+            };
+            this.guardarnotificacion(notificacion);
+            this.webService.emit(this.event_name, res);
+          }
+        );
       }
-    );
+    }else{
+      this.ReaccionpubService.publicar(this.Reaccion).subscribe(
+        (res: any) => {
+          let notificacion: Notificacion = {
+            id_notif: 0,
+            contenido_notif: "El usuario " + this.usuario.nom_usuario + " ha reaccionado una publicacion",
+            fecha_hora_notif: new Date(),
+            leida_notif:false,
+            id_usuario: this.usuario.id_usuario,
+          };
+          this.guardarnotificacion(notificacion);
+          this.webService.emit(this.event_name, res);
+        }
+      );
+    }
+    
   }
   //GuardaNotificaciones de Reaccion
   guardarnotificacion(notificacion: Notificacion) {
